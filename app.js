@@ -5,7 +5,7 @@ import express from "express";
 import CONFIG from "./config/config.js";
 import routes from "./routes/routes.js";
 
-const { displayPort } = CONFIG;
+const { port } = CONFIG;
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
@@ -23,4 +23,4 @@ app.use(express.static("public"));
 app.use(routes);
 
 // app.listen(1801);
-app.listen(displayPort);
+app.listen(port);

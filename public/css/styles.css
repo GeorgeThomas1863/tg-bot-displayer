@@ -1,0 +1,154 @@
+body {
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+main {
+  margin: 0 auto;
+  justify-content: center;
+  text-align: center;
+}
+
+nav {
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  position: absolute;
+  text-align: left;
+  width: 20rem;
+}
+
+#fuck-forms {
+  width: 50%;
+  margin: 0 auto;
+}
+
+/* form {
+    width: 50%;
+    margin: 0 auto;
+  } */
+
+h1 {
+  font-size: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0;
+}
+
+h2 {
+  padding: 0;
+  margin: 0;
+  margin-left: 2rem;
+  text-align: left;
+  font-size: 2.5rem;
+}
+
+p {
+  margin-left: 2rem;
+  padding: 0;
+  text-align: left;
+  width: 90%;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+li label {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-left: 0.5rem;
+}
+
+li input {
+  display: block;
+  margin-left: auto;
+  font-size: 1.5rem;
+  width: 75%;
+  height: 2rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+li textarea {
+  display: block;
+  margin-left: auto;
+  font-size: 1.5rem;
+  width: 75%;
+  height: 4rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+li select {
+  display: block;
+  margin-left: auto;
+  font-size: 1.5rem;
+  width: 76%;
+  height: 2.5rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+nav li {
+  gap: 1rem;
+}
+
+.action-button {
+  font-size: 1rem;
+  margin-top: -0.5rem;
+  padding: 0.75rem 0;
+  width: 100%;
+}
+
+button {
+  margin-top: 0.5rem;
+  background: rgb(180, 180, 180);
+  color: inherit;
+  border: none;
+  padding: 0.5rem 2rem;
+  font: inherit;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+#buttons-div {
+  display: flex;
+}
+
+#make-pretty-button {
+  margin-top: 2rem;
+  margin-left: 2rem;
+  display: none;
+}
+
+#undo-button {
+  display: none;
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+#data-return-section {
+  /* position: absolute; */
+  /* margin-top: 40rem; */
+  margin-top: 5rem;
+  margin-left: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.hide-placeholder {
+  visibility: hidden;
+}
