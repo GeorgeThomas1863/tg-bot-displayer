@@ -12,10 +12,10 @@ export const buildDisplay = async () => {
 
   //build drop down / form on first load
   if (isFirstLoad) {
-    const actionButtonWrapper = await buildActionButtons();
-    const mainFormWrapper = await buildMainForm();
+    const actionButtonElement = await buildActionButtons();
+    const mainFormElement = await buildMainForm();
 
-    displayElement.append(actionButtonWrapper, mainFormWrapper);
+    displayElement.append(actionButtonElement, mainFormElement);
     // console.log("!!!DISPLAY ELEMENT");
     // console.log(displayElement);
   }

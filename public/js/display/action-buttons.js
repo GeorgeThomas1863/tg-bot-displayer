@@ -2,9 +2,8 @@
 
 //TELEGRAM ACTION BUTTONS
 export const buildActionButtons = async () => {
-  const telegramActionWrapper = document.createElement("ul");
-  telegramActionWrapper.id = "telegram-action-wrapper";
-  telegramActionWrapper.className = "wrapper collapse-content";
+  const actionButtonWrapper = document.createElement("ul");
+  actionButtonWrapper.id = "action-button-wrapper";
 
   //build ACTION BUTTON list items
   const actionButtonsRow1 = await buildActionButtonsRow1();
@@ -12,7 +11,7 @@ export const buildActionButtons = async () => {
   const actionButtonsRow3 = await buildActionButtonsRow3();
   const actionButtonsRow4 = await buildActionButtonsRow4();
 
-  telegramActionWrapper.append(actionButtonsRow1, actionButtonsRow2, actionButtonsRow3, actionButtonsRow4);
+  actionButtonWrapper.append(actionButtonsRow1, actionButtonsRow2, actionButtonsRow3, actionButtonsRow4);
 
   // create title element for collapse container
   //   const titleElement = document.createElement("div");
@@ -34,7 +33,7 @@ export const buildActionButtons = async () => {
 
   //   return telegramActionCollapseContainer;
 
-  return telegramActionWrapper;
+  return actionButtonWrapper;
 };
 
 export const buildActionButtonsRow1 = async () => {

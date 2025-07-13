@@ -8,16 +8,23 @@ main {
   text-align: center;
 }
 
-nav {
+#display-element {
+  display: flex;
+  gap: 5rem;
+  /* align-items: center; */
+}
+
+#action-button-wrapper {
   margin-top: 2rem;
   margin-left: 1.5rem;
-  position: absolute;
+  /* position: absolute; */
   text-align: left;
   width: 20rem;
 }
 
-#fuck-forms {
-  width: 50%;
+#form-wrapper {
+  margin-top: 2rem;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -57,6 +64,21 @@ li {
   margin-top: 1.5rem;
   display: flex;
   justify-content: center;
+}
+
+/* CHANGED: Added specific styling for form list items */
+li.form {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* CHANGED: Added specific styling for action button rows */
+li.action-button-row {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Space between buttons in a row */
 }
 
 li label {
@@ -107,6 +129,8 @@ nav li {
   margin-top: -0.5rem;
   padding: 0.75rem 0;
   width: 100%;
+  /* CHANGED: Added flex-grow for equal button sizing in rows */
+  flex: 1;
 }
 
 button {
@@ -120,6 +144,50 @@ button {
   font-weight: bold;
   cursor: pointer;
   border-radius: 8px;
+}
+
+/* ADDED: New styles for collapse containers */
+.wrapper {
+  margin-bottom: 2rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.collapse-header {
+  background: rgb(200, 200, 200);
+  padding: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #333;
+  user-select: none;
+}
+
+.collapse-header:hover {
+  background: rgb(220, 220, 220);
+}
+
+.collapse-content {
+  padding: 1rem;
+  background: white;
+}
+
+.collapse-content.collapsed {
+  display: none;
+}
+
+/* ADDED: Specific styling for different form sections */
+.article-wrapper-collapse .collapse-header {
+  background: rgb(200, 220, 255);
+}
+
+.telegram-wrapper-collapse .collapse-header {
+  background: rgb(255, 220, 200);
+}
+
+.telegram-action-wrapper-collapse .collapse-header {
+  background: rgb(200, 255, 220);
 }
 
 #buttons-div {

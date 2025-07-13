@@ -2,9 +2,9 @@ import { buildCollapseContainer } from "../util/collapse.js";
 
 //TELEGRAM FORM ELEMENTS
 export const buildMainForm = async () => {
-  const telegramWrapper = document.createElement("ul");
-  telegramWrapper.id = "telegram-wrapper";
-  telegramWrapper.className = "wrapper collapse-content";
+  const formWrapper = document.createElement("ul");
+  formWrapper.id = "form-wrapper";
+  formWrapper.className = "wrapper collapse-content";
 
   //build FORM list items
   const forwardAllStoreTypeListItem = await buildForwardAllStoreTypeListItem();
@@ -24,8 +24,9 @@ export const buildMainForm = async () => {
   const uploadToListItem = await buildUploadToListItem();
   const commandListItem = await buildCommandListItem();
   const textInputListItem = await buildTextInputListItem();
+  const submitButton = await buildSubmitButton();
 
-  telegramWrapper.append(
+  formWrapper.append(
     forwardAllStoreTypeListItem,
     captionLookupTypeListItem,
     uploadPicTypeListItem,
@@ -42,7 +43,8 @@ export const buildMainForm = async () => {
     forwardToChatIdListItem,
     uploadToListItem,
     commandListItem,
-    textInputListItem
+    textInputListItem,
+    submitButton
   );
 
   // create title element for collapse container
@@ -52,7 +54,7 @@ export const buildMainForm = async () => {
   //build collapse container
   const telegramCollapseObj = {
     titleElement: titleElement,
-    contentElement: telegramWrapper,
+    contentElement: formWrapper,
     isExpanded: true,
     className: "telegram-wrapper-collapse",
     dataAttribute: "telegram-form-header",
@@ -437,4 +439,12 @@ export const buildTextInputListItem = async () => {
   textInputListItem.append(textInputLabel, textInputTextarea);
 
   return textInputListItem;
+};
+
+export const buildSubmitButton = async () => {
+  const submitButton = document.createElement("button");
+  submitButton.id = "submit-button";
+  submitButton.textContent = "SUBMIT";
+
+  return submitButton;
 };
