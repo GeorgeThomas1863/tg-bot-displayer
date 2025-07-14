@@ -30,6 +30,51 @@ export const tgSendMessage = async (inputParams) => {
 
   const url = `${baseURL}${token}/${commandType}`;
   const data = await tgPostReq(url, params);
+
+  //try again
+  if (data === "FUCKED") return await tgSendMessage(inputParams);
+
+  return data;
+};
+
+export const tgForwardMessage = async (inputParams) => {
+  const { baseURL } = CONFIG;
+  const { forwardToId, forwardFromId, messageId, commandType } = inputParams;
+  const token = tokenArray[tokenIndex];
+
+  const params = {
+    chat_id: forwardToId,
+    from_chat_id: forwardFromId,
+    message_id: messageId,
+  };
+
+  const url = `${baseURL}${token}/${commandType}`;
+  const data = await tgPostReq(url, params);
+
+  //try again
+  if (data === "FUCKED") return await tgForwardMessage(inputParams);
+
+  return data;
+};
+
+export const tgEditMessageCaption = async (inputParams) => {
+  const { baseURL } = CONFIG;
+  const { editChannelId, messageId, caption, commandType } = inputParams;
+  const token = tokenArray[tokenIndex];
+
+  const params = {
+    chat_id: editChannelId,
+    message_id: messageId,
+    caption: caption,
+  };
+
+  const url = `${baseURL}${token}/${commandType}`;
+  const data = await tgPostReq(url, params);
+
+  //try again
+  if (data === "FUCKED") return await tgEditMessageCaption(inputParams);
+
+  return data;
 };
 
 //------------------------------
@@ -48,7 +93,6 @@ export const tgGetReq = async (url) => {
     const data = await checkToken(res.data);
     if (data) return data;
 
-    tokenIndex++;
     return "FUCKED";
   } catch (e) {
     console.log(e.message);
@@ -61,9 +105,25 @@ export const tgGetReq = async (url) => {
 export const tgPostReq = async (url, params) => {
   if (!url || !params) return null;
 
-  console.log("TG POST REQ");
-  console.log(url);
-  console.log(params);
+  try {
+    const res = await axios.post(url, params);
+    if (!res || !res.data) {
+      const error = new Error("REQUEST FUCKED");
+      error.data = res?.data || null;
+      error.status = res?.status || null;
+      throw error;
+    }
+
+    const data = await checkToken(res.data);
+    if (data) return data;
+
+    return "FUCKED";
+  } catch (e) {
+    console.log(e.message);
+    console.log(e.data);
+    console.log(e.status);
+    return null;
+  }
 };
 
 export const checkToken = async (data) => {

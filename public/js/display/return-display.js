@@ -10,8 +10,23 @@ export const buildReturnDisplay = async (data) => {
   parsedData.id = "parsed-data";
   parsedData.innerHTML = JSON.stringify(data);
 
-  //FORMAT BETTER (maybe)
-  returnElement.append(makePrettyButtons, parsedData);
+  //first load
+  if (returnElement.children.length === 0) {
+    returnElement.append(makePrettyButtons, parsedData);
+    return true;
+  }
+
+  //check make pretty buttons (since only built once)
+  const makePrettyButton = document.getElementById("make-pretty-button");
+  const undoPrettyButton = document.getElementById("undo-pretty-button");
+  if (makePrettyButton.classList.contains("hidden")) {
+    makePrettyButton.classList.remove("hidden");
+    undoPrettyButton.classList.add("hidden");
+  }
+
+  //replace old data
+  returnElement.replaceChild(parsedData, returnElement.children[1]);
+  return true;
 };
 
 export const buildMakePrettyButtons = async () => {
@@ -23,7 +38,6 @@ export const buildMakePrettyButtons = async () => {
   const makePrettyButton = document.createElement("button");
   makePrettyButton.id = "make-pretty-button";
   makePrettyButton.textContent = "Make Pretty";
- 
 
   const undoPrettyButton = document.createElement("button");
   undoPrettyButton.id = "undo-pretty-button";
