@@ -8,6 +8,18 @@ main {
   text-align: center;
 }
 
+#background-pic {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+}
+
 #display-element {
   display: flex;
   justify-content: center;
@@ -26,7 +38,7 @@ main {
   /* margin: 0 auto; */
   margin-top: 2.5rem;
   margin-right: 5rem;
-  width: 65%;
+  min-width: 65%;
   border: 2px solid #333;
 }
 
