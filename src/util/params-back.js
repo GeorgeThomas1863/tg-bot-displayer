@@ -9,6 +9,10 @@ export const buildEverythingParams = async (inputParams, dataType = null) => {
     case "vidParams":
       data = await buildVidParams(inputParams, dataType);
       break;
+
+    case "textParams":
+      data = await buildTextParams(inputParams);
+      break;
   }
 
   return data;
@@ -16,13 +20,16 @@ export const buildEverythingParams = async (inputParams, dataType = null) => {
 
 //calc param type
 export const getParamType = async (inputParams) => {
-  const { video, photo, document } = inputParams.result;
+  const { video, photo, document, text } = inputParams.result;
+
+  if (video) return "vidParams";
+  if (text) return "textParams";
 
   console.log("PARAM TYPE!!!");
   console.log(inputParams);
-
-  if (video) return "vidParams";
 };
+
+//--------------------------
 
 //build vid Params
 export const buildVidParams = async (inputParams, dataType = null) => {
@@ -57,7 +64,7 @@ export const buildVidParams = async (inputParams, dataType = null) => {
   return vidParams;
 };
 
-//parse type HERE (Kink, bang, etc) return obj
+//parse type HERE (Kink, bang, etc) return obj MAYBE MOVE ELSEWHERE
 export const getVidType = async (inputParams, dataType) => {
   if (!inputParams) return null;
 
@@ -73,4 +80,24 @@ export const getVidType = async (inputParams, dataType) => {
   }
   //BUILD
   return null;
+};
+
+export const buildTextParams = async (inputParams) => {
+  if (!inputParams || !inputParams.result || !inputParams.result.text) return null;
+
+  const textParams = {
+    messageId: inputParams.result.message_id,
+    forwardFromMessageId: inputParams.result.forward_from_message_id,
+    forwardFromChannelId: inputParams.result.forward_from_chat.id,
+    forwardFromChannelName: inputParams.result.forward_from_chat.title,
+    forwardToId: inputParams.result.chat.id,
+    forwardToName: inputParams.result.chat.title,
+    text: inputParams.result.text,
+    datePosted: inputParams.result.date,
+    dateForwarded: inputParams.result.forward_date,
+    paramType: "textParams",
+    storeDate: new Date(),
+  };
+
+  return textParams;
 };

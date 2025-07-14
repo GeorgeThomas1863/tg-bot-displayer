@@ -25,14 +25,26 @@ export const runForwardAllStore = async (inputParams) => {
       const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
       if (!storeParams) continue;
 
-      // console.log("STORE PARAMS");
-      // console.log(storeParams);
+      console.log("STORE PARAMS");
+      console.log(storeParams);
 
       const storeModel = new dbModel(storeParams, collectionSaveTo);
-      const storeData = await storeModel.storeUniqueVid();
 
-      // console.log("STORE DATA");
-      // console.log(storeData);
+      //if store everything
+      if (forwardAllType === "storeEverything") {
+        const everythingData = await storeModel.storeAnyData();
+        console.log("EVERYTHING DATA");
+        console.log(everythingData);
+
+        returnDataArray.push(everythingData);
+        continue;
+      }
+
+      //otherwise store unique
+      const storeData = await storeModel.storeUniqueData();
+
+      console.log("STORE DATA");
+      console.log(storeData);
 
       //for tracking
       returnDataArray.push(storeData);
