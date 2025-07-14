@@ -29,7 +29,7 @@ export const buildInputParams = async () => {
     text: d.textInputElement.value,
     caption: d.textInputElement.value,
     offset: d.updateIdElement.value,
-    commandType: d.commandInput.value,
+    commandType: d.commandInputElement.value,
     uploadPicType: d.uploadPicTypeInput.value,
     forwardAllType: d.forwardAllStoreType.value,
     captionAllType: d.captionLookupTypeInput.value,

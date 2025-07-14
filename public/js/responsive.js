@@ -1,4 +1,4 @@
-import { changeActionButtonDisplay } from "./display/change-display.js";
+import { changeActionButtonDisplay, changeFormTitle } from "./display/change-display.js";
 import { sendToBack } from "./util/api-front.js";
 import { buildInputParams } from "./util/params.js";
 // import { checkClickTrigger } from "./util/check-things.js";
@@ -15,6 +15,7 @@ export const mainClickHandler = async (e) => {
   //action buttons
   if (clickElement.classList.contains("action-button")) {
     await changeActionButtonDisplay(clickElement);
+    await changeFormTitle();
     return true;
   }
 

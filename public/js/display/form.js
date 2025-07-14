@@ -47,7 +47,6 @@ export const buildMainForm = async () => {
     submitButton
   );
 
-  // create title element for collapse container
   const titleElement = document.createElement("div");
   titleElement.textContent = "TELEGRAM INPUT";
 
