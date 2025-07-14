@@ -1,18 +1,18 @@
-export const hideArrayFunction = (inputs) => {
+export const hideArray = async (inputs) => {
   for (const input of inputs) {
     input.classList.add("hidden");
   }
 };
 
 //UNHIDE ARRAY
-export const unhideArrayFunction = (inputs) => {
+export const unhideArray = async (inputs) => {
   for (const input of inputs) {
     input.classList.remove("hidden");
   }
 };
 
 //Make Pretty
-export const makePretty = () => {
+export const makePretty = async () => {
   const currentDataFormat = d.dataReturnUpdatesElement.innerHTML;
 
   //makePretty (reformat data)
@@ -23,7 +23,7 @@ export const makePretty = () => {
 };
 
 //Undo Pretty
-export const undoPretty = () => {
+export const undoPretty = async () => {
   const currentDataFormat = d.dataReturnUpdatesElement.innerHTML;
   //removes the <pre> from begin / end; checks if it's there first
   if (currentDataFormat.substring(0, 5) === "<pre>") {

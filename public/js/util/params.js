@@ -1,4 +1,4 @@
-import d from "./define-things";
+import { d } from "./define-things.js";
 
 //BUILD INPUT PARAMS
 export const buildInputParams = async () => {

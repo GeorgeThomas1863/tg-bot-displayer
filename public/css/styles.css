@@ -28,7 +28,7 @@ main {
 
 #action-button-wrapper {
   margin-top: 2rem;
-  margin-left: 1rem;
+  margin-right: 2rem;
   /* position: absolute; */
   text-align: left;
   width: 20rem;
@@ -38,7 +38,7 @@ main {
   /* margin: 0 auto; */
   margin-top: 2.5rem;
   margin-right: 5rem;
-  min-width: 65%;
+  min-width: 50%;
   border: 2px solid #333;
 }
 
@@ -202,7 +202,7 @@ button {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .hide-placeholder {

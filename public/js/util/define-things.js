@@ -1,4 +1,4 @@
-const d = {
+export const d = {
   //define action buttons
   getUpdatesActionButton: document.getElementById("get-updates-action-button"),
   sendMessageActionButton: document.getElementById("send-message-action-button"),
@@ -61,55 +61,46 @@ const d = {
   dataReturnUpdatesElement: document.getElementById("data-return-element"),
   makePrettyUpdatesElement: document.getElementById("make-pretty-button"),
   undoButtonElement: document.getElementById("undo-button"),
-
-  //define list item array
-  listItemsButtonsArray: [
-    this.updateIdListItem,
-    this.messageIdListItem,
-    this.chatIdListItem,
-    this.messageStartListItem,
-    this.messageStopListItem,
-    this.forwardFromListItem,
-    this.forwardToListItem,
-    this.uploadToListItem,
-    this.editCaptionChannelListItem,
-    this.collectionPullFromListItem,
-    this.collectionSaveToListItem,
-    this.forwardAllStoreTypeListItem,
-    this.captionLookupTypeListItem,
-    this.uploadPicTypeListItem,
-    this.textInputListItem,
-    this.commandListItem,
-    this.picPathListItem,
-    this.getUpdatesSubmitElement,
-    this.sendMessageSubmitElement,
-    this.forwardMessageSubmitElement,
-    this.forwardAllStoreSubmitElement,
-    this.editCaptionSubmitElement,
-    this.captionAllLookupSubmitElement,
-    this.uploadPicsSubmitElement,
-  ],
-
-  actionButtonArray: [
-    this.getUpdatesActionButton,
-    this.sendMessageActionButton,
-    this.forwardMessageActionButton,
-    this.editCaptionActionButton,
-    this.forwardAllStoreActionButton,
-    this.captionAllLookupActionButton,
-    this.uploadPicsActionButton,
-  ],
-
-  submitButtonArray: [
-    this.getUpdatesActionButton,
-    this.getUpdatesSubmitElement,
-    this.sendMessageSubmitElement,
-    this.forwardMessageSubmitElement,
-    this.editCaptionSubmitElement,
-    this.forwardAllStoreSubmitElement,
-    this.captionAllLookupSubmitElement,
-    this.uploadPicsSubmitElement,
-  ],
 };
 
-export default d;
+//define list item array
+export const listItemsButtonsArray = [
+  d.updateIdListItem,
+  d.messageIdListItem,
+  d.chatIdListItem,
+  d.messageStartListItem,
+  d.messageStopListItem,
+  d.forwardFromListItem,
+  d.forwardToListItem,
+  d.uploadToListItem,
+  d.editCaptionChannelListItem,
+  d.collectionPullFromListItem,
+  d.collectionSaveToListItem,
+  d.forwardAllStoreTypeListItem,
+  d.captionLookupTypeListItem,
+  d.uploadPicTypeListItem,
+  d.textInputListItem,
+  d.commandListItem,
+  d.picPathListItem,
+];
+
+export const actionButtonArray = [
+  d.getUpdatesActionButton,
+  d.sendMessageActionButton,
+  d.forwardMessageActionButton,
+  d.editCaptionActionButton,
+  d.forwardAllStoreActionButton,
+  d.captionAllLookupActionButton,
+  d.uploadPicsActionButton,
+];
+
+export const submitButtonArray = [
+  d.getUpdatesActionButton,
+  d.getUpdatesSubmitElement,
+  d.sendMessageSubmitElement,
+  d.forwardMessageSubmitElement,
+  d.editCaptionSubmitElement,
+  d.forwardAllStoreSubmitElement,
+  d.captionAllLookupSubmitElement,
+  d.uploadPicsSubmitElement,
+];
