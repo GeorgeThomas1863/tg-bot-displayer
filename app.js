@@ -1,5 +1,7 @@
-// import { dirname, join } from "path";
-// import { fileURLToPath } from "url";
+//TO DO: 
+// - ADD data submit to responsive
+// - build backend
+// (prob remove state)
 
 import express from "express";
 import CONFIG from "./config/config.js";

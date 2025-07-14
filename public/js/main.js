@@ -10,53 +10,58 @@ export const buildDisplay = async () => {
   if (!displayElement) return null;
   const { isFirstLoad } = state;
 
-  //build drop down / form on first load
-  if (isFirstLoad) {
-    const actionButtonElement = await buildActionButtons();
-    const mainFormElement = await buildMainForm();
+  const actionButtonElement = await buildActionButtons();
+  const mainFormElement = await buildMainForm();
 
-    displayElement.append(actionButtonElement, mainFormElement);
-    // console.log("!!!DISPLAY ELEMENT");
-    // console.log(displayElement);
-  }
+  displayElement.append(actionButtonElement, mainFormElement);
+
+  // //build drop down / form on first load
+  // if (isFirstLoad) {
+  //   const actionButtonElement = await buildActionButtons();
+  //   const mainFormElement = await buildMainForm();
+
+  //   displayElement.append(actionButtonElement, mainFormElement);
+  //   // console.log("!!!DISPLAY ELEMENT");
+  //   // console.log(displayElement);
+  // }
 
   //check if new data is needed [will pass on first load]
-//   const newDataNeeded = await checkNewDataNeeded();
-//   if (!newDataNeeded) {
-//     //if new data not needed, check if hide / unhide data
-//     await checkHideUnhideData();
-//     return null;
-//   }
+  //   const newDataNeeded = await checkNewDataNeeded();
+  //   if (!newDataNeeded) {
+  //     //if new data not needed, check if hide / unhide data
+  //     await checkHideUnhideData();
+  //     return null;
+  //   }
 
-//   //get / parse backend data (returns array of objects)
-//   const backendData = await sendToBack(state);
-//   // console.log("!!!BACKEND DATA");
-//   // console.log(backendData);
+  //   //get / parse backend data (returns array of objects)
+  //   const backendData = await sendToBack(state);
+  //   // console.log("!!!BACKEND DATA");
+  //   // console.log(backendData);
 
-//   if (!backendData) {
-//     //ensure below doesnt fuck things
-//     await displayFail();
-//     return true;
-//   }
+  //   if (!backendData) {
+  //     //ensure below doesnt fuck things
+  //     await displayFail();
+  //     return true;
+  //   }
 
-//   const backendDataParsed = await buildBackendDisplay(backendData);
+  //   const backendDataParsed = await buildBackendDisplay(backendData);
 
-//   //on fail
-//   if (!backendDataParsed) {
-//     await displayFail();
-//     return null;
-//   }
+  //   //on fail
+  //   if (!backendDataParsed) {
+  //     await displayFail();
+  //     return null;
+  //   }
 
-//   //otherwise append data
-//   displayElement.append(backendDataParsed);
+  //   //otherwise append data
+  //   displayElement.append(backendDataParsed);
 
-//   //UPDATE data loaded (also updates active article)
-//   await updateStateDataLoaded(backendData);
+  //   //UPDATE data loaded (also updates active article)
+  //   await updateStateDataLoaded(backendData);
 
-//   console.log("!!!DISPLAY ELEMENT");
-//   console.log(displayElement);
+  //   console.log("!!!DISPLAY ELEMENT");
+  //   console.log(displayElement);
 
-//   return "#DONE";
+  //   return "#DONE";
 };
 
 buildDisplay();
