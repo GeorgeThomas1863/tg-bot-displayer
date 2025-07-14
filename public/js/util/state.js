@@ -1,6 +1,6 @@
-const state = {
-  isFirstLoad: true,
-  command: "",
-};
+// const state = {
+//   isFirstLoad: true,
+//   command: "",
+// };
 
-export default state;
+// export default state;

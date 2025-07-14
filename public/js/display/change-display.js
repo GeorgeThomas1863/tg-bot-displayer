@@ -1,8 +1,13 @@
-import { d, listItemsButtonsArray } from "../util/define-things.js";
+import { d, listItemsButtonsArray, commandMap } from "../util/define-things.js";
 import { hideArray, unhideArray } from "../util/util.js";
 
 export const changeActionButtonDisplay = async (clickElement) => {
   if (!clickElement) return null;
+
+  //SET COMMAND TYPE
+  const commandType = commandMap[clickElement.id];
+  if (!commandType) return null;
+  d.commandInput.value = commandType;
 
   console.log("!!!CHANGE ACTION BUTTON DISPLAY");
   console.log(clickElement.id);

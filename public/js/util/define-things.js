@@ -104,3 +104,13 @@ export const submitButtonArray = [
   d.captionAllLookupSubmitElement,
   d.uploadPicsSubmitElement,
 ];
+
+export const commandMap = {
+  "get-updates-action-button": "getUpdates",
+  "send-message-action-button": "sendMessage",
+  "forward-message-action-button": "forwardMessage",
+  "forward-all-store-action-button": "forwardAllStore",
+  "edit-caption-action-button": "editMessageCaption",
+  "caption-all-lookup-action-button": "captionAllLookup",
+  "upload-pics-action-button": "sendPhoto",
+};

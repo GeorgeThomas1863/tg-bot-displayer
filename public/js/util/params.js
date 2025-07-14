@@ -1,5 +1,15 @@
 import { d } from "./define-things.js";
 
+export const setCommandType = async (clickElement) => {
+  if (!clickElement) return null;
+  console.log("!!!SET COMMAND TYPE");
+  console.log(clickElement);
+  console.log(clickElement.id);
+
+  // d.commandType.value = clickElement.id;
+  // return true;
+};
+
 //BUILD INPUT PARAMS
 export const buildInputParams = async () => {
   //reset each time
@@ -19,7 +29,7 @@ export const buildInputParams = async () => {
     text: d.textInputElement.value,
     caption: d.textInputElement.value,
     offset: d.updateIdElement.value,
-    commandType: d.commandInputElement.value,
+    commandType: d.commandInput.value,
     uploadPicType: d.uploadPicTypeInput.value,
     forwardAllType: d.forwardAllStoreType.value,
     captionAllType: d.captionLookupTypeInput.value,
