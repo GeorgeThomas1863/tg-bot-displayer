@@ -114,3 +114,13 @@ export const commandMap = {
   "caption-all-lookup-action-button": "captionAllLookup",
   "upload-pics-action-button": "sendPhoto",
 };
+
+export const titleMap = {
+  getUpdates: "Get Updates",
+  sendMessage: "Send Message",
+  forwardMessage: "Forward Message",
+  forwardAllStore: "Forward All Store",
+  editMessageCaption: "Edit Message Caption",
+  captionAllLookup: "Caption All Lookup",
+  sendPhoto: "Send Photo",
+};

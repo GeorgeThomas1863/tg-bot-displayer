@@ -1,4 +1,4 @@
-import { d, listItemsButtonsArray, commandMap } from "../util/define-things.js";
+import { d, listItemsButtonsArray, commandMap, titleMap } from "../util/define-things.js";
 import { hideArray, unhideArray } from "../util/util.js";
 
 export const changeActionButtonDisplay = async (clickElement) => {
@@ -61,8 +61,8 @@ export const changeActionButtonDisplay = async (clickElement) => {
 
 export const changeFormTitle = async () => {
   const commandInputElement = document.getElementById("command-input");
-  const titleElement = document.getElementById("form-collapse-container");
-  console.log(commandInputElement);
-  console.log(titleElement);
-  titleElement.textContent = commandInputElement?.value || "TELEGRAM INPUT";
+  const titleElement = document.querySelector(".collapse-header");
+  const titleText = titleMap[commandInputElement?.value] || "TELEGRAM INPUT";
+  titleElement.textContent = titleText.toUpperCase();
+  return true;
 };
