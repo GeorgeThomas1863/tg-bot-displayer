@@ -25,8 +25,10 @@ export const mainClickHandler = async (e) => {
   const inputParams = await buildInputParams();
 
   const data = await sendToBack(inputParams);
-  console.log("!!!INPUT PARAMS");
-  console.dir(inputParams);
+  if (!data) return null;
+
+  //FORMAT BETTER
+  displayElement.append(data);
 };
 
 if (displayElement) {

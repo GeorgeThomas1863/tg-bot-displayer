@@ -6,7 +6,7 @@ export const tgCommandRun = async (inputParams) => {
 
   //add defaults
   const params = await setInputParamDefaults(inputParams);
-  const { commandType } = params;
+  const { commandType, offset } = params;
 
   console.log("PARAMS");
   console.log(params);
@@ -14,19 +14,9 @@ export const tgCommandRun = async (inputParams) => {
   let data = null;
   switch (commandType) {
     case "getUpdates":
-      data = await tgGetUpdates(params);
+      data = await tgGetUpdates({ offset: offset });
       break;
   }
 
-  console.log("DATA");
-  console.log(data);
-  //     case "sendMessage":
-  //       data = await sendMessage(params);
-  //       break;
-  //     case "editMessage":
-  //       data = await editMessage(params);
-  //       break;
-  //     case "deleteMessage":
-  //       data = await deleteMessage(params);
-  //   }
+  return data;
 };
