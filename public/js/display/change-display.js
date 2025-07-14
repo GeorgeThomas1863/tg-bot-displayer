@@ -12,25 +12,29 @@ export const changeActionButtonDisplay = async (clickElement) => {
 
   switch (clickElement.id) {
     case "get-updates-action-button":
-      await unhideArray([d.updateIdListItem, d.commandListItem]);
+      await unhideArray([d.updateIdListItem]);
+      d.commandListItem.value = "getUpdates";
       return true;
 
     case "send-message-action-button":
-      await unhideArray([d.chatIdListItem, d.textInputListItem, d.commandListItem]);
+      await unhideArray([d.chatIdListItem, d.textInputListItem]);
+      d.commandListItem.value = "sendMessage";
       return true;
 
     case "forward-message-action-button":
-      await unhideArray([d.messageIdListItem, d.forwardFromListItem, d.forwardToListItem, d.commandListItem]);
+      await unhideArray([d.messageIdListItem, d.forwardFromListItem, d.forwardToListItem]);
+      d.commandListItem.value = "forwardMessage";
       return true;
 
     case "forward-all-store-action-button":
       await unhideArray([d.messageStartListItem, d.messageStopListItem, d.forwardFromListItem, d.forwardToListItem, d.forwardAllStoreTypeListItem, d.collectionSaveToListItem]);
-      d.commandInputElement.value = "forwardMessage";
+      d.commandInputElement.value = "forwardAllStore";
       d.collectionSaveToListItem.value = "";
       return true;
 
     case "edit-caption-action-button":
-      await unhideArray([d.messageIdListItem, d.editCaptionChannelListItem, d.textInputListItem, d.commandListItem]);
+      await unhideArray([d.messageIdListItem, d.editCaptionChannelListItem, d.textInputListItem]);
+      d.commandListItem.value = "editMessageCaption";
       return true;
 
     case "caption-all-lookup-action-button":
@@ -43,14 +47,14 @@ export const changeActionButtonDisplay = async (clickElement) => {
         d.editCaptionChannelListItem,
         d.forwardToListItem,
       ]);
-      d.commandInputElement.value = "editMessageCaption";
+      d.commandInputElement.value = "captionAllLookup";
       d.collectionPullFromElement.value = "";
       d.collectionSaveToListItem.value = "";
       return true;
 
     case "upload-pics-action-button":
-      await unhideArray([d.uploadToListItem, d.uploadPicTypeListItem, d.picPathListItem, d.collectionPullFromListItem, d.commandListItem, d.collectionSaveToListItem]);
-      d.commandInputElement.value = "sendPhoto";
+      await unhideArray([d.uploadToListItem, d.uploadPicTypeListItem, d.picPathListItem, d.collectionPullFromListItem, d.collectionSaveToListItem]);
+      d.commandListItem.value = "sendPhoto";
       d.collectionPullFromElement.value = "";
       d.collectionSaveToElement.value = "";
       return true;

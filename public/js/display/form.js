@@ -407,7 +407,7 @@ export const buildUploadToListItem = async () => {
 export const buildCommandListItem = async () => {
   const commandListItem = document.createElement("li");
   commandListItem.id = "list-item-command";
-  commandListItem.className = "form";
+  commandListItem.className = "form hidden";
 
   const commandLabel = document.createElement("label");
   commandLabel.setAttribute("for", "command-input");

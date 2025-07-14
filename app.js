@@ -1,6 +1,5 @@
 //TO DO: 
-// - ADD data submit to responsive
-// - build backend
+// find better way to pass command TYPE
 // (prob remove state)
 
 import express from "express";
