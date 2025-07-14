@@ -10,6 +10,10 @@ export const buildEverythingParams = async (inputParams, dataType = null) => {
       data = await buildVidParams(inputParams, dataType);
       break;
 
+    case "picParams":
+      data = await buildPicParams(inputParams);
+      break;
+
     case "textParams":
       data = await buildTextParams(inputParams);
       break;
@@ -23,6 +27,7 @@ export const getParamType = async (inputParams) => {
   const { video, photo, document, text } = inputParams.result;
 
   if (video) return "vidParams";
+  if (photo) return "picParams";
   if (text) return "textParams";
 
   console.log("PARAM TYPE!!!");
@@ -80,6 +85,41 @@ export const getVidType = async (inputParams, dataType) => {
   }
   //BUILD
   return null;
+};
+
+//------------------------
+
+export const buildPicParams = async (inputParams) => {
+  if (!inputParams || !inputParams.result || !inputParams.result.photo) return null;
+
+  //set null caption
+  if (!inputParams.result.caption) {
+    inputParams.result.caption = "";
+  }
+
+  //get pic array length
+  const k = inputParams.result.photo.length - 1;
+
+  const picParams = {
+    messageId: inputParams.result.message_id,
+    forwardFromMessageId: inputParams.result.forward_from_message_id,
+    forwardFromChannelId: inputParams.result.forward_from_chat.id,
+    forwardFromChannelName: inputParams.result.forward_from_chat.title,
+    forwardToId: inputParams.result.chat.id,
+    forwardToName: inputParams.result.chat.title,
+    fileFullId: inputParams.result.photo[k].file_id,
+    fileUniqueId: inputParams.result.photo[k].file_unique_id,
+    caption: inputParams.result.caption,
+    fileSize: inputParams.result.photo[k].file_size,
+    picWidth: inputParams.result.photo[k].width,
+    picHeight: inputParams.result.photo[k].height,
+    datePosted: inputParams.result.date,
+    dateForwarded: inputParams.result.forward_date,
+    paramType: "picParams",
+    storeDate: new Date(),
+  };
+
+  return picParams;
 };
 
 export const buildTextParams = async (inputParams) => {
