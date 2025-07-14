@@ -12,15 +12,17 @@ export const tgGetUpdates = async (inputParams) => {
   const url = `${baseURL}${token}/getUpdates?offset=${offset}`;
   const data = await tgGetReq(url);
 
+  const checkData = await checkToken(data);
+
   //if fucked run again
-  if (data === "FUCKED") return await tgGetUpdates(inputParams);
+  if (!checkData) return await tgGetUpdates(inputParams);
 
   return data;
 };
 
 export const tgSendMessage = async (inputParams) => {
   const { baseURL } = CONFIG;
-  const { chatId, text, commandType } = inputParams;
+  const { chatId, text } = inputParams;
   const token = tokenArray[tokenIndex];
 
   const params = {
@@ -28,18 +30,20 @@ export const tgSendMessage = async (inputParams) => {
     text: text,
   };
 
-  const url = `${baseURL}${token}/${commandType}`;
+  const url = `${baseURL}${token}/sendMessage`;
   const data = await tgPostReq(url, params);
 
+  const checkData = await checkToken(data);
+
   //try again
-  if (data === "FUCKED") return await tgSendMessage(inputParams);
+  if (!checkData) return await tgSendMessage(inputParams);
 
   return data;
 };
 
 export const tgForwardMessage = async (inputParams) => {
   const { baseURL } = CONFIG;
-  const { forwardToId, forwardFromId, messageId, commandType } = inputParams;
+  const { forwardToId, forwardFromId, messageId } = inputParams;
   const token = tokenArray[tokenIndex];
 
   const params = {
@@ -48,18 +52,20 @@ export const tgForwardMessage = async (inputParams) => {
     message_id: messageId,
   };
 
-  const url = `${baseURL}${token}/${commandType}`;
+  const url = `${baseURL}${token}/forwardMessage`;
   const data = await tgPostReq(url, params);
 
+  const checkData = await checkToken(data);
+
   //try again
-  if (data === "FUCKED") return await tgForwardMessage(inputParams);
+  if (!checkData) return await tgForwardMessage(inputParams);
 
   return data;
 };
 
 export const tgEditMessageCaption = async (inputParams) => {
   const { baseURL } = CONFIG;
-  const { editChannelId, messageId, caption, commandType } = inputParams;
+  const { editChannelId, messageId, caption } = inputParams;
   const token = tokenArray[tokenIndex];
 
   const params = {
@@ -68,11 +74,13 @@ export const tgEditMessageCaption = async (inputParams) => {
     caption: caption,
   };
 
-  const url = `${baseURL}${token}/${commandType}`;
+  const url = `${baseURL}${token}/editMessageCaption`;
   const data = await tgPostReq(url, params);
 
+  const checkData = await checkToken(data);
+
   //try again
-  if (data === "FUCKED") return await tgEditMessageCaption(inputParams);
+  if (!checkData) return await tgEditMessageCaption(inputParams);
 
   return data;
 };
@@ -83,22 +91,9 @@ export const tgGetReq = async (url) => {
   if (!url) return null;
   try {
     const res = await axios.get(url);
-    if (!res || !res.data) {
-      const error = new Error("REQUEST FUCKED");
-      error.data = res?.data || null;
-      error.status = res?.status || null;
-      throw error;
-    }
-
-    const data = await checkToken(res.data);
-    if (data) return data;
-
-    return "FUCKED";
+    return res.data;
   } catch (e) {
     console.log(e.message);
-    console.log(e.data);
-    console.log(e.status);
-    return null;
   }
 };
 
@@ -107,34 +102,16 @@ export const tgPostReq = async (url, params) => {
 
   try {
     const res = await axios.post(url, params);
-    if (!res || !res.data) {
-      const error = new Error("REQUEST FUCKED");
-      error.data = res?.data || null;
-      error.status = res?.status || null;
-      throw error;
-    }
-
-    const data = await checkToken(res.data);
-    if (data) return data;
-
-    return "FUCKED";
+    return res.data;
   } catch (e) {
     console.log(e.message);
-    console.log(e.data);
-    console.log(e.status);
-    return null;
   }
 };
 
 export const checkToken = async (data) => {
-  if (data && data.ok) return data;
+  if (data && data.ok) return true;
 
-  if (data.error_code !== 429) {
-    const error = new Error("ERROR: " + data.error_code);
-    error.data = data;
-    error.status = res?.status || null;
-    throw error;
-  }
+  if (data.error_code !== 429) return true;
 
   //otherwise bot fucked, return null
   console.log("AHHHHHHHHHHHHH");
