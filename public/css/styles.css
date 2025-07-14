@@ -39,7 +39,7 @@ main {
   margin-top: 2.5rem;
   margin-right: 10rem;
   width: 60%;
-  border: 2px solid #333;
+  /* border: 2px solid #333; */
 }
 
 /* #form-wrapper {
@@ -154,11 +154,11 @@ button {
 }
 
 /* ADDED: New styles for collapse containers */
-.wrapper {
+/* .wrapper {
   border-radius: 12px;
   overflow: hidden;
   background-color: transparent;
-}
+} */
 
 .collapse-header {
   background: rgb(200, 200, 200);
@@ -166,7 +166,9 @@ button {
   cursor: pointer;
   font-weight: bold;
   font-size: 2rem;
-  border-bottom: 2px solid #333;
+  border: 2px solid black;
+  /* border-bottom: none; */
+  border-radius: 12px 12px 0 0;
   user-select: none;
   text-align: center;
 }
@@ -178,11 +180,10 @@ button {
 .collapse-content {
   padding: 0 3rem;
   margin-top: 0;
+  border: 2px solid black;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
 }
-
-/* .collapse-content.collapsed {
-  
-} */
 
 .collapse-content.hidden {
   display: none;
