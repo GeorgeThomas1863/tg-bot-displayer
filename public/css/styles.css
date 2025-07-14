@@ -211,9 +211,11 @@ button {
   margin-left: 1rem;
 }
 
-#data-return-section {
-  margin-top: 5rem;
-  margin-left: 1rem;
+
+#return-element {
+  margin-top: 3rem;
+  margin-left: 5rem;
+  width: 90%;
 }
 
 .hidden {
