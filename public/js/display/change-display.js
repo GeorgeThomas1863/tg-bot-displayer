@@ -1,5 +1,5 @@
 import { d, listItemsButtonsArray, commandMap, titleMap } from "../util/define-things.js";
-import { hideArray, unhideArray } from "../util/util.js";
+import { hideArray, unhideArray, makePretty, undoPretty } from "../util/util.js";
 
 export const changeActionButtonDisplay = async (clickElement) => {
   if (!clickElement) return null;
@@ -65,4 +65,36 @@ export const changeFormTitle = async () => {
   const titleText = titleMap[commandInputElement?.value] || "TELEGRAM INPUT";
   titleElement.textContent = titleText.toUpperCase();
   return true;
+};
+
+export const changePrettyDisplay = async (clickElement) => {
+  if (!clickElement) return null;
+
+  switch (clickElement.id) {
+    case "make-pretty-button":
+      await makePretty();
+      // const parsedData = document.getElementById("parsed-data");
+
+      // if (!parsedData) return null;
+      // const currentFormat = parsedData.innerHTML;
+      // const prettyFormat = "<pre>" + JSON.stringify(JSON.parse(currentFormat), null, 2) + "</pre>";
+      // parsedData.innerHTML = prettyFormat;
+
+      // const makePrettyButton = document.getElementById("make-pretty-button");
+      // const undoPrettyButton = document.getElementById("undo-pretty-button");
+
+      // makePrettyButton.classList.add("hidden");
+      // undoPrettyButton.classList.remove("hidden");
+      break;
+
+    case "undo-pretty-button":
+      await undoPretty();
+      // const parsedData = document.getElementById("parsed-data");
+
+      // if (!parsedData) return null;
+      // const currentFormat = parsedData.innerHTML;
+      // const prettyFormat = "<pre>" + JSON.stringify(JSON.parse(currentFormat), null, 2) + "</pre>";
+      // parsedData.innerHTML = prettyFormat;
+      break;
+  }
 };

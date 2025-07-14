@@ -200,17 +200,12 @@ button {
 }
 
 #make-pretty-button {
-  margin-top: 2rem;
-  margin-left: 2rem;
-  display: none;
+  margin-bottom: 2rem;
 }
 
-#undo-button {
-  display: none;
-  margin-top: 2rem;
-  margin-left: 1rem;
+#undo-pretty-button {
+  margin-bottom: 2rem;
 }
-
 
 #return-element {
   margin-top: 3rem;
