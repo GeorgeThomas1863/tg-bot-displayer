@@ -13,7 +13,8 @@ const addDefaultParams = async (inputParams) => {
     messageStart: 0,
     messageStop: 20,
     // forwardFromId: -1002418863636,
-    forwardFromId: -1002230354437,
+    // forwardFromId: -1002230354437,
+    forwardFromId: -1002123668375, //random stuff
     forwardToId: -1002468318224, //forwardTest53
     uploadToId: -1002468318224,
     editChannelId: -1002230354437,

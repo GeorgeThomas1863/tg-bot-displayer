@@ -33,7 +33,6 @@ export const buildInputParams = async () => {
     uploadPicType: d.uploadPicTypeInput.value,
     forwardAllType: d.forwardAllStoreType.value,
     captionAllType: d.captionLookupTypeInput.value,
-    tokenIndex: 0,
     alreadyStoredArray: [],
   };
 
