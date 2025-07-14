@@ -1,6 +1,5 @@
 //TO DO: 
-// find better way to pass command TYPE
-// (prob remove state)
+// TG BOT TOKEN SEEMS TO BE FUCKED
 
 import express from "express";
 import CONFIG from "./config/config.js";
