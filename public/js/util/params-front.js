@@ -23,6 +23,7 @@ export const buildInputParams = async () => {
     editChannelId: d.editCaptionsChannelElement.value,
     collectionPullFrom: d.collectionPullFromElement.value,
     collectionSaveTo: d.collectionSaveToElement.value,
+    dataType: d.dataTypeElement.value,
     picPath: d.picPathElement.value,
     chatId: d.chatIdElement.value,
     messageId: d.messageIdElement.value,

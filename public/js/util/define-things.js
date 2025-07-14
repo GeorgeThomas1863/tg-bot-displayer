@@ -20,6 +20,7 @@ export const d = {
   updateIdListItem: document.getElementById("list-item-update-id"),
   messageIdListItem: document.getElementById("list-item-message-id"),
   chatIdListItem: document.getElementById("list-item-chat-id"),
+  dataTypeListItem: document.getElementById("list-item-data-type"),
   messageStartListItem: document.getElementById("list-item-message-start"),
   messageStopListItem: document.getElementById("list-item-message-stop"),
   forwardFromListItem: document.getElementById("list-item-forward-from-chat-id"),
@@ -50,6 +51,7 @@ export const d = {
   picPathElement: document.getElementById("pic-path-input"),
   commandInputElement: document.getElementById("command-input"),
   textInputElement: document.getElementById("text-input"),
+  dataTypeElement: document.getElementById("data-type-input"),
 
   //define drop down options; forward all drop downs
   forwardAllStoreType: document.getElementById("forward-all-store-type-input"),
@@ -82,6 +84,7 @@ export const listItemsButtonsArray = [
   d.textInputListItem,
   d.commandListItem,
   d.picPathListItem,
+  d.dataTypeListItem,
 ];
 
 export const actionButtonArray = [

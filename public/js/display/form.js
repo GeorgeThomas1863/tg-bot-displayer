@@ -10,6 +10,7 @@ export const buildMainForm = async () => {
   const forwardAllStoreTypeListItem = await buildForwardAllStoreTypeListItem();
   const captionLookupTypeListItem = await buildCaptionLookupTypeListItem();
   const uploadPicTypeListItem = await buildUploadPicTypeListItem();
+  const dataTypeListItem = await buildDataTypeListItem();
   const updateIdListItem = await buildUpdateIdListItem();
   const messageIdListItem = await buildMessageIdListItem();
   const chatIdListItem = await buildChatIdListItem();
@@ -30,6 +31,7 @@ export const buildMainForm = async () => {
     forwardAllStoreTypeListItem,
     captionLookupTypeListItem,
     uploadPicTypeListItem,
+    dataTypeListItem,
     updateIdListItem,
     messageIdListItem,
     chatIdListItem,
@@ -173,6 +175,25 @@ export const buildUploadPicTypeListItem = async () => {
   uploadPicTypeListItem.append(uploadPicTypeLabel, uploadPicTypeSelect);
 
   return uploadPicTypeListItem;
+};
+
+export const buildDataTypeListItem = async () => {
+  const dataTypeListItem = document.createElement("li");
+  dataTypeListItem.id = "list-item-data-type";
+  dataTypeListItem.className = "form hidden";
+
+  const dataTypeLabel = document.createElement("label");
+  dataTypeLabel.setAttribute("for", "lookup-type-data-input");
+  dataTypeLabel.textContent = "Data TYPE";
+
+  const dataTypeInput = document.createElement("input");
+  dataTypeInput.type = "text";
+  dataTypeInput.name = "data-type-input";
+  dataTypeInput.id = "data-type-input";
+
+  dataTypeListItem.append(dataTypeLabel, dataTypeInput);
+
+  return dataTypeListItem;
 };
 
 export const buildUpdateIdListItem = async () => {

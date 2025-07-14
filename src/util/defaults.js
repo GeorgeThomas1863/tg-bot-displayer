@@ -1,7 +1,6 @@
 //Set to default
 export const setInputParamDefaults = async (inputParams) => {
   const paramsDefaultAdded = await addDefaultParams(inputParams);
-  // const paramsCommandsAdded = await addCommandParams(paramsDefaultAdded);
   const finishedParams = await addCallParams(paramsDefaultAdded);
 
   return finishedParams;
@@ -27,6 +26,7 @@ const addDefaultParams = async (inputParams) => {
     text: "bundle of sticks",
     caption: "",
     offset: "",
+    dataType: "kink",
   };
 
   for (let key1 in inputParams) {

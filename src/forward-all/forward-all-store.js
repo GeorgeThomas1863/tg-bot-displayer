@@ -1,12 +1,13 @@
 import dbModel from "../../models/db-model.js";
 import { tgForwardMessage } from "../tg-api.js";
-import { buildVidParams } from "../util/params-back.js";
+import { buildVidParams, buildEverythingParams } from "../util/params-back.js";
 
 export const runForwardAllStore = async (inputParams) => {
-  const { messageStart, messageStop, forwardFromId, forwardToId, forwardAllType } = inputParams;
+  const { messageStart, messageStop, forwardAllType, collectionSaveTo, dataType } = inputParams;
   console.log("INPUT PARAMS");
   console.log(inputParams);
 
+  const returnDataArray = [];
   for (let i = messageStart; i < messageStop; i++) {
     try {
       const messageId = i;
@@ -21,7 +22,20 @@ export const runForwardAllStore = async (inputParams) => {
       if (!forwardData) continue;
 
       //parse by type
-      const storeData = await forwardAllParse(forwardData, inputParams);
+      const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
+      if (!storeParams) continue;
+
+      // console.log("STORE PARAMS");
+      // console.log(storeParams);
+
+      const storeModel = new dbModel(storeParams, collectionSaveTo);
+      const storeData = await storeModel.storeUniqueVid();
+
+      // console.log("STORE DATA");
+      // console.log(storeData);
+
+      //for tracking
+      returnDataArray.push(storeData);
     } catch (e) {
       console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
@@ -30,29 +44,34 @@ export const runForwardAllStore = async (inputParams) => {
   return true;
 };
 
-export const forwardAllParse = async (forwardData, inputParams) => {
-  if (!forwardData || !forwardData.result) return null;
-  const { forwardAllType, collectionSaveTo } = inputParams;
-
-  console.log("FORWARD ALL TYPE");
-  console.log(forwardData.result);
+export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
+  if (!inputData || !inputData.result) return null;
 
   switch (forwardAllType) {
     case "storeVids":
-      if (!forwardData.result.video) return null;
+      if (!inputData.result.video) return null;
 
       //build vid params
-      const vidParams = await buildVidParams(forwardData, "kink");
-      if (!vidParams) return null;
+      const vidParams = await buildVidParams(inputData, dataType);
+      return vidParams;
 
-      const storeModel = new dbModel(vidParams, collectionSaveTo);
-      const storeData = await storeModel.storeUniqueVid();
-      return storeData;
     case "storeEverything":
-      break;
+      const everythingParams = await buildEverythingParams(inputData, dataType);
+      return everythingParams;
+
     case "storeStart":
-      break;
+      if (!inputData.result.video || !inputData.result.video.caption) return null;
+      const { caption } = inputData.result.video;
+      const beginningChars = caption.substring(0, 3);
+      if (beginningChars !== "!!!" || beginningChars !== "+++") return null;
+
+      const startParams = await buildVidParams(inputData, dataType);
+      return startParams;
+
     case "storeBlanks":
-      break;
+      if (!inputData.result.video || inputData.result.video.caption) return null;
+
+      const blankParams = await buildVidParams(inputData, dataType);
+      return blankParams;
   }
 };

@@ -26,7 +26,7 @@ export const changeActionButtonDisplay = async (clickElement) => {
       return true;
 
     case "forward-all-store-action-button":
-      await unhideArray([d.messageStartListItem, d.messageStopListItem, d.forwardFromListItem, d.forwardToListItem, d.forwardAllStoreTypeListItem, d.collectionSaveToListItem]);
+      await unhideArray([d.messageStartListItem, d.messageStopListItem, d.forwardFromListItem, d.forwardToListItem, d.forwardAllStoreTypeListItem, d.collectionSaveToListItem, d.dataTypeListItem]);
       d.collectionSaveToListItem.value = "";
       return true;
 
@@ -44,6 +44,7 @@ export const changeActionButtonDisplay = async (clickElement) => {
         d.captionLookupTypeListItem,
         d.editCaptionChannelListItem,
         d.forwardToListItem,
+        d.dataTypeListItem,
       ]);
       d.collectionPullFromElement.value = "";
       d.collectionSaveToListItem.value = "";
@@ -73,28 +74,10 @@ export const changePrettyDisplay = async (clickElement) => {
   switch (clickElement.id) {
     case "make-pretty-button":
       await makePretty();
-      // const parsedData = document.getElementById("parsed-data");
-
-      // if (!parsedData) return null;
-      // const currentFormat = parsedData.innerHTML;
-      // const prettyFormat = "<pre>" + JSON.stringify(JSON.parse(currentFormat), null, 2) + "</pre>";
-      // parsedData.innerHTML = prettyFormat;
-
-      // const makePrettyButton = document.getElementById("make-pretty-button");
-      // const undoPrettyButton = document.getElementById("undo-pretty-button");
-
-      // makePrettyButton.classList.add("hidden");
-      // undoPrettyButton.classList.remove("hidden");
-      break;
+      return true;
 
     case "undo-pretty-button":
       await undoPretty();
-      // const parsedData = document.getElementById("parsed-data");
-
-      // if (!parsedData) return null;
-      // const currentFormat = parsedData.innerHTML;
-      // const prettyFormat = "<pre>" + JSON.stringify(JSON.parse(currentFormat), null, 2) + "</pre>";
-      // parsedData.innerHTML = prettyFormat;
-      break;
+      return true;
   }
 };
