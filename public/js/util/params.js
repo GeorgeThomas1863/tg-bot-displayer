@@ -4,6 +4,7 @@ import { d } from "./define-things.js";
 export const buildInputParams = async () => {
   //reset each time
   const params = {
+    route: "/tg-submit-route",
     messageStart: +d.messageStartElement.value,
     messageStop: +d.messageStopElement.value,
     forwardFromId: d.forwardFromElement.value,
@@ -24,7 +25,6 @@ export const buildInputParams = async () => {
     captionAllType: d.captionLookupTypeInput.value,
     tokenIndex: 0,
     alreadyStoredArray: [],
-    route: "/tg-submit-route",
   };
 
   return params;

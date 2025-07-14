@@ -28,7 +28,7 @@ main {
 
 #action-button-wrapper {
   margin-top: 2rem;
-  margin-right: 2rem;
+  margin-left: 2rem;
   /* position: absolute; */
   text-align: left;
   width: 20rem;
@@ -38,7 +38,7 @@ main {
   /* margin: 0 auto; */
   margin-top: 2.5rem;
   margin-right: 10rem;
-  width: 60%;
+  width: 65%;
   /* border: 2px solid #333; */
 }
 
@@ -67,18 +67,16 @@ ul {
   padding: 0;
 }
 
-li {
+/* CHANGED: Added specific styling for form list items */
+li.form {
   /* margin-top: 1.5rem; */
   display: flex;
   justify-content: center;
 }
 
-/* CHANGED: Added specific styling for form list items */
-li.form {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: center;
-}
+/* li.form :first-child {
+  margin-top: 0;
+} */
 
 /* CHANGED: Added specific styling for action button rows */
 li.action-button-row {
@@ -91,10 +89,12 @@ li.action-button-row {
 li label {
   font-weight: bold;
   font-size: 2rem;
-  margin-left: 0.5rem;
+  margin-top: 1rem;
+  margin-right: 0.5rem;
 }
 
 li input {
+  margin-top: 1rem;
   display: block;
   margin-left: auto;
   font-size: 1.5rem;
@@ -106,6 +106,7 @@ li input {
 }
 
 li textarea {
+  margin-top: 1rem;
   display: block;
   margin-left: auto;
   font-size: 1.5rem;
@@ -117,6 +118,7 @@ li textarea {
 }
 
 li select {
+  margin-top: 1rem;
   display: block;
   margin-left: auto;
   font-size: 1.5rem;
@@ -127,9 +129,9 @@ li select {
   font-family: inherit;
 }
 
-nav li {
+/* nav li {
   gap: 1rem;
-}
+} */
 
 .action-button {
   font-size: 1rem;
