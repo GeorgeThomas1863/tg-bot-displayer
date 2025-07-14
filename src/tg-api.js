@@ -111,7 +111,7 @@ export const tgPostReq = async (url, params) => {
 export const checkToken = async (data) => {
   if (data && data.ok) return true;
 
-  if (data.error_code !== 429) return true;
+  if (data && data.error_code && data.error_code !== 429) return true;
 
   //otherwise bot fucked, return null
   console.log("AHHHHHHHHHHHHH");
