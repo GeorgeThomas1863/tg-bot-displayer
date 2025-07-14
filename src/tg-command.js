@@ -1,5 +1,5 @@
 import { setInputParamDefaults } from "./util/defaults.js";
-import { tgGetUpdates } from "./tg-api.js";
+import { tgGetUpdates, tgSendMessage } from "./tg-api.js";
 
 export const tgCommandRun = async (inputParams) => {
   if (!inputParams) return null;
@@ -16,6 +16,10 @@ export const tgCommandRun = async (inputParams) => {
     case "getUpdates":
       data = await tgGetUpdates({ offset: offset });
       break;
+
+    case "sendMessage":
+      data = await tgSendMessage(params)
+      break
   }
 
   return data;
