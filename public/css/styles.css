@@ -10,34 +10,24 @@ main {
 
 #display-element {
   display: flex;
+  justify-content: center;
   gap: 5rem;
-  /* align-items: center; */
 }
 
 #action-button-wrapper {
   margin-top: 2rem;
-  margin-left: 1.5rem;
+  margin-left: 1rem;
   /* position: absolute; */
   text-align: left;
   width: 20rem;
 }
 
-#form-wrapper {
-  margin-top: 2rem;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* form {
-    width: 50%;
-    margin: 0 auto;
-  } */
-
-h1 {
-  font-size: 3rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding: 0;
+#form-collapse-container {
+  /* margin: 0 auto; */
+  margin-top: 2.5rem;
+  margin-right: 5rem;
+  width: 65%;
+  border: 2px solid #333;
 }
 
 h2 {
@@ -61,7 +51,7 @@ ul {
 }
 
 li {
-  margin-top: 1.5rem;
+  /* margin-top: 1.5rem; */
   display: flex;
   justify-content: center;
 }
@@ -138,7 +128,7 @@ button {
   background: rgb(180, 180, 180);
   color: inherit;
   border: none;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 3rem;
   font: inherit;
   font-size: 2rem;
   font-weight: bold;
@@ -148,10 +138,9 @@ button {
 
 /* ADDED: New styles for collapse containers */
 .wrapper {
-  margin-bottom: 2rem;
-  border: 2px solid #333;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  background-color: transparent;
 }
 
 .collapse-header {
@@ -159,9 +148,10 @@ button {
   padding: 1rem;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 2rem;
   border-bottom: 2px solid #333;
   user-select: none;
+  text-align: center;
 }
 
 .collapse-header:hover {
@@ -169,29 +159,17 @@ button {
 }
 
 .collapse-content {
-  padding: 1rem;
-  background: white;
+  padding: 0 3rem;
+  margin-top: 0;
 }
 
 .collapse-content.collapsed {
   display: none;
 }
 
-/* ADDED: Specific styling for different form sections */
-.article-wrapper-collapse .collapse-header {
-  background: rgb(200, 220, 255);
-}
-
-.telegram-wrapper-collapse .collapse-header {
-  background: rgb(255, 220, 200);
-}
-
-.telegram-action-wrapper-collapse .collapse-header {
-  background: rgb(200, 255, 220);
-}
-
-#buttons-div {
-  display: flex;
+#submit-button {
+  margin: 2rem auto;
+  display: block;
 }
 
 #make-pretty-button {
@@ -207,8 +185,6 @@ button {
 }
 
 #data-return-section {
-  /* position: absolute; */
-  /* margin-top: 40rem; */
   margin-top: 5rem;
   margin-left: 1rem;
 }

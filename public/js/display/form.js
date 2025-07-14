@@ -61,6 +61,7 @@ export const buildMainForm = async () => {
   };
 
   const telegramCollapseContainer = await buildCollapseContainer(telegramCollapseObj);
+  telegramCollapseContainer.id = "form-collapse-container";
 
   // Apply the wrapper class to the collapse container instead
   telegramCollapseContainer.className = "wrapper";
