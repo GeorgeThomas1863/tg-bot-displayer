@@ -1,7 +1,7 @@
 import { changeActionButtonDisplay, changeFormTitle, changePrettyDisplay } from "./display/change-display.js";
 import { buildReturnDisplay } from "./display/return-display.js";
 import { sendToBack } from "./util/api-front.js";
-import { buildInputParams } from "./util/params.js";
+import { buildInputParams } from "./util/params-front.js";
 // import { checkClickTrigger } from "./util/check-things.js";
 
 const displayElement = document.getElementById("display-element");

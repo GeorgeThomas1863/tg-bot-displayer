@@ -1,4 +1,6 @@
+import dbModel from "../../models/db-model.js";
 import { tgForwardMessage } from "../tg-api.js";
+import { buildVidParams } from "../util/params-back.js";
 
 export const runForwardAllStore = async (inputParams) => {
   const { messageStart, messageStop, forwardFromId, forwardToId, forwardAllType } = inputParams;
@@ -19,7 +21,7 @@ export const runForwardAllStore = async (inputParams) => {
       if (!forwardData) continue;
 
       //parse by type
-      const storeData = await forwardAllParse(forwardData, forwardAllType);
+      const storeData = await forwardAllParse(forwardData, inputParams);
     } catch (e) {
       console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
@@ -28,15 +30,24 @@ export const runForwardAllStore = async (inputParams) => {
   return true;
 };
 
-export const forwardAllParse = async (inputData, forwardAllType) => {
-  if (!inputData || !inputData.result) return null;
+export const forwardAllParse = async (forwardData, inputParams) => {
+  if (!forwardData || !forwardData.result) return null;
+  const { forwardAllType, collectionSaveTo } = inputParams;
 
   console.log("FORWARD ALL TYPE");
-  console.log(inputData.result);
+  console.log(forwardData.result);
 
   switch (forwardAllType) {
     case "storeVids":
-      break;
+      if (!forwardData.result.video) return null;
+
+      //build vid params
+      const vidParams = await buildVidParams(forwardData, "kink");
+      if (!vidParams) return null;
+
+      const storeModel = new dbModel(vidParams, collectionSaveTo);
+      const storeData = await storeModel.storeUniqueVid();
+      return storeData;
     case "storeEverything":
       break;
     case "storeStart":
