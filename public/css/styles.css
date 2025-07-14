@@ -42,6 +42,11 @@ main {
   border: 2px solid #333;
 }
 
+/* #form-wrapper {
+  background-color: #f0f0f0;
+  opacity: 0.9;
+} */
+
 h2 {
   padding: 0;
   margin: 0;
@@ -175,8 +180,15 @@ button {
   margin-top: 0;
 }
 
-.collapse-content.collapsed {
+/* .collapse-content.collapsed {
+  
+} */
+
+.collapse-content.hidden {
   display: none;
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
 }
 
 #submit-button {
