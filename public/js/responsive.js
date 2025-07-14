@@ -1,5 +1,5 @@
 import { changeActionButtonDisplay } from "./display/change-display.js";
-import { sendToBackend } from "./util/api-front.js";
+import { sendToBack } from "./util/api-front.js";
 import { buildInputParams } from "./util/params.js";
 // import { checkClickTrigger } from "./util/check-things.js";
 
@@ -23,7 +23,7 @@ export const mainClickHandler = async (e) => {
 
   const inputParams = await buildInputParams();
 
-  const data = await sendToBackend(inputParams);
+  const data = await sendToBack(inputParams);
   console.log("!!!INPUT PARAMS");
   console.dir(inputParams);
 };

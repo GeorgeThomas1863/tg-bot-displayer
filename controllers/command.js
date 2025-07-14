@@ -1,9 +1,8 @@
-export const tgCommandParse = async (req, res) => {
+import { tgCommandRun } from "../src/main.js";
+
+export const tgCommandControl = async (req, res) => {
   const inputParams = req.body;
 
-  console.log("!!!INPUT PARAMS");
-  console.dir(inputParams);
-
-  //   console.log(command);
-  res.json({ command: "build" });
+  const data = await tgCommandRun(inputParams);
+  res.json(data);
 };

@@ -1,7 +1,7 @@
 import express from "express";
 
 import { tgDisplay, display404, display500 } from "../controllers/display.js";
-import { tgCommandParse } from "../controllers/command.js";
+import { tgCommandControl } from "../controllers/command.js";
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", tgDisplay);
 
 //tg command sumbit
-router.post("/tg-submit-route", tgCommandParse);
+router.post("/tg-submit-route", tgCommandControl);
 
 router.use(display404);
 
