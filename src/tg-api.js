@@ -94,6 +94,8 @@ export const tgGetReq = async (url) => {
     return res.data;
   } catch (e) {
     console.log(e.message);
+    //axios throws error on 429, so need to return
+    return e.response.data;
   }
 };
 
@@ -105,22 +107,25 @@ export const tgPostReq = async (url, params) => {
     return res.data;
   } catch (e) {
     console.log(e.message);
+    //axios throws error on 429, so need to return
+    return e.response.data;
   }
 };
 
 export const checkToken = async (data) => {
   if (data && data.ok) return true;
 
-  if (data && data.error_code && data.error_code === 429) {
-    //otherwise bot fucked, return null
-    console.log("AHHHHHHHHHHHHH");
-    tokenIndex++;
+  console.log("HERE FAGGOT");
+  console.log(data);
 
-    if (tokenIndex > 11) tokenIndex = 0;
+  if (data && data.error_code && data.error_code !== 429) return true;
 
-    console.log("CANT GET UPDATES TRYING NEW FUCKING BOT. TOKEN INDEX:" + tokenIndex);
-    return null;
-  }
+  //otherwise bot fucked, return null
+  console.log("AHHHHHHHHHHHHH");
+  tokenIndex++;
 
-  return true;
+  if (tokenIndex > 11) tokenIndex = 0;
+
+  console.log("CANT GET UPDATES TRYING NEW FUCKING BOT. TOKEN INDEX:" + tokenIndex);
+  return null;
 };
