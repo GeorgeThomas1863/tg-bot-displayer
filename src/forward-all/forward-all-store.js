@@ -41,7 +41,7 @@ export const runForwardAllStore = async (inputParams) => {
       }
 
       //otherwise store unique
-      const storeData = await storeModel.storeUniqueData();
+      const storeData = await storeModel.storeUniqueVid();
 
       console.log("STORE DATA");
       console.log(storeData);

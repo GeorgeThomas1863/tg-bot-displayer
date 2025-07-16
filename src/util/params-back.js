@@ -43,6 +43,9 @@ export const buildVidParams = async (inputParams, dataType = null) => {
   //CUSTOMIZE TYPE HERE
   const vidTypeObj = await getVidType(inputParams, dataType);
 
+  console.log("VIDP PARAMS");
+  console.log(inputParams);
+
   const vidParams = {
     ...vidTypeObj,
     messageId: inputParams.result.message_id,

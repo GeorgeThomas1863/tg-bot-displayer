@@ -1,6 +1,8 @@
 //TO DO: 
 // TG BOT TOKEN SEEMS TO BE FUCKED
 
+//MAKE GET UPDATES ACTION BUTTON TRIGGER
+
 import express from "express";
 import CONFIG from "./config/config.js";
 import routes from "./routes/routes.js";

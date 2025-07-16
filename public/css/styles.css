@@ -37,8 +37,8 @@ main {
 #form-collapse-container {
   /* margin: 0 auto; */
   margin-top: 2.5rem;
-  margin-right: 10rem;
-  width: 65%;
+  margin-right: 15rem;
+  width: 50%;
   /* border: 2px solid #333; */
 }
 
@@ -90,7 +90,8 @@ li label {
   font-weight: bold;
   font-size: 2rem;
   margin-top: 1rem;
-  margin-right: 0.5rem;
+  /* margin-right: 0.5rem; */
+  /* margin-left: 5rem; */
 }
 
 li input {
