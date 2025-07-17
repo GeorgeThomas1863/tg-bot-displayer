@@ -45,12 +45,11 @@ export const buildVidParams = async (inputParams, dataType = null) => {
 
   const fileNameRaw = inputParams.result.video.file_name.slice(0, -4);
 
-
   //CUSTOMIZE TYPE HERE
   const vidTypeObj = await getVidType(inputParams, dataType);
 
-  console.log("VIDP PARAMS");
-  console.log(inputParams);
+  // console.log("VIDP PARAMS");
+  // console.log(inputParams);
 
   const vidParams = {
     ...vidTypeObj,
@@ -62,7 +61,7 @@ export const buildVidParams = async (inputParams, dataType = null) => {
     forwardToName: inputParams.result.chat.title,
     fileFullId: inputParams.result.video.file_id,
     fileUniqueId: inputParams.result.video.file_unique_id,
-    fileName: fileNameRaw,
+    fileNameRaw: fileNameRaw,
     // fileNameNormal: fileNameNormal,
     // kinkId: kinkId,
     // vidId: vidId,
@@ -105,6 +104,9 @@ export const buildPicParams = async (inputParams) => {
   if (!inputParams.result.caption) {
     inputParams.result.caption = "";
   }
+
+  // console.log("PIC PARAMS");
+  // console.log(inputParams);
 
   //get pic array length
   const k = inputParams.result.photo.length - 1;
