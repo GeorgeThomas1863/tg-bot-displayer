@@ -1,6 +1,8 @@
 //TO DO: 
 // TG BOT TOKEN SEEMS TO BE FUCKED
 
+//FIX THE CHANNEL IDs in MONGO, see if save as string or variable
+
 //MAKE GET UPDATES ACTION BUTTON TRIGGER
 
 import express from "express";

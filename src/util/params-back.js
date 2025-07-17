@@ -40,6 +40,9 @@ export const getParamType = async (inputParams) => {
 export const buildVidParams = async (inputParams, dataType = null) => {
   if (!inputParams || !inputParams.result) return null;
 
+  console.log("VID PARAMS");
+  console.log(inputParams);
+
   //CUSTOMIZE TYPE HERE
   const vidTypeObj = await getVidType(inputParams, dataType);
 
