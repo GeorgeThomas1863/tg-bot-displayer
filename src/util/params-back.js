@@ -38,10 +38,13 @@ export const getParamType = async (inputParams) => {
 
 //build vid Params
 export const buildVidParams = async (inputParams, dataType = null) => {
-  if (!inputParams || !inputParams.result) return null;
+  if (!inputParams || !inputParams.result || !inputParams.result.video) return null;
 
   console.log("VID PARAMS");
   console.log(inputParams);
+
+  const fileNameRaw = inputParams.result.video.file_name.slice(0, -4);
+
 
   //CUSTOMIZE TYPE HERE
   const vidTypeObj = await getVidType(inputParams, dataType);
@@ -59,7 +62,7 @@ export const buildVidParams = async (inputParams, dataType = null) => {
     forwardToName: inputParams.result.chat.title,
     fileFullId: inputParams.result.video.file_id,
     fileUniqueId: inputParams.result.video.file_unique_id,
-    // fileName: fileNameRaw,
+    fileName: fileNameRaw,
     // fileNameNormal: fileNameNormal,
     // kinkId: kinkId,
     // vidId: vidId,
