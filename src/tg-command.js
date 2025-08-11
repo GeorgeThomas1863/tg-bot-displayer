@@ -3,9 +3,11 @@ import { tgGetUpdates, tgSendMessage, tgForwardMessage, tgEditMessageCaption } f
 import { runForwardAllStore } from "./forward-all/forward-all-store.js";
 import { runCaptionAllLookup } from "./caption-all/caption-all-lookup.js";
 import { runUploadPics } from "./upload-pics/upload-pics.js";
+import state from "./state.js";
 
 export const tgCommandRun = async (inputParams) => {
   if (!inputParams) return null;
+  if (!state.active) return null;
 
   //add defaults
   const params = await setInputParamDefaults(inputParams);

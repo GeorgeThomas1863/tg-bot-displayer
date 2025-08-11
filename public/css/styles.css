@@ -9,7 +9,7 @@ main {
 }
 
 #background-pic {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -195,9 +195,13 @@ button {
   padding: 0;
 }
 
-#submit-button {
-  margin: 2rem auto;
-  display: block;
+#button-container {
+  margin: 1rem auto;
+  margin-right: 12rem;
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+  /* display: block; */
 }
 
 #make-pretty-button {
@@ -206,6 +210,10 @@ button {
 
 #undo-pretty-button {
   margin-bottom: 0;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 
 #return-element {

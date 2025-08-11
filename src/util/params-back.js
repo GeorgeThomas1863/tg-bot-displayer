@@ -1,4 +1,7 @@
+import state from "../state.js";
+
 export const buildEverythingParams = async (inputParams, dataType = null) => {
+  if (!state.active) return null;
   if (!inputParams || !inputParams.result) return null;
 
   //figure out param type
@@ -24,6 +27,8 @@ export const buildEverythingParams = async (inputParams, dataType = null) => {
 
 //calc param type
 export const getParamType = async (inputParams) => {
+  if (!state.active) return null;
+
   const { video, photo, document, text } = inputParams.result;
 
   if (video) return "vidParams";
@@ -38,6 +43,7 @@ export const getParamType = async (inputParams) => {
 
 //build vid Params
 export const buildVidParams = async (inputParams, dataType = null) => {
+  if (!state.active) return null;
   if (!inputParams || !inputParams.result || !inputParams.result.video) return null;
 
   console.log("VID PARAMS");
@@ -79,6 +85,7 @@ export const buildVidParams = async (inputParams, dataType = null) => {
 
 //parse type HERE (Kink, bang, etc) return obj MAYBE MOVE ELSEWHERE
 export const getVidType = async (inputParams, dataType) => {
+  if (!state.active) return null;
   if (!inputParams) return null;
 
   switch (dataType) {

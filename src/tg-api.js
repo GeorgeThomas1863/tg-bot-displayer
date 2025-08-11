@@ -1,10 +1,12 @@
 import axios from "axios";
 import CONFIG from "../config/config.js";
 import tokenArray from "../config/tg-bot.js";
+import state from "./state.js";
 
 let tokenIndex = 0;
 
 export const tgGetUpdates = async (inputParams) => {
+  if (!state.active) return null;
   const { baseURL } = CONFIG;
   const { offset } = inputParams;
   const token = tokenArray[tokenIndex];
@@ -21,6 +23,7 @@ export const tgGetUpdates = async (inputParams) => {
 };
 
 export const tgSendMessage = async (inputParams) => {
+  if (!state.active) return null;
   const { baseURL } = CONFIG;
   const { chatId, text } = inputParams;
   const token = tokenArray[tokenIndex];
@@ -42,6 +45,7 @@ export const tgSendMessage = async (inputParams) => {
 };
 
 export const tgForwardMessage = async (inputParams) => {
+  if (!state.active) return null;
   const { baseURL } = CONFIG;
   const { forwardToId, forwardFromId, messageId } = inputParams;
   const token = tokenArray[tokenIndex];
@@ -64,6 +68,7 @@ export const tgForwardMessage = async (inputParams) => {
 };
 
 export const tgEditMessageCaption = async (inputParams) => {
+  if (!state.active) return null;
   const { baseURL } = CONFIG;
   const { editChannelId, messageId, caption } = inputParams;
   const token = tokenArray[tokenIndex];
@@ -88,6 +93,7 @@ export const tgEditMessageCaption = async (inputParams) => {
 //------------------------------
 
 export const tgGetReq = async (url) => {
+  if (!state.active) return null;
   if (!url) return null;
   try {
     const res = await axios.get(url);
@@ -100,6 +106,7 @@ export const tgGetReq = async (url) => {
 };
 
 export const tgPostReq = async (url, params) => {
+  if (!state.active) return null;
   if (!url || !params) return null;
 
   try {
@@ -113,6 +120,7 @@ export const tgPostReq = async (url, params) => {
 };
 
 export const checkToken = async (data) => {
+  if (!state.active) return null;
   if (data && data.ok) return true;
 
   if (data && data.error_code && data.error_code !== 429) return true;

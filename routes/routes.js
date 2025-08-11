@@ -1,7 +1,7 @@
 import express from "express";
 
-import { tgDisplay, display404, display500 } from "../controllers/display.js";
-import { tgCommandControl } from "../controllers/command.js";
+import { tgDisplay, display404, display500 } from "../controllers/display-controller.js";
+import { tgCommandControl } from "../controllers/data-controller.js";
 
 const router = express.Router();
 

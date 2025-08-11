@@ -25,7 +25,7 @@ export const buildMainForm = async () => {
   const uploadToListItem = await buildUploadToListItem();
   const commandListItem = await buildCommandListItem();
   const textInputListItem = await buildTextInputListItem();
-  const submitButton = await buildSubmitButton();
+  const buttonContainer = await buildButtonContainer();
 
   formWrapper.append(
     forwardAllStoreTypeListItem,
@@ -46,7 +46,7 @@ export const buildMainForm = async () => {
     uploadToListItem,
     commandListItem,
     textInputListItem,
-    submitButton
+    buttonContainer
   );
 
   const titleElement = document.createElement("div");
@@ -462,10 +462,19 @@ export const buildTextInputListItem = async () => {
   return textInputListItem;
 };
 
-export const buildSubmitButton = async () => {
+export const buildButtonContainer = async () => {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.id = "button-container";
+
   const submitButton = document.createElement("button");
   submitButton.id = "submit-button";
   submitButton.textContent = "SUBMIT";
 
-  return submitButton;
+  const stopButton = document.createElement("button");
+  stopButton.id = "stop-button";
+  stopButton.textContent = "STOP";
+
+  buttonContainer.append(submitButton, stopButton);
+
+  return buttonContainer;
 };

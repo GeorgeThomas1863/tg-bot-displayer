@@ -6,7 +6,7 @@ import { buildInputParams } from "./util/params-front.js";
 
 const displayElement = document.getElementById("display-element");
 const returnElement = document.getElementById("return-element");
-// const getUpdatesActionButton = document.getElementById("get-updates-action-button");
+const stopButton = document.getElementById("stop-button");
 
 export const displayClickHandler = async (e) => {
   e.preventDefault();
@@ -41,6 +41,21 @@ export const displayClickHandler = async (e) => {
   await buildReturnDisplay(data);
 };
 
+export const stopClickHandler = async (e) => {
+  e.preventDefault();
+  console.log("!!!STOP CLICKED");
+
+  const params = {
+    route: "/tg-submit-route",
+    command: "stop",
+  };
+
+  const data = await sendToBack(params);
+  if (!data) return null;
+
+  await buildReturnDisplay("DATA STOPPED");
+};
+
 export const returnClickHandler = async (e) => {
   e.preventDefault();
   const clickElement = e.target;
@@ -55,6 +70,10 @@ export const returnClickHandler = async (e) => {
 if (displayElement) {
   displayElement.addEventListener("click", displayClickHandler);
   // getUpdatesActionButton.addEventListener("click", displayClickHandler);
+}
+
+if (stopButton) {
+  stopButton.addEventListener("click", stopClickHandler);
 }
 
 if (returnElement) {
