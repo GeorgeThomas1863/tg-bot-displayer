@@ -64,6 +64,8 @@ export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
   if (!state.active) return null;
   if (!inputData || !inputData.result) return null;
 
+  //KEEP DEBUGGING HERE
+
   switch (forwardAllType) {
     case "storeVids":
       if (!inputData.result.video) return null;
@@ -95,8 +97,7 @@ export const getStartParams = async (inputData, dataType) => {
   const { text, video } = inputData.result;
 
   if (text) {
-    const beginningText = text.substring(0, 3);
-    if (beginningText !== "!!!" && beginningText !== "+++") return null;
+    if (!text.startsWith("!") && !text.startsWith("+")) return null;
 
     const textParams = await buildTextParams(inputData);
     return textParams;
@@ -104,8 +105,7 @@ export const getStartParams = async (inputData, dataType) => {
 
   if (video && !video.caption) return null;
   const { caption } = video;
-  const beginningCaption = caption.substring(0, 3);
-  if (beginningCaption !== "!!!" || beginningCaption !== "+++") return null;
+  if (!caption.startsWith("!") && !caption.startsWith("+")) return null;
 
   const vidParams = await buildVidParams(inputData, dataType);
   return vidParams;
