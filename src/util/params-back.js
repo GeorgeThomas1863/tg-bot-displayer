@@ -35,8 +35,8 @@ export const getParamType = async (inputParams) => {
   if (photo) return "picParams";
   if (text) return "textParams";
 
-  console.log("PARAM TYPE!!!");
-  console.log(inputParams);
+  // console.log("PARAM TYPE!!!");
+  // console.log(inputParams);
 };
 
 //--------------------------
@@ -46,8 +46,8 @@ export const buildVidParams = async (inputParams, dataType = null) => {
   if (!state.active) return null;
   if (!inputParams || !inputParams.result || !inputParams.result.video) return null;
 
-  console.log("VID PARAMS");
-  console.log(inputParams);
+  // console.log("VID PARAMS");
+  // console.log(inputParams);
 
   const fileNameRaw = inputParams.result.video.file_name.slice(0, -4);
 

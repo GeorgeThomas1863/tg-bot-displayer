@@ -27,13 +27,16 @@ class dbModel {
   }
 
   async vidAlreadyStored() {
-    const fileUniqueId = this.dataObject.fileUniqueId;
+    const { forwardFromChannelId, forwardFromMessageId } = this.dataObject;
 
-    const vidAlreadyStored = await db.dbGet().collection(this.collection).findOne({ fileUniqueId: fileUniqueId });
+    if (!forwardFromChannelId || !forwardFromMessageId) {
+      console.log("CANNOT FIND UNIQUE IDENTIFIERS");
+      return true;
+    }
+
+    const vidAlreadyStored = await db.dbGet().collection(this.collection).findOne({ forwardFromChannelId: forwardFromChannelId, forwardFromMessageId: forwardFromMessageId }); //prettier-ignore
     if (vidAlreadyStored) {
       const error = new Error("VID ALREADY STORED");
-      error.loopId = vidAlreadyStored.fileName;
-      error.function = "vidAlreadyStored MODEL";
       throw error;
     }
   }
