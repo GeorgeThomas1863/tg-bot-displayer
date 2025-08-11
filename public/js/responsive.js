@@ -6,6 +6,7 @@ import { buildInputParams } from "./util/params-front.js";
 
 const displayElement = document.getElementById("display-element");
 const returnElement = document.getElementById("return-element");
+// const getUpdatesActionButton = document.getElementById("get-updates-action-button");
 
 export const displayClickHandler = async (e) => {
   e.preventDefault();
@@ -13,19 +14,24 @@ export const displayClickHandler = async (e) => {
   const clickElement = e.target;
   console.log("!!!CLICK ELEMENT");
   console.log(clickElement);
+  console.log(clickElement.id);
 
   //action buttons
   if (clickElement.classList.contains("action-button")) {
     await changeActionButtonDisplay(clickElement);
     await changeFormTitle();
-    return true;
+
+    if (clickElement.id !== "get-updates-action-button") return true;
   }
 
   //submit button
-  if (clickElement.id !== "submit-button") return null;
+  if (clickElement.id !== "submit-button" && clickElement.id !== "get-updates-action-button") return null;
 
   //get input params
   const inputParams = await buildInputParams();
+
+  console.log("!!!INPUT PARAMS");
+  console.log(inputParams);
 
   //send to back
   const data = await sendToBack(inputParams);
@@ -48,6 +54,7 @@ export const returnClickHandler = async (e) => {
 
 if (displayElement) {
   displayElement.addEventListener("click", displayClickHandler);
+  // getUpdatesActionButton.addEventListener("click", displayClickHandler);
 }
 
 if (returnElement) {

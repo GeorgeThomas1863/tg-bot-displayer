@@ -1,14 +1,14 @@
 import { d } from "./define-things.js";
 
-export const setCommandType = async (clickElement) => {
-  if (!clickElement) return null;
-  console.log("!!!SET COMMAND TYPE");
-  console.log(clickElement);
-  console.log(clickElement.id);
+// export const setCommandType = async (clickElement) => {
+//   if (!clickElement) return null;
+//   console.log("!!!SET COMMAND TYPE");
+//   console.log(clickElement);
+//   console.log(clickElement.id);
 
-  // d.commandType.value = clickElement.id;
-  // return true;
-};
+//   // d.commandType.value = clickElement.id;
+//   // return true;
+// };
 
 //BUILD INPUT PARAMS
 export const buildInputParams = async () => {

@@ -13,26 +13,6 @@ export const buildActionButtons = async () => {
 
   actionButtonWrapper.append(actionButtonsRow1, actionButtonsRow2, actionButtonsRow3, actionButtonsRow4);
 
-  // create title element for collapse container
-  //   const titleElement = document.createElement("div");
-  //   titleElement.textContent = "TELEGRAM ACTIONS";
-
-  //   //build collapse container
-  //   const telegramActionCollapseObj = {
-  //     titleElement: titleElement,
-  //     contentElement: telegramActionWrapper,
-  //     isExpanded: true,
-  //     className: "telegram-action-wrapper-collapse",
-  //     dataAttribute: "telegram-action-header",
-  //   };
-
-  //   const telegramActionCollapseContainer = await buildCollapseContainer(telegramActionCollapseObj);
-
-  //   // Apply the wrapper class to the collapse container instead
-  //   telegramActionCollapseContainer.className = "wrapper";
-
-  //   return telegramActionCollapseContainer;
-
   return actionButtonWrapper;
 };
 

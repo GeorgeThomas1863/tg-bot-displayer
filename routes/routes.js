@@ -5,11 +5,11 @@ import { tgCommandControl } from "../controllers/command.js";
 
 const router = express.Router();
 
-//tg display route
-router.get("/", tgDisplay);
-
 //tg command sumbit
 router.post("/tg-submit-route", tgCommandControl);
+
+//tg display route
+router.get("/", tgDisplay);
 
 router.use(display404);
 
