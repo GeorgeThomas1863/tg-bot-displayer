@@ -28,8 +28,8 @@ export const runForwardAllStore = async (inputParams) => {
       const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
       if (!storeParams) continue;
 
-      // console.log("!!!STORE PARAM!!!");
-      // console.log(storeParams);
+      console.log("!!!STORE PARAM!!!");
+      console.log(storeParams);
 
       const storeModel = new dbModel(storeParams, collectionSaveTo);
 
