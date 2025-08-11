@@ -99,7 +99,7 @@ export const tgGetReq = async (url) => {
     const res = await axios.get(url);
     return res.data;
   } catch (e) {
-    console.log(e.message);
+    console.log(e.response.data);
     //axios throws error on 429, so need to return
     return e.response.data;
   }
@@ -113,7 +113,7 @@ export const tgPostReq = async (url, params) => {
     const res = await axios.post(url, params);
     return res.data;
   } catch (e) {
-    console.log(e.message);
+    console.log(e.response.data);
     //axios throws error on 429, so need to return
     return e.response.data;
   }

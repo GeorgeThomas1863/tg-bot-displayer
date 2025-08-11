@@ -7,8 +7,8 @@ export const runForwardAllStore = async (inputParams) => {
   if (!state.active) return null;
 
   const { messageStart, messageStop, forwardAllType, collectionSaveTo, dataType } = inputParams;
-  console.log("INPUT PARAMS");
-  console.log(inputParams);
+  // console.log("INPUT PARAMS");
+  // console.log(inputParams);
 
   const returnDataArray = [];
   for (let i = messageStart; i < messageStop; i++) {
@@ -18,8 +18,7 @@ export const runForwardAllStore = async (inputParams) => {
       const forwardParams = { ...inputParams, messageId: messageId };
 
       //update from forwardAllStore
-      const updateCommandType = "forwardMessage";
-      forwardParams.commandType = updateCommandType;
+      forwardParams.commandType = "forwardMessage";
 
       //get forward data
       const forwardData = await tgForwardMessage(forwardParams);
@@ -37,8 +36,8 @@ export const runForwardAllStore = async (inputParams) => {
       //if store everything
       if (forwardAllType === "storeEverything") {
         const everythingData = await storeModel.storeAnyData();
-        console.log("EVERYTHING DATA");
-        console.log(everythingData);
+        // console.log("EVERYTHING DATA");
+        // console.log(everythingData);
 
         returnDataArray.push(everythingData);
         continue;
@@ -81,8 +80,8 @@ export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
 
     case "storeStart":
       const startParams = await getStartParams(inputData, dataType);
-      console.log("!!!START PARAMS!!!");
-      console.log(startParams);
+      // console.log("!!!START PARAMS!!!");
+      // console.log(startParams);
       return startParams;
 
     case "storeBlanks":
@@ -97,15 +96,16 @@ export const getStartParams = async (inputData, dataType) => {
   if (!inputData || !inputData.result) return null;
   const { text, video } = inputData.result;
 
-  console.log("!!!INPUT DATA GET START PARAMS!!!");
-  console.log(inputData);
-  console.log("TEXT");
-  console.log(text);
+  // console.log("!!!INPUT DATA GET START PARAMS!!!");
+  // console.log(inputData);
+  // console.log("TEXT");
+  // console.log(text);
   // console.log("VIDEO");
   // console.log(video);
 
   if (text) {
-    if (!text.startsWith("!") && !text.startsWith("+")) return null;
+    const trimText = text.trim();
+    if (!trimText.startsWith("!") && !trimText.startsWith("+") && !trimText.startsWith("#")) return null;
 
     const textParams = await buildTextParams(inputData);
     return textParams;
@@ -113,7 +113,8 @@ export const getStartParams = async (inputData, dataType) => {
 
   if (video && !video.caption) return null;
   const { caption } = video;
-  if (!caption.startsWith("!") && !caption.startsWith("+")) return null;
+  const trimCaption = caption.trim();
+  if (!trimCaption.startsWith("!") && !trimCaption.startsWith("+") && !trimCaption.startsWith("#")) return null;
 
   const vidParams = await buildVidParams(inputData, dataType);
   return vidParams;

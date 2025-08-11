@@ -201,7 +201,7 @@ button {
   margin-right: 5rem;
   display: flex;
   /* justify-content: right; */
-  gap: 2rem;
+  gap: 1rem;
 }
 
 #submit-button,
