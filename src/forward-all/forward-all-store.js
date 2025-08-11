@@ -29,8 +29,8 @@ export const runForwardAllStore = async (inputParams) => {
       const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
       if (!storeParams) continue;
 
-      console.log("!!!STORE PARAM!!!");
-      console.log(storeParams);
+      // console.log("!!!STORE PARAM!!!");
+      // console.log(storeParams);
 
       const storeModel = new dbModel(storeParams, collectionSaveTo);
 
@@ -64,7 +64,8 @@ export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
   if (!state.active) return null;
   if (!inputData || !inputData.result) return null;
 
-  //KEEP DEBUGGING HERE
+  // console.log("!!!INPUT DATA!!!");
+  // console.log(inputData);
 
   switch (forwardAllType) {
     case "storeVids":
@@ -95,6 +96,13 @@ export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
 export const getStartParams = async (inputData, dataType) => {
   if (!inputData || !inputData.result) return null;
   const { text, video } = inputData.result;
+
+  console.log("!!!INPUT DATA GET START PARAMS!!!");
+  console.log(inputData);
+  console.log("TEXT");
+  console.log(text);
+  // console.log("VIDEO");
+  // console.log(video);
 
   if (text) {
     if (!text.startsWith("!") && !text.startsWith("+")) return null;

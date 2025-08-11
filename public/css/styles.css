@@ -197,11 +197,16 @@ button {
 
 #button-container {
   margin: 1rem auto;
-  margin-right: 12rem;
+  margin-left: 20rem;
+  margin-right: 5rem;
   display: flex;
-  justify-content: right;
-  gap: 1rem;
-  /* display: block; */
+  /* justify-content: right; */
+  gap: 2rem;
+}
+
+#submit-button,
+#stop-button {
+  width: 100%;
 }
 
 #make-pretty-button {
