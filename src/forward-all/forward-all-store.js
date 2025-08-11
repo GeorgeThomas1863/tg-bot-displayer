@@ -1,6 +1,6 @@
 import dbModel from "../../models/db-model.js";
 import { tgForwardMessage } from "../tg-api.js";
-import { buildVidParams, buildEverythingParams } from "../util/params-back.js";
+import { buildVidParams, buildEverythingParams, buildTextParams } from "../util/params-back.js";
 import state from "../state.js";
 
 export const runForwardAllStore = async (inputParams) => {
@@ -29,7 +29,7 @@ export const runForwardAllStore = async (inputParams) => {
       const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
       if (!storeParams) continue;
 
-      console.log("STORE PARAMS");
+      console.log("!!!STORE PARAM!!!");
       console.log(storeParams);
 
       const storeModel = new dbModel(storeParams, collectionSaveTo);
@@ -77,12 +77,9 @@ export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
       return everythingParams;
 
     case "storeStart":
-      if (!inputData.result.video || !inputData.result.video.caption) return null;
-      const { caption } = inputData.result.video;
-      const beginningChars = caption.substring(0, 3);
-      if (beginningChars !== "!!!" || beginningChars !== "+++") return null;
-
-      const startParams = await buildVidParams(inputData, dataType);
+      const startParams = await getStartParams(inputData, dataType);
+      console.log("!!!START PARAMS!!!");
+      console.log(startParams);
       return startParams;
 
     case "storeBlanks":
@@ -91,4 +88,25 @@ export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
       const blankParams = await buildVidParams(inputData, dataType);
       return blankParams;
   }
+};
+
+export const getStartParams = async (inputData, dataType) => {
+  if (!inputData || !inputData.result) return null;
+  const { text, video } = inputData.result;
+
+  if (text) {
+    const beginningText = text.substring(0, 3);
+    if (beginningText !== "!!!" && beginningText !== "+++") return null;
+
+    const textParams = await buildTextParams(inputData);
+    return textParams;
+  }
+
+  if (video && !video.caption) return null;
+  const { caption } = video;
+  const beginningCaption = caption.substring(0, 3);
+  if (beginningCaption !== "!!!" || beginningCaption !== "+++") return null;
+
+  const vidParams = await buildVidParams(inputData, dataType);
+  return vidParams;
 };

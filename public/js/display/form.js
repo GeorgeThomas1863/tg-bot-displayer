@@ -380,6 +380,7 @@ export const buildForwardFromChatIdListItem = async () => {
   forwardFromChatIdInput.type = "text";
   forwardFromChatIdInput.name = "from-chat-id-input";
   forwardFromChatIdInput.id = "from-chat-id-input";
+  forwardFromChatIdInput.value = "-1001706757504"; //REMOVE DEFAULT VALUE
 
   forwardFromChatIdListItem.append(forwardFromChatIdLabel, forwardFromChatIdInput);
 
