@@ -9,6 +9,10 @@ export const tgDisplay = async (req, res) => {
   res.sendFile(path.join(__dirname, "../html/index.html"));
 };
 
+export const display401 = (req, res) => {
+  res.status(401).sendFile(path.join(__dirname, "../html/401.html"));
+};
+
 export const display404 = (req, res) => {
   res.status(404).sendFile(path.join(__dirname, "../html/404.html"));
 };
