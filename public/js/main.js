@@ -1,6 +1,6 @@
 // import state from "./util/state.js";
 import { buildActionButtons } from "./display/action-buttons.js";
-import { buildMainForm } from "./display/form.js";
+import { buildMainForm } from "./display/main-form.js";
 
 //get display element
 const displayElement = document.getElementById("display-element");

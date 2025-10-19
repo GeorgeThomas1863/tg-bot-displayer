@@ -58,7 +58,7 @@ ul {
 
 /* +++++++++++++++++++++++++++++++++++++++ */
 
-/* AUTH STYLES */
+/* AUTH FORM STYLES */
 
 #auth-form-wrapper {
   margin: 1.5rem auto;
@@ -85,6 +85,125 @@ ul {
   font-size: 1.8rem;
   font-weight: 700;
   color: #2d3748;
+}
+
+/* ++++++++++++++++++++++++++++++++++++++ */
+
+/* MAIN FORM STYLES */
+
+#form-collapse-container {
+  margin: 0 auto;
+  margin-top: 2.5rem;
+  margin-right: 15rem;
+  width: 50%;
+}
+
+li.form {
+  display: flex;
+  justify-content: center;
+}
+
+li label {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-top: 1rem;
+  /* margin-right: 0.5rem; */
+  /* margin-left: 5rem; */
+}
+
+li input {
+  margin-top: 1rem;
+  display: block;
+  margin-left: auto;
+  font-size: 1.5rem;
+  width: 75%;
+  height: 2rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+li textarea {
+  margin-top: 1rem;
+  display: block;
+  margin-left: auto;
+  font-size: 1.5rem;
+  width: 75%;
+  height: 4rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+li select {
+  margin-top: 1rem;
+  display: block;
+  margin-left: auto;
+  font-size: 1.5rem;
+  width: 76%;
+  height: 2.5rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+#action-button-wrapper {
+  margin-top: 2rem;
+  margin-left: 2rem;
+  text-align: left;
+  width: 20rem;
+}
+
+li.action-button-row {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Space between buttons in a row */
+}
+
+.action-button {
+  font-size: 1rem;
+  margin-top: -0.5rem;
+  padding: 0.75rem 0;
+  width: 100%;
+  /* CHANGED: Added flex-grow for equal button sizing in rows */
+  flex: 1;
+}
+
+/* +++++++++++++++++++++++++++++++++++++ */
+
+/* COLLAPSE STYLES */
+
+.collapse-header {
+  background: rgb(200, 200, 200);
+  padding: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 2rem;
+  border: 2px solid black;
+  /* border-bottom: none; */
+  border-radius: 12px 12px 0 0;
+  user-select: none;
+  text-align: center;
+}
+
+.collapse-header:hover {
+  background: rgb(220, 220, 220);
+}
+
+.collapse-content {
+  padding: 0 3rem;
+  margin-top: 0;
+  border: 2px solid black;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.collapse-content.hidden {
+  display: none;
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -159,6 +278,8 @@ ul {
   margin-top: 0.5rem;
   background: #52525b;
   color: #ffffff;
+  /* background: rgb(200, 200, 200);
+  color: black; */
   text-transform: uppercase;
   letter-spacing: 1px;
   border: none;
