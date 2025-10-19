@@ -3,22 +3,21 @@
 //KEEP BUILDING FORWARD ALL / CAPTION ALL
 
 import express from "express";
-import CONFIG from "./config/config.js";
+import session from "express-session";
 import routes from "./routes/router.js";
+
+import CONFIG from "./config/config.js";
 
 const { port } = CONFIG;
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
-
 const app = express();
+
+app.use(session(CONFIG.buildSessionConfig()));
 
 app.use(express.static("public"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-app.use(express.static("public"));
 
 //routes
 app.use(routes);
