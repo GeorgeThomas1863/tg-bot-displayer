@@ -1,3 +1,17 @@
+export const hideArray = async (inputs) => {
+  for (const input of inputs) {
+    if (!input) continue;
+    input.classList.add("hidden");
+  }
+};
+
+export const unhideArray = async (inputs) => {
+  for (const input of inputs) {
+    if (!input) continue;
+    input.classList.remove("hidden");
+  }
+};
+
 export const buildCollapseContainer = async (inputObj) => {
   if (!inputObj || !inputObj.titleElement || !inputObj.contentElement) return null;
   const { titleElement, contentElement, isExpanded = false, className = "", dataAttribute = "" } = inputObj;
@@ -8,16 +22,16 @@ export const buildCollapseContainer = async (inputObj) => {
 
   // Create header with arrow and title
   const collapseHeader = document.createElement("div");
-  collapseHeader.setAttribute("data-expand", dataAttribute);
+  collapseHeader.setAttribute("data-update", dataAttribute);
   collapseHeader.className = "collapse-header";
 
   const arrow = document.createElement("div");
   arrow.id = "collapse-arrow";
   arrow.className = isExpanded ? "collapse-arrow expanded" : "collapse-arrow";
-  arrow.setAttribute("data-expand", dataAttribute);
+  arrow.setAttribute("data-update", dataAttribute);
 
   titleElement.className = "collapse-title";
-  titleElement.setAttribute("data-expand", dataAttribute);
+  titleElement.setAttribute("data-update", dataAttribute);
 
   //add arrow / title to header
   collapseHeader.append(arrow, titleElement);
@@ -45,6 +59,7 @@ export const defineCollapseItems = async (inputArray) => {
   for (let i = 0; i < inputArray.length; i++) {
     const collapseElement = inputArray[i];
     const header = collapseElement.querySelector(".collapse-header");
+    if (!header) continue;
 
     header.addEventListener("click", () => {
       // collapse shit

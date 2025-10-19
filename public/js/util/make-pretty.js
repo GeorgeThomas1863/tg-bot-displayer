@@ -1,17 +1,3 @@
-export const hideArray = async (inputs) => {
-  for (const input of inputs) {
-    input.classList.add("hidden");
-  }
-};
-
-//UNHIDE ARRAY
-export const unhideArray = async (inputs) => {
-  for (const input of inputs) {
-    input.classList.remove("hidden");
-  }
-};
-
-//Make Pretty
 export const makePretty = async () => {
   const parsedData = document.getElementById("parsed-data");
   if (!parsedData) return null;

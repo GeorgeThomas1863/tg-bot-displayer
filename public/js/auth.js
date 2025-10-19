@@ -39,7 +39,7 @@ export const buildAuthPwListItem = async () => {
   const authPwLabel = document.createElement("label");
   authPwLabel.id = "auth-label";
   authPwLabel.setAttribute("for", "auth-pw-input");
-  authPwLabel.textContent = "Welcome to the Nork Tracker 5000";
+  authPwLabel.textContent = "TG BOT DISPLAY";
 
   const authPwWrapper = document.createElement("div");
   authPwWrapper.className = "password-input-wrapper";
