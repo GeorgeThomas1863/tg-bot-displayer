@@ -4,7 +4,7 @@
 
 import express from "express";
 import CONFIG from "./config/config.js";
-import routes from "./routes/routes.js";
+import routes from "./routes/router.js";
 
 const { port } = CONFIG;
 

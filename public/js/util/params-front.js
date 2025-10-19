@@ -1,4 +1,4 @@
-import { d } from "./define-things.js";
+import d from "./define-things.js";
 
 // export const setCommandType = async (clickElement) => {
 //   if (!clickElement) return null;

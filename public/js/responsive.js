@@ -4,10 +4,6 @@ import { sendToBack } from "./util/api-front.js";
 import { buildInputParams } from "./util/params-front.js";
 // import { checkClickTrigger } from "./util/check-things.js";
 
-const displayElement = document.getElementById("display-element");
-const returnElement = document.getElementById("return-element");
-const stopButton = document.getElementById("stop-button");
-
 export const displayClickHandler = async (e) => {
   e.preventDefault();
 
@@ -66,6 +62,15 @@ export const returnClickHandler = async (e) => {
 
   await changePrettyDisplay(clickElement);
 };
+
+const displayElement = document.getElementById("display-element");
+const returnElement = document.getElementById("return-element");
+const stopButton = document.getElementById("stop-button");
+const authElement = document.getElementById("auth-element");
+
+// if (authElement) {
+//   authElement.addEventListener("click", clickHandler);
+// }
 
 if (displayElement) {
   displayElement.addEventListener("click", displayClickHandler);
