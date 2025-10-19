@@ -1,5 +1,6 @@
-//TO DO:
+//CURRENT STEP: //REDO ALL THE FRONTEND JS
 
+//TO DO:
 //KEEP BUILDING FORWARD ALL / CAPTION ALL
 
 import express from "express";

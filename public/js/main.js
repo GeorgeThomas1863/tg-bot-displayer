@@ -9,10 +9,16 @@ const displayElement = document.getElementById("display-element");
 export const buildDisplay = async () => {
   if (!displayElement) return null;
 
+  const inputWrapper = document.createElement("div");
+  inputWrapper.id = "input-wrapper";
+
   const actionButtonElement = await buildActionButtons();
   const mainFormElement = await buildMainForm();
+  if (!actionButtonElement || !mainFormElement) return null;
 
-  displayElement.append(actionButtonElement, mainFormElement);
+  inputWrapper.append(actionButtonElement, mainFormElement);
+
+  displayElement.append(inputWrapper);
 };
 
 buildDisplay();

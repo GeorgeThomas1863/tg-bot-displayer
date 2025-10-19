@@ -465,14 +465,16 @@ export const buildTextInputListItem = async () => {
 
 export const buildButtonContainer = async () => {
   const buttonContainer = document.createElement("div");
-  buttonContainer.id = "button-container";
+  buttonContainer.id = "button-command-container";
 
   const submitButton = document.createElement("button");
-  submitButton.id = "submit-button";
+  submitButton.id = "submit-command-button";
+  submitButton.className = "btn-submit";
   submitButton.textContent = "SUBMIT";
 
   const stopButton = document.createElement("button");
-  stopButton.id = "stop-button";
+  stopButton.id = "stop-command-button";
+  stopButton.className = "btn-submit";
   stopButton.textContent = "STOP";
 
   buttonContainer.append(submitButton, stopButton);

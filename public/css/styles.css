@@ -91,11 +91,25 @@ ul {
 
 /* MAIN FORM STYLES */
 
+#input-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#action-button-wrapper {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: 22rem;
+}
+
 #form-collapse-container {
-  margin: 0 auto;
-  margin-top: 2.5rem;
-  margin-right: 15rem;
+  margin: 0;
   width: 50%;
+  max-width: 900px;
 }
 
 li.form {
@@ -147,18 +161,25 @@ li select {
   font-family: inherit;
 }
 
-#action-button-wrapper {
-  margin-top: 2rem;
-  margin-left: 1rem;
-  text-align: left;
-  width: 25rem;
-}
-
 li.action-button-row {
   margin-top: 1.5rem;
   display: flex;
   justify-content: center;
   gap: 1rem; /* Space between buttons in a row */
+}
+
+#button-command-container {
+  margin: 1rem auto;
+  /* margin-left: 20rem;
+  margin-right: 5rem; */
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+}
+
+#submit-command-button,
+#stop-command-button {
+  width: 45%;
 }
 
 /* +++++++++++++++++++++++++++++++++++++ */
