@@ -1,4 +1,4 @@
-import { EYE_CLOSED_SVG } from "../util/define-things.js";
+import { EYE_CLOSED_SVG } from "./util/define-things.js";
 
 const authElement = document.getElementById("auth-element");
 

@@ -1,4 +1,5 @@
-import { d, listItemsButtonsArray, commandMap, titleMap } from "../util/define-things.js";
+import d from "../util/define-things.js";
+import { listItemsButtonsArray, commandMap, titleMap } from "../util/define-things.js";
 import { hideArray, unhideArray, makePretty, undoPretty } from "../util/util.js";
 
 export const changeActionButtonDisplay = async (clickElement) => {
