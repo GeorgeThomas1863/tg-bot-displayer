@@ -1,3 +1,4 @@
+import { runAuthSubmit, runPwToggle } from "./run.js";
 // import { changeActionButtonDisplay, changeFormTitle, changePrettyDisplay } from "./display/change-display.js";
 // import { buildReturnDisplay } from "./display/return-display.js";
 // import { sendToBack } from "./util/api-front.js";
@@ -8,9 +9,28 @@ export const clickHandler = async (e) => {
   e.preventDefault();
 
   const clickElement = e.target;
+  const clickId = clickElement.id;
+  const clickType = clickElement.getAttribute("data-label");
+
   console.log("!!!CLICK ELEMENT");
   console.log(clickElement);
-  console.log(clickElement.id);
+  console.log("CLICK ID");
+  console.log(clickId);
+  console.log("CLICK TYPE");
+  console.log(clickType);
+
+  switch (clickType) {
+    case "auth-submit":
+      await runAuthSubmit();
+      break;
+
+    case "pwToggle":
+      await runPwToggle();
+      break;
+
+    default:
+      break;
+  }
 
   //action buttons
   // if (clickElement.classList.contains("action-button")) {

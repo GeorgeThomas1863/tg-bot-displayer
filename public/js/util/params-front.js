@@ -10,6 +10,22 @@ import d from "./define-things.js";
 //   // return true;
 // };
 
+export const getAuthParams = async () => {
+  const authPwInput = document.getElementById("auth-pw-input");
+
+  try {
+    const params = {
+      //REMOVE PLACEHOLDER BELOW
+      pw: authPwInput.value || authPwInput.placeholder,
+    };
+
+    return params;
+  } catch (e) {
+    console.log("ERROR: " + e.message + "; FUNCTION: " + e.function);
+    return null;
+  }
+};
+
 //BUILD INPUT PARAMS
 export const buildInputParams = async () => {
   //reset each time
