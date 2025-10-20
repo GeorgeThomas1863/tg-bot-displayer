@@ -1,4 +1,4 @@
-import { runAuthSubmit, runPwToggle } from "./run.js";
+import { runAuthSubmit, runPwToggle, runChangeActionButton } from "./run.js";
 // import { changeActionButtonDisplay, changeFormTitle, changePrettyDisplay } from "./display/change-display.js";
 // import { buildReturnDisplay } from "./display/return-display.js";
 // import { sendToBack } from "./util/api-front.js";
@@ -26,6 +26,10 @@ export const clickHandler = async (e) => {
 
     case "pwToggle":
       await runPwToggle();
+      break;
+
+    case "action-button":
+      await runChangeActionButton(clickElement);
       break;
 
     default:

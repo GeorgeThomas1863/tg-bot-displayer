@@ -92,22 +92,26 @@ ul {
 /* MAIN FORM STYLES */
 
 #input-wrapper {
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
   display: flex;
-  gap: 2rem;
-  justify-content: center;
-  align-items: flex-start;
+  gap: 7rem;
+  /* justify-content: center; */
+  /* align-items: flex-start; */
 }
 
 #action-button-wrapper {
-  position: absolute;
-  left: 1.5rem;
-  top: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+  /* justify-content: left; */
+  /* left: 1.5rem;
+  top: 1rem; */
   width: 22rem;
 }
 
 #form-collapse-container {
-  margin: 0;
+  margin-top: 2rem;
+  /* justify-content: right; */
+  /* margin: 0; */
   width: 50%;
   max-width: 900px;
 }

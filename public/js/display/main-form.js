@@ -7,45 +7,51 @@ export const buildMainForm = async () => {
   formWrapper.className = "wrapper collapse-content";
 
   //build FORM list items
-  const forwardAllStoreTypeListItem = await buildForwardAllStoreTypeListItem();
-  const captionLookupTypeListItem = await buildCaptionLookupTypeListItem();
-  const uploadPicTypeListItem = await buildUploadPicTypeListItem();
-  const dataTypeListItem = await buildDataTypeListItem();
-  const updateIdListItem = await buildUpdateIdListItem();
-  const messageIdListItem = await buildMessageIdListItem();
+  const offsetListItem = await buildOffsetListItem();
   const chatIdListItem = await buildChatIdListItem();
+  const messageIdListItem = await buildMessageIdListItem();
+  const dataTypeListItem = await buildDataTypeListItem();
+
+  const commandListItem = await buildCommandListItem();
+  const textInputListItem = await buildTextInputListItem();
+
   const messageStartListItem = await buildMessageStartListItem();
   const messageStopListItem = await buildMessageStopListItem();
-  const picPathListItem = await buildPicPathListItem();
-  const collectionPullFromListItem = await buildCollectionPullFromListItem();
-  const collectionSaveToListItem = await buildCollectionSaveToListItem();
+
   const editCaptionsChannelListItem = await buildEditCaptionsChannelListItem();
   const forwardFromChatIdListItem = await buildForwardFromChatIdListItem();
   const forwardToChatIdListItem = await buildForwardToChatIdListItem();
   const uploadToListItem = await buildUploadToListItem();
-  const commandListItem = await buildCommandListItem();
-  const textInputListItem = await buildTextInputListItem();
+
+  const forwardAllStoreTypeListItem = await buildForwardAllStoreTypeListItem();
+  const captionLookupTypeListItem = await buildCaptionLookupTypeListItem();
+  const uploadPicTypeListItem = await buildUploadPicTypeListItem();
+
+  const picPathListItem = await buildPicPathListItem();
+  const collectionPullFromListItem = await buildCollectionPullFromListItem();
+  const collectionSaveToListItem = await buildCollectionSaveToListItem();
+
   const buttonContainer = await buildButtonContainer();
 
   formWrapper.append(
-    forwardAllStoreTypeListItem,
-    captionLookupTypeListItem,
-    uploadPicTypeListItem,
-    dataTypeListItem,
-    updateIdListItem,
-    messageIdListItem,
+    offsetListItem,
     chatIdListItem,
+    messageIdListItem,
+    dataTypeListItem,
+    commandListItem,
+    textInputListItem,
     messageStartListItem,
     messageStopListItem,
-    picPathListItem,
-    collectionPullFromListItem,
-    collectionSaveToListItem,
     editCaptionsChannelListItem,
     forwardFromChatIdListItem,
     forwardToChatIdListItem,
     uploadToListItem,
-    commandListItem,
-    textInputListItem,
+    forwardAllStoreTypeListItem,
+    captionLookupTypeListItem,
+    uploadPicTypeListItem,
+    picPathListItem,
+    collectionPullFromListItem,
+    collectionSaveToListItem,
     buttonContainer
   );
 
@@ -68,6 +74,235 @@ export const buildMainForm = async () => {
   telegramCollapseContainer.className = "wrapper";
 
   return telegramCollapseContainer;
+};
+
+export const buildOffsetListItem = async () => {
+  const offsetListItem = document.createElement("li");
+  offsetListItem.id = "list-item-offset";
+  offsetListItem.className = "form";
+
+  const offsetLabel = document.createElement("label");
+  offsetLabel.setAttribute("for", "offset-input");
+  offsetLabel.textContent = "Offset";
+
+  const offsetInput = document.createElement("input");
+  offsetInput.type = "text";
+  offsetInput.name = "offset-input";
+  offsetInput.id = "offset-input";
+
+  offsetListItem.append(offsetLabel, offsetInput);
+
+  return offsetListItem;
+};
+
+export const buildChatIdListItem = async () => {
+  const chatIdListItem = document.createElement("li");
+  chatIdListItem.id = "list-item-chat-id";
+  chatIdListItem.className = "form hidden";
+
+  const chatIdLabel = document.createElement("label");
+  chatIdLabel.setAttribute("for", "chat-id-input");
+  chatIdLabel.textContent = "Chat ID";
+
+  const chatIdInput = document.createElement("input");
+  chatIdInput.type = "text";
+  chatIdInput.name = "chat-id-input";
+  chatIdInput.id = "chat-id-input";
+
+  chatIdListItem.append(chatIdLabel, chatIdInput);
+
+  return chatIdListItem;
+};
+
+export const buildMessageIdListItem = async () => {
+  const messageIdListItem = document.createElement("li");
+  messageIdListItem.id = "list-item-message-id";
+  messageIdListItem.className = "form hidden";
+
+  const messageIdLabel = document.createElement("label");
+  messageIdLabel.setAttribute("for", "message-id-input");
+  messageIdLabel.textContent = "Message ID";
+
+  const messageIdInput = document.createElement("input");
+  messageIdInput.type = "text";
+  messageIdInput.name = "message-id-input";
+  messageIdInput.id = "message-id-input";
+
+  messageIdListItem.append(messageIdLabel, messageIdInput);
+
+  return messageIdListItem;
+};
+
+export const buildDataTypeListItem = async () => {
+  const dataTypeListItem = document.createElement("li");
+  dataTypeListItem.id = "list-item-data-type";
+  dataTypeListItem.className = "form hidden";
+
+  const dataTypeLabel = document.createElement("label");
+  dataTypeLabel.setAttribute("for", "lookup-type-data-input");
+  dataTypeLabel.textContent = "Data TYPE";
+
+  const dataTypeInput = document.createElement("input");
+  dataTypeInput.type = "text";
+  dataTypeInput.name = "data-type-input";
+  dataTypeInput.id = "data-type-input";
+
+  dataTypeListItem.append(dataTypeLabel, dataTypeInput);
+
+  return dataTypeListItem;
+};
+
+export const buildCommandListItem = async () => {
+  const commandListItem = document.createElement("li");
+  commandListItem.id = "list-item-command";
+  commandListItem.className = "form hidden";
+
+  const commandLabel = document.createElement("label");
+  commandLabel.setAttribute("for", "command-input");
+  commandLabel.textContent = "Command";
+
+  const commandInput = document.createElement("input");
+  commandInput.type = "text";
+  commandInput.name = "command-input";
+  commandInput.id = "command-input";
+  commandInput.value = "getUpdates";
+
+  commandListItem.append(commandLabel, commandInput);
+
+  return commandListItem;
+};
+
+export const buildTextInputListItem = async () => {
+  const textInputListItem = document.createElement("li");
+  textInputListItem.id = "list-item-text-input";
+  textInputListItem.className = "form hidden";
+
+  const textInputLabel = document.createElement("label");
+  textInputLabel.setAttribute("for", "text-input");
+  textInputLabel.textContent = "Text";
+
+  const textInputTextarea = document.createElement("textarea");
+  textInputTextarea.name = "text-input";
+  textInputTextarea.id = "text-input";
+
+  textInputListItem.append(textInputLabel, textInputTextarea);
+
+  return textInputListItem;
+};
+
+export const buildMessageStartListItem = async () => {
+  const messageStartListItem = document.createElement("li");
+  messageStartListItem.id = "list-item-message-start";
+  messageStartListItem.className = "form hidden";
+
+  const messageStartLabel = document.createElement("label");
+  messageStartLabel.setAttribute("for", "message-start-input");
+  messageStartLabel.textContent = "Start Msg ID";
+
+  const messageStartInput = document.createElement("input");
+  messageStartInput.type = "text";
+  messageStartInput.name = "message-start-input";
+  messageStartInput.id = "message-start-input";
+
+  messageStartListItem.append(messageStartLabel, messageStartInput);
+
+  return messageStartListItem;
+};
+
+export const buildMessageStopListItem = async () => {
+  const messageStopListItem = document.createElement("li");
+  messageStopListItem.id = "list-item-message-stop";
+  messageStopListItem.className = "form hidden";
+
+  const messageStopLabel = document.createElement("label");
+  messageStopLabel.setAttribute("for", "message-stop-input");
+  messageStopLabel.textContent = "Stop Msg ID";
+
+  const messageStopInput = document.createElement("input");
+  messageStopInput.type = "text";
+  messageStopInput.name = "message-stop-input";
+  messageStopInput.id = "message-stop-input";
+
+  messageStopListItem.append(messageStopLabel, messageStopInput);
+
+  return messageStopListItem;
+};
+
+export const buildEditCaptionsChannelListItem = async () => {
+  const editCaptionsChannelListItem = document.createElement("li");
+  editCaptionsChannelListItem.id = "list-item-edit-captions-channel";
+  editCaptionsChannelListItem.className = "form hidden";
+
+  const editCaptionsChannelLabel = document.createElement("label");
+  editCaptionsChannelLabel.setAttribute("for", "edit-captions-channel");
+  editCaptionsChannelLabel.textContent = "Edit Channel";
+
+  const editCaptionsChannelInput = document.createElement("input");
+  editCaptionsChannelInput.type = "text";
+  editCaptionsChannelInput.name = "edit-captions-channel";
+  editCaptionsChannelInput.id = "edit-captions-channel";
+
+  editCaptionsChannelListItem.append(editCaptionsChannelLabel, editCaptionsChannelInput);
+
+  return editCaptionsChannelListItem;
+};
+
+export const buildForwardFromChatIdListItem = async () => {
+  const forwardFromChatIdListItem = document.createElement("li");
+  forwardFromChatIdListItem.id = "list-item-forward-from-chat-id";
+  forwardFromChatIdListItem.className = "form hidden";
+
+  const forwardFromChatIdLabel = document.createElement("label");
+  forwardFromChatIdLabel.setAttribute("for", "from-chat-id-input");
+  forwardFromChatIdLabel.textContent = "Forward FROM";
+
+  const forwardFromChatIdInput = document.createElement("input");
+  forwardFromChatIdInput.type = "text";
+  forwardFromChatIdInput.name = "from-chat-id-input";
+  forwardFromChatIdInput.id = "from-chat-id-input";
+  forwardFromChatIdInput.value = "-1001706757504"; //REMOVE DEFAULT VALUE
+
+  forwardFromChatIdListItem.append(forwardFromChatIdLabel, forwardFromChatIdInput);
+
+  return forwardFromChatIdListItem;
+};
+
+export const buildForwardToChatIdListItem = async () => {
+  const forwardToChatIdListItem = document.createElement("li");
+  forwardToChatIdListItem.id = "list-item-forward-to-chat-id";
+  forwardToChatIdListItem.className = "form hidden";
+
+  const forwardToChatIdLabel = document.createElement("label");
+  forwardToChatIdLabel.setAttribute("for", "to-chat-id-input");
+  forwardToChatIdLabel.textContent = "Forward TO";
+
+  const forwardToChatIdInput = document.createElement("input");
+  forwardToChatIdInput.type = "text";
+  forwardToChatIdInput.name = "to-chat-id-input";
+  forwardToChatIdInput.id = "to-chat-id-input";
+
+  forwardToChatIdListItem.append(forwardToChatIdLabel, forwardToChatIdInput);
+
+  return forwardToChatIdListItem;
+};
+
+export const buildUploadToListItem = async () => {
+  const uploadToListItem = document.createElement("li");
+  uploadToListItem.id = "list-item-upload-to";
+  uploadToListItem.className = "form hidden";
+
+  const uploadToLabel = document.createElement("label");
+  uploadToLabel.setAttribute("for", "upload-to-input");
+  uploadToLabel.textContent = "Upload TO";
+
+  const uploadToInput = document.createElement("input");
+  uploadToInput.type = "text";
+  uploadToInput.name = "upload-to-input";
+  uploadToInput.id = "upload-to-input";
+
+  uploadToListItem.append(uploadToLabel, uploadToInput);
+
+  return uploadToListItem;
 };
 
 export const buildForwardAllStoreTypeListItem = async () => {
@@ -177,120 +412,6 @@ export const buildUploadPicTypeListItem = async () => {
   return uploadPicTypeListItem;
 };
 
-export const buildDataTypeListItem = async () => {
-  const dataTypeListItem = document.createElement("li");
-  dataTypeListItem.id = "list-item-data-type";
-  dataTypeListItem.className = "form hidden";
-
-  const dataTypeLabel = document.createElement("label");
-  dataTypeLabel.setAttribute("for", "lookup-type-data-input");
-  dataTypeLabel.textContent = "Data TYPE";
-
-  const dataTypeInput = document.createElement("input");
-  dataTypeInput.type = "text";
-  dataTypeInput.name = "data-type-input";
-  dataTypeInput.id = "data-type-input";
-
-  dataTypeListItem.append(dataTypeLabel, dataTypeInput);
-
-  return dataTypeListItem;
-};
-
-export const buildUpdateIdListItem = async () => {
-  const updateIdListItem = document.createElement("li");
-  updateIdListItem.id = "list-item-update-id";
-  updateIdListItem.className = "form";
-
-  const updateIdLabel = document.createElement("label");
-  updateIdLabel.setAttribute("for", "update-id-input");
-  updateIdLabel.textContent = "Offset";
-
-  const updateIdInput = document.createElement("input");
-  updateIdInput.type = "text";
-  updateIdInput.name = "update-id-input";
-  updateIdInput.id = "update-id-input";
-
-  updateIdListItem.append(updateIdLabel, updateIdInput);
-
-  return updateIdListItem;
-};
-
-export const buildMessageIdListItem = async () => {
-  const messageIdListItem = document.createElement("li");
-  messageIdListItem.id = "list-item-message-id";
-  messageIdListItem.className = "form hidden";
-
-  const messageIdLabel = document.createElement("label");
-  messageIdLabel.setAttribute("for", "message-id-input");
-  messageIdLabel.textContent = "Message ID";
-
-  const messageIdInput = document.createElement("input");
-  messageIdInput.type = "text";
-  messageIdInput.name = "message-id-input";
-  messageIdInput.id = "message-id-input";
-
-  messageIdListItem.append(messageIdLabel, messageIdInput);
-
-  return messageIdListItem;
-};
-
-export const buildChatIdListItem = async () => {
-  const chatIdListItem = document.createElement("li");
-  chatIdListItem.id = "list-item-chat-id";
-  chatIdListItem.className = "form hidden";
-
-  const chatIdLabel = document.createElement("label");
-  chatIdLabel.setAttribute("for", "chat-id-input");
-  chatIdLabel.textContent = "Chat ID";
-
-  const chatIdInput = document.createElement("input");
-  chatIdInput.type = "text";
-  chatIdInput.name = "chat-id-input";
-  chatIdInput.id = "chat-id-input";
-
-  chatIdListItem.append(chatIdLabel, chatIdInput);
-
-  return chatIdListItem;
-};
-
-export const buildMessageStartListItem = async () => {
-  const messageStartListItem = document.createElement("li");
-  messageStartListItem.id = "list-item-message-start";
-  messageStartListItem.className = "form hidden";
-
-  const messageStartLabel = document.createElement("label");
-  messageStartLabel.setAttribute("for", "message-start-input");
-  messageStartLabel.textContent = "Start Msg ID";
-
-  const messageStartInput = document.createElement("input");
-  messageStartInput.type = "text";
-  messageStartInput.name = "message-start-input";
-  messageStartInput.id = "message-start-input";
-
-  messageStartListItem.append(messageStartLabel, messageStartInput);
-
-  return messageStartListItem;
-};
-
-export const buildMessageStopListItem = async () => {
-  const messageStopListItem = document.createElement("li");
-  messageStopListItem.id = "list-item-message-stop";
-  messageStopListItem.className = "form hidden";
-
-  const messageStopLabel = document.createElement("label");
-  messageStopLabel.setAttribute("for", "message-stop-input");
-  messageStopLabel.textContent = "Stop Msg ID";
-
-  const messageStopInput = document.createElement("input");
-  messageStopInput.type = "text";
-  messageStopInput.name = "message-stop-input";
-  messageStopInput.id = "message-stop-input";
-
-  messageStopListItem.append(messageStopLabel, messageStopInput);
-
-  return messageStopListItem;
-};
-
 export const buildPicPathListItem = async () => {
   const picPathListItem = document.createElement("li");
   picPathListItem.id = "list-item-pic-path";
@@ -346,121 +467,6 @@ export const buildCollectionSaveToListItem = async () => {
   collectionSaveToListItem.append(collectionSaveToLabel, collectionSaveToInput);
 
   return collectionSaveToListItem;
-};
-
-export const buildEditCaptionsChannelListItem = async () => {
-  const editCaptionsChannelListItem = document.createElement("li");
-  editCaptionsChannelListItem.id = "list-item-edit-captions-channel";
-  editCaptionsChannelListItem.className = "form hidden";
-
-  const editCaptionsChannelLabel = document.createElement("label");
-  editCaptionsChannelLabel.setAttribute("for", "edit-captions-channel");
-  editCaptionsChannelLabel.textContent = "Edit Channel";
-
-  const editCaptionsChannelInput = document.createElement("input");
-  editCaptionsChannelInput.type = "text";
-  editCaptionsChannelInput.name = "edit-captions-channel";
-  editCaptionsChannelInput.id = "edit-captions-channel";
-
-  editCaptionsChannelListItem.append(editCaptionsChannelLabel, editCaptionsChannelInput);
-
-  return editCaptionsChannelListItem;
-};
-
-export const buildForwardFromChatIdListItem = async () => {
-  const forwardFromChatIdListItem = document.createElement("li");
-  forwardFromChatIdListItem.id = "list-item-forward-from-chat-id";
-  forwardFromChatIdListItem.className = "form hidden";
-
-  const forwardFromChatIdLabel = document.createElement("label");
-  forwardFromChatIdLabel.setAttribute("for", "from-chat-id-input");
-  forwardFromChatIdLabel.textContent = "Forward FROM";
-
-  const forwardFromChatIdInput = document.createElement("input");
-  forwardFromChatIdInput.type = "text";
-  forwardFromChatIdInput.name = "from-chat-id-input";
-  forwardFromChatIdInput.id = "from-chat-id-input";
-  forwardFromChatIdInput.value = "-1001706757504"; //REMOVE DEFAULT VALUE
-
-  forwardFromChatIdListItem.append(forwardFromChatIdLabel, forwardFromChatIdInput);
-
-  return forwardFromChatIdListItem;
-};
-
-export const buildForwardToChatIdListItem = async () => {
-  const forwardToChatIdListItem = document.createElement("li");
-  forwardToChatIdListItem.id = "list-item-forward-to-chat-id";
-  forwardToChatIdListItem.className = "form hidden";
-
-  const forwardToChatIdLabel = document.createElement("label");
-  forwardToChatIdLabel.setAttribute("for", "to-chat-id-input");
-  forwardToChatIdLabel.textContent = "Forward TO";
-
-  const forwardToChatIdInput = document.createElement("input");
-  forwardToChatIdInput.type = "text";
-  forwardToChatIdInput.name = "to-chat-id-input";
-  forwardToChatIdInput.id = "to-chat-id-input";
-
-  forwardToChatIdListItem.append(forwardToChatIdLabel, forwardToChatIdInput);
-
-  return forwardToChatIdListItem;
-};
-
-export const buildUploadToListItem = async () => {
-  const uploadToListItem = document.createElement("li");
-  uploadToListItem.id = "list-item-upload-to";
-  uploadToListItem.className = "form hidden";
-
-  const uploadToLabel = document.createElement("label");
-  uploadToLabel.setAttribute("for", "upload-to-input");
-  uploadToLabel.textContent = "Upload TO";
-
-  const uploadToInput = document.createElement("input");
-  uploadToInput.type = "text";
-  uploadToInput.name = "upload-to-input";
-  uploadToInput.id = "upload-to-input";
-
-  uploadToListItem.append(uploadToLabel, uploadToInput);
-
-  return uploadToListItem;
-};
-
-export const buildCommandListItem = async () => {
-  const commandListItem = document.createElement("li");
-  commandListItem.id = "list-item-command";
-  commandListItem.className = "form hidden";
-
-  const commandLabel = document.createElement("label");
-  commandLabel.setAttribute("for", "command-input");
-  commandLabel.textContent = "Command";
-
-  const commandInput = document.createElement("input");
-  commandInput.type = "text";
-  commandInput.name = "command-input";
-  commandInput.id = "command-input";
-  commandInput.value = "getUpdates";
-
-  commandListItem.append(commandLabel, commandInput);
-
-  return commandListItem;
-};
-
-export const buildTextInputListItem = async () => {
-  const textInputListItem = document.createElement("li");
-  textInputListItem.id = "list-item-text-input";
-  textInputListItem.className = "form hidden";
-
-  const textInputLabel = document.createElement("label");
-  textInputLabel.setAttribute("for", "text-input");
-  textInputLabel.textContent = "Text";
-
-  const textInputTextarea = document.createElement("textarea");
-  textInputTextarea.name = "text-input";
-  textInputTextarea.id = "text-input";
-
-  textInputListItem.append(textInputLabel, textInputTextarea);
-
-  return textInputListItem;
 };
 
 export const buildButtonContainer = async () => {

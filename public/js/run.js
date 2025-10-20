@@ -1,4 +1,5 @@
 import d from "./util/define-things.js";
+import { actionButtonMap, listItemsButtonsArray } from "./util/define-things.js";
 import { EYE_CLOSED_SVG, EYE_OPEN_SVG } from "./util/define-things.js";
 import { getAuthParams } from "./util/params-front.js";
 import { sendToBack } from "./util/api-front.js";
@@ -36,6 +37,18 @@ export const runPwToggle = async () => {
     pwButton.innerHTML = EYE_CLOSED_SVG;
     pwInput.type = "password";
   }
+
+  return true;
+};
+
+export const runChangeActionButton = async (clickElement) => {
+  if (!clickElement) return null;
+
+  const clickId = clickElement.id;
+  const actionType = clickId.split("-").slice(0, -2).join("-");
+
+  await hideArray(listItemsButtonsArray);
+  await unhideArray(actionButtonMap[actionType]);
 
   return true;
 };

@@ -24,12 +24,13 @@ export const buildActionButtonsRow1 = async () => {
   const getUpdatesButton = document.createElement("button");
   getUpdatesButton.id = "get-updates-action-button";
   getUpdatesButton.className = "action-button";
-  getUpdatesButton.setAttribute("data-id", "1");
+  getUpdatesButton.setAttribute("data-label", "action-button");
   getUpdatesButton.textContent = "GET UPDATES";
 
   const sendMessageButton = document.createElement("button");
   sendMessageButton.id = "send-message-action-button";
   sendMessageButton.className = "action-button";
+  sendMessageButton.setAttribute("data-label", "action-button");
   sendMessageButton.textContent = "Send Message";
 
   actionButtonsRow1.append(getUpdatesButton, sendMessageButton);
@@ -45,11 +46,13 @@ export const buildActionButtonsRow2 = async () => {
   const forwardMessageButton = document.createElement("button");
   forwardMessageButton.id = "forward-message-action-button";
   forwardMessageButton.className = "action-button";
+  forwardMessageButton.setAttribute("data-label", "action-button");
   forwardMessageButton.textContent = "Forward Message";
 
   const editCaptionButton = document.createElement("button");
   editCaptionButton.id = "edit-caption-action-button";
   editCaptionButton.className = "action-button";
+  editCaptionButton.setAttribute("data-label", "action-button");
   editCaptionButton.textContent = "Edit Caption";
 
   actionButtonsRow2.append(forwardMessageButton, editCaptionButton);
@@ -65,11 +68,13 @@ export const buildActionButtonsRow3 = async () => {
   const forwardAllStoreButton = document.createElement("button");
   forwardAllStoreButton.id = "forward-all-store-action-button";
   forwardAllStoreButton.className = "action-button";
+  forwardAllStoreButton.setAttribute("data-label", "action-button");
   forwardAllStoreButton.textContent = "Forward ALL Store";
 
   const captionAllLookupButton = document.createElement("button");
   captionAllLookupButton.id = "caption-all-lookup-action-button";
   captionAllLookupButton.className = "action-button";
+  captionAllLookupButton.setAttribute("data-label", "action-button");
   captionAllLookupButton.textContent = "Caption ALL Lookup";
 
   actionButtonsRow3.append(forwardAllStoreButton, captionAllLookupButton);
@@ -85,11 +90,13 @@ export const buildActionButtonsRow4 = async () => {
   const uploadPicsButton = document.createElement("button");
   uploadPicsButton.id = "upload-pics-action-button";
   uploadPicsButton.className = "action-button";
+  uploadPicsButton.setAttribute("data-label", "action-button");
   uploadPicsButton.textContent = "Upload Pics";
 
   const placeholderButton = document.createElement("button");
   placeholderButton.id = "placeholder";
   placeholderButton.className = "action-button hidden";
+  placeholderButton.setAttribute("data-label", "action-button");
   placeholderButton.textContent = "Placeholder";
 
   actionButtonsRow4.append(uploadPicsButton, placeholderButton);

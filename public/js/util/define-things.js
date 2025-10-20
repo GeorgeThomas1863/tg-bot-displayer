@@ -1,23 +1,23 @@
 const d = {
   //define action buttons
-  getUpdatesActionButton: document.getElementById("get-updates-action-button"),
-  sendMessageActionButton: document.getElementById("send-message-action-button"),
-  forwardMessageActionButton: document.getElementById("forward-message-action-button"),
-  editCaptionActionButton: document.getElementById("edit-caption-action-button"),
-  forwardAllStoreActionButton: document.getElementById("forward-all-store-action-button"),
-  captionAllLookupActionButton: document.getElementById("caption-all-lookup-action-button"),
+  // getUpdatesActionButton: document.getElementById("get-updates-action-button"),
+  // sendMessageActionButton: document.getElementById("send-message-action-button"),
+  // forwardMessageActionButton: document.getElementById("forward-message-action-button"),
+  // editCaptionActionButton: document.getElementById("edit-caption-action-button"),
+  // forwardAllStoreActionButton: document.getElementById("forward-all-store-action-button"),
+  // captionAllLookupActionButton: document.getElementById("caption-all-lookup-action-button"),
 
   //define submit buttons
-  getUpdatesSubmitElement: document.getElementById("get-updates-submit"),
-  sendMessageSubmitElement: document.getElementById("send-message-submit"),
-  forwardMessageSubmitElement: document.getElementById("forward-message-submit"),
-  editCaptionSubmitElement: document.getElementById("edit-caption-submit"),
-  forwardAllStoreSubmitElement: document.getElementById("forward-all-store-submit"),
-  captionAllLookupSubmitElement: document.getElementById("caption-all-lookup-submit"),
-  uploadPicsSubmitElement: document.getElementById("upload-pics-submit"),
+  // getUpdatesSubmitElement: document.getElementById("get-updates-submit"),
+  // sendMessageSubmitElement: document.getElementById("send-message-submit"),
+  // forwardMessageSubmitElement: document.getElementById("forward-message-submit"),
+  // editCaptionSubmitElement: document.getElementById("edit-caption-submit"),
+  // forwardAllStoreSubmitElement: document.getElementById("forward-all-store-submit"),
+  // captionAllLookupSubmitElement: document.getElementById("caption-all-lookup-submit"),
+  // uploadPicsSubmitElement: document.getElementById("upload-pics-submit"),
 
   //define form list items
-  updateIdListItem: document.getElementById("list-item-update-id"),
+  offsetListItem: document.getElementById("list-item-offset"),
   messageIdListItem: document.getElementById("list-item-message-id"),
   chatIdListItem: document.getElementById("list-item-chat-id"),
   dataTypeListItem: document.getElementById("list-item-data-type"),
@@ -67,7 +67,7 @@ const d = {
 
 //define list item array
 export const listItemsButtonsArray = [
-  d.updateIdListItem,
+  d.offsetListItem,
   d.messageIdListItem,
   d.chatIdListItem,
   d.messageStartListItem,
@@ -126,6 +126,25 @@ export const titleMap = {
   editMessageCaption: "Edit Message Caption",
   captionAllLookup: "Caption All Lookup",
   sendPhoto: "Send Photo",
+};
+
+export const actionButtonMap = {
+  "get-updates": [d.offsetListItem],
+  "send-message": [d.chatIdListItem, d.textInputListItem],
+  "forward-message": [d.messageIdListItem, d.forwardFromListItem, d.forwardToListItem],
+  "forward-all-store": [d.messageStartListItem, d.messageStopListItem, d.forwardFromListItem, d.forwardToListItem, d.forwardAllStoreTypeListItem, d.collectionSaveToListItem, d.dataTypeListItem],
+  "edit-caption": [d.messageIdListItem, d.editCaptionChannelListItem, d.textInputListItem],
+  "caption-all-lookup": [
+    d.messageStartListItem,
+    d.messageStopListItem,
+    d.collectionPullFromListItem,
+    d.collectionSaveToListItem,
+    d.captionLookupTypeListItem,
+    d.editCaptionChannelListItem,
+    d.forwardToListItem,
+    d.dataTypeListItem,
+  ],
+  "upload-pics": [d.uploadToListItem, d.uploadPicTypeListItem, d.picPathListItem, d.collectionPullFromListItem, d.collectionSaveToListItem],
 };
 
 export const EYE_CLOSED_SVG = `
