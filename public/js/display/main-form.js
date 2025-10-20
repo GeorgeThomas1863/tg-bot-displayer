@@ -179,7 +179,7 @@ export const buildTextInputListItem = async () => {
 
   const textInputLabel = document.createElement("label");
   textInputLabel.setAttribute("for", "text-input");
-  textInputLabel.textContent = "Text";
+  textInputLabel.textContent = "Msg Text";
 
   const textInputTextarea = document.createElement("textarea");
   textInputTextarea.name = "text-input";
@@ -254,7 +254,7 @@ export const buildForwardFromChatIdListItem = async () => {
 
   const forwardFromChatIdLabel = document.createElement("label");
   forwardFromChatIdLabel.setAttribute("for", "from-chat-id-input");
-  forwardFromChatIdLabel.textContent = "Forward FROM";
+  forwardFromChatIdLabel.textContent = "Fwd FROM";
 
   const forwardFromChatIdInput = document.createElement("input");
   forwardFromChatIdInput.type = "text";
@@ -274,7 +274,7 @@ export const buildForwardToChatIdListItem = async () => {
 
   const forwardToChatIdLabel = document.createElement("label");
   forwardToChatIdLabel.setAttribute("for", "to-chat-id-input");
-  forwardToChatIdLabel.textContent = "Forward TO";
+  forwardToChatIdLabel.textContent = "Fwd TO";
 
   const forwardToChatIdInput = document.createElement("input");
   forwardToChatIdInput.type = "text";

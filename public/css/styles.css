@@ -113,6 +113,7 @@ ul {
   /* justify-content: right; */
   /* margin: 0; */
   width: 50%;
+  min-width: 850px;
   max-width: 900px;
 }
 
@@ -125,8 +126,7 @@ li label {
   font-weight: bold;
   font-size: 2rem;
   margin-top: 1rem;
-  /* margin-right: 0.5rem; */
-  /* margin-left: 5rem; */
+  flex-shrink: 0;
 }
 
 li input {
