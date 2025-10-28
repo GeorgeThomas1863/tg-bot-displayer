@@ -6,17 +6,17 @@ import { runUploadPics } from "./upload-pics/upload-pics.js";
 import state from "./state.js";
 
 export const tgCommandRun = async (inputParams) => {
-  // if (!inputParams) return null;
-  // if (!state.active) return null;
+  if (!inputParams) return null;
+  if (!state.active) return null;
   console.log("!!!INPUT PARAMS");
   console.log(inputParams);
 
-  //add defaults
-  // const params = await setInputParamDefaults(inputParams);
-  // const { commandType, offset } = params;
+  // add defaults
+  const params = await setInputParamDefaults(inputParams);
+  const { commandType, offset } = params;
 
-  // // console.log("PARAMS");
-  // // console.log(params);
+  console.log("PARAMS");
+  console.log(params);
 
   // let data = null;
   // switch (commandType) {
@@ -51,5 +51,5 @@ export const tgCommandRun = async (inputParams) => {
   //     break;
   // }
 
-  return data;
+  // return data;
 };
