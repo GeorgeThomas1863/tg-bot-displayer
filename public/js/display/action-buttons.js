@@ -25,6 +25,7 @@ export const buildActionButtonsRow1 = async () => {
   getUpdatesButton.id = "get-updates-action-button";
   getUpdatesButton.className = "action-button";
   getUpdatesButton.setAttribute("data-label", "action-button");
+  getUpdatesButton.setAttribute("data-label", "submit-command"); //auto submit getUpdates
   getUpdatesButton.textContent = "GET UPDATES";
 
   const sendMessageButton = document.createElement("button");
