@@ -3,6 +3,7 @@ import { EYE_CLOSED_SVG, EYE_OPEN_SVG } from "./util/define-things.js";
 import { actionButtonMap, listItemsButtonsArray, commandMap, titleMap } from "./util/define-things.js";
 import { getAuthParams, buildInputParams } from "./util/params-front.js";
 import { sendToBack } from "./util/api-front.js";
+import { buildReturnDisplay } from "./display/return-display.js";
 
 import { hideArray, unhideArray } from "./util/collapse.js";
 import { makePretty, undoPretty } from "./util/make-pretty.js";

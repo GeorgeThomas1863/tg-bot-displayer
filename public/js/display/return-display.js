@@ -1,36 +1,42 @@
-const returnElement = document.getElementById("return-element");
+const displayElement = document.getElementById("display-element");
 
 export const buildReturnDisplay = async (data) => {
-  if (!data || !returnElement) return null;
+  if (!data || !displayElement) return null;
+
+  const returnWrapper = document.createElement("div");
+  returnWrapper.id = "return-wrapper";
 
   //build make pretty buttons
   const makePrettyButtons = await buildMakePrettyButtons();
+  returnWrapper.append(makePrettyButtons);
+
+  const currentData = document.getElementById("parse-wrapper");
+  if (currentData) currentData.remove();
+
+  const parseData = await buildParseData(data);
+  returnWrapper.append(parseData);
+
+  displayElement.append(returnWrapper);
+};
+
+export const buildParseData = async (data) => {
+  if (!data) return null;
+
+  const parseWrapper = document.createElement("div");
+  parseWrapper.id = "parse-wrapper";
 
   const parsedData = document.createElement("div");
   parsedData.id = "parsed-data";
   parsedData.innerHTML = JSON.stringify(data);
+  parseWrapper.append(parsedData);
 
-  //first load
-  if (returnElement.children.length === 0) {
-    returnElement.append(makePrettyButtons, parsedData);
-    return true;
-  }
-
-  //check make pretty buttons (since only built once)
-  const makePrettyButton = document.getElementById("make-pretty-button");
-  const undoPrettyButton = document.getElementById("undo-pretty-button");
-  if (makePrettyButton.classList.contains("hidden")) {
-    makePrettyButton.classList.remove("hidden");
-    undoPrettyButton.classList.add("hidden");
-  }
-
-  //replace old data
-  returnElement.replaceChild(parsedData, returnElement.children[1]);
-  return true;
+  return parseWrapper;
 };
 
 export const buildMakePrettyButtons = async () => {
-  if (!returnElement) return null;
+  //check if already built
+  const checkButton = document.getElementById("button-wrapper");
+  if (checkButton) return checkButton;
 
   const buttonWrapper = document.createElement("div");
   buttonWrapper.id = "button-wrapper";
