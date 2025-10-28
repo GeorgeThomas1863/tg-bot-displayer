@@ -12,6 +12,7 @@ export const makePretty = async () => {
 
   makePrettyButton.classList.add("hidden");
   undoPrettyButton.classList.remove("hidden");
+  return true;
 };
 
 //Undo Pretty
@@ -31,4 +32,5 @@ export const undoPretty = async () => {
 
   makePrettyButton.classList.remove("hidden");
   undoPrettyButton.classList.add("hidden");
+  return true;
 };

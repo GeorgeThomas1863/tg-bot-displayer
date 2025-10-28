@@ -44,10 +44,12 @@ export const buildMakePrettyButtons = async () => {
   const makePrettyButton = document.createElement("button");
   makePrettyButton.id = "make-pretty-button";
   makePrettyButton.textContent = "Make Pretty";
+  makePrettyButton.setAttribute("data-label", "make-pretty");
 
   const undoPrettyButton = document.createElement("button");
   undoPrettyButton.id = "undo-pretty-button";
   undoPrettyButton.textContent = "Undo Pretty";
+  undoPrettyButton.setAttribute("data-label", "undo-pretty");
   undoPrettyButton.classList.add("hidden");
 
   buttonWrapper.append(makePrettyButton, undoPrettyButton);

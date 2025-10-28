@@ -1,4 +1,5 @@
 import { runAuthSubmit, runPwToggle, runChangeActionButton, runSubmitCommand, runStopCommand } from "./run.js";
+import { makePretty, undoPretty } from "./util/make-pretty.js";
 // import { changeActionButtonDisplay, changeFormTitle, changePrettyDisplay } from "./display/change-display.js";
 // import { buildReturnDisplay } from "./display/return-display.js";
 // import { sendToBack } from "./util/api-front.js";
@@ -24,6 +25,8 @@ export const clickHandler = async (e) => {
   if (clickType === "action-button") await runChangeActionButton(clickElement);
   if (clickType === "submit-command") await runSubmitCommand();
   if (clickType === "stop-command") await runStopCommand();
+  if (clickType === "make-pretty") await makePretty();
+  if (clickType === "undo-pretty") await undoPretty();
 };
 
 // export const stopClickHandler = async (e) => {

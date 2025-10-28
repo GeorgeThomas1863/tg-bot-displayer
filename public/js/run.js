@@ -1,12 +1,10 @@
-import d from "./util/define-things.js";
 import { EYE_CLOSED_SVG, EYE_OPEN_SVG } from "./util/define-things.js";
-import { actionButtonMap, listItemsButtonsArray, commandMap, titleMap } from "./util/define-things.js";
+import { actionButtonMap, listItemsButtonsArray } from "./util/define-things.js";
 import { getAuthParams, buildInputParams } from "./util/params-front.js";
 import { sendToBack } from "./util/api-front.js";
 import { buildReturnDisplay } from "./display/return-display.js";
 
 import { hideArray, unhideArray } from "./util/collapse.js";
-import { makePretty, undoPretty } from "./util/make-pretty.js";
 
 export const runAuthSubmit = async () => {
   try {
@@ -68,26 +66,10 @@ export const runSubmitCommand = async () => {
   return true;
 };
 
-export const runStopCommand = async () => {};
-
-// export const changeFormTitle = async () => {
-//   const commandInputElement = document.getElementById("command-input");
-//   const titleElement = document.querySelector(".collapse-header");
-//   const titleText = titleMap[commandInputElement?.value] || "TELEGRAM INPUT";
-//   titleElement.textContent = titleText.toUpperCase();
-//   return true;
-// };
-
-// export const changePrettyDisplay = async (clickElement) => {
-//   if (!clickElement) return null;
-
-//   switch (clickElement.id) {
-//     case "make-pretty-button":
-//       await makePretty();
-//       return true;
-
-//     case "undo-pretty-button":
-//       await undoPretty();
-//       return true;
-//   }
-// };
+export const runStopCommand = async () => {
+  const data = await sendToBack({ route: "/tg-submit-route", command: "stop" });
+  console.log("!!!DATA");
+  console.log(data);
+  await buildReturnDisplay(data);
+  return true;
+};
