@@ -280,7 +280,6 @@ export const buildForwardFromChatIdListItem = async () => {
   forwardFromChatIdInput.name = "from-chat-id-input";
   forwardFromChatIdInput.id = "from-chat-id-input";
   forwardFromChatIdInput.className = "form-input";
-  forwardFromChatIdInput.value = "-1001706757504"; //REMOVE DEFAULT VALUE
 
   forwardFromChatIdListItem.append(forwardFromChatIdLabel, forwardFromChatIdInput);
 
@@ -520,7 +519,7 @@ export const buildButtonContainer = async () => {
   stopButton.className = "btn-submit";
   stopButton.textContent = "STOP";
   stopButton.setAttribute("data-label", "stop-command");
-  
+
   buttonContainer.append(submitButton, stopButton);
 
   return buttonContainer;

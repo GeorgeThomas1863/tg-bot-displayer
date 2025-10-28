@@ -6,50 +6,24 @@ import { runUploadPics } from "./upload-pics/upload-pics.js";
 import state from "./state.js";
 
 export const tgCommandRun = async (inputParams) => {
-  if (!inputParams) return null;
-  if (!state.active) return null;
-  console.log("!!!INPUT PARAMS");
+  if (!inputParams || !state.active || !inputParams.command) return null;
+  console.log("!!!INPUT PARAMS RAW");
   console.log(inputParams);
 
   // add defaults
   const params = await setInputParamDefaults(inputParams);
-  const { commandType, offset } = params;
+  const { command, offset } = params;
 
   console.log("PARAMS");
   console.log(params);
 
-  // let data = null;
-  // switch (commandType) {
-  //   case "getUpdates":
-  //     data = await tgGetUpdates({ offset: offset });
-  //     break;
+  if (command === "getUpdates") return await tgGetUpdates({ offset: offset });
+  if (command === "sendMessage") return await tgSendMessage(params);
+  if (command === "forwardMessage") return await tgForwardMessage(params);
+  if (command === "editMessageCaption") return await tgEditMessageCaption(params);
+  if (command === "forwardAllStore") return await runForwardAllStore(params);
+  if (command === "captionAllLookup") return await runCaptionAllLookup(params);
+  if (command === "sendPhoto") return await runUploadPics(params);
 
-  //   case "sendMessage":
-  //     data = await tgSendMessage(params);
-  //     break;
-
-  //   case "forwardMessage":
-  //     data = await tgForwardMessage(params);
-  //     break;
-
-  //   case "editMessageCaption":
-  //     data = await tgEditMessageCaption(params);
-  //     break;
-
-  //   //---------------
-
-  //   case "forwardAllStore":
-  //     data = await runForwardAllStore(params);
-  //     break;
-
-  //   case "captionAllLookup":
-  //     data = await runCaptionAllLookup(params);
-  //     break;
-
-  //   case "sendPhoto":
-  //     data = await runUploadPics(params);
-  //     break;
-  // }
-
-  // return data;
+  return null;
 };
