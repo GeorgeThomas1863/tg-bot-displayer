@@ -126,7 +126,7 @@ li label {
   font-weight: bold;
   font-size: 2rem;
   margin-top: 1rem;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
 }
 
 li input {

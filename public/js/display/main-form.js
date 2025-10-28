@@ -84,11 +84,13 @@ export const buildOffsetListItem = async () => {
   const offsetLabel = document.createElement("label");
   offsetLabel.setAttribute("for", "offset-input");
   offsetLabel.textContent = "Offset";
+  offsetLabel.className = "form-label";
 
   const offsetInput = document.createElement("input");
   offsetInput.type = "text";
   offsetInput.name = "offset-input";
   offsetInput.id = "offset-input";
+  offsetInput.className = "form-input";
 
   offsetListItem.append(offsetLabel, offsetInput);
 
@@ -103,11 +105,13 @@ export const buildChatIdListItem = async () => {
   const chatIdLabel = document.createElement("label");
   chatIdLabel.setAttribute("for", "chat-id-input");
   chatIdLabel.textContent = "Chat ID";
+  chatIdLabel.className = "form-label";
 
   const chatIdInput = document.createElement("input");
   chatIdInput.type = "text";
   chatIdInput.name = "chat-id-input";
   chatIdInput.id = "chat-id-input";
+  chatIdInput.className = "form-input";
 
   chatIdListItem.append(chatIdLabel, chatIdInput);
 
@@ -122,11 +126,13 @@ export const buildMessageIdListItem = async () => {
   const messageIdLabel = document.createElement("label");
   messageIdLabel.setAttribute("for", "message-id-input");
   messageIdLabel.textContent = "Message ID";
+  messageIdLabel.className = "form-label";
 
   const messageIdInput = document.createElement("input");
   messageIdInput.type = "text";
   messageIdInput.name = "message-id-input";
   messageIdInput.id = "message-id-input";
+  messageIdInput.className = "form-input";
 
   messageIdListItem.append(messageIdLabel, messageIdInput);
 
@@ -141,11 +147,13 @@ export const buildDataTypeListItem = async () => {
   const dataTypeLabel = document.createElement("label");
   dataTypeLabel.setAttribute("for", "lookup-type-data-input");
   dataTypeLabel.textContent = "Data TYPE";
+  dataTypeLabel.className = "form-label";
 
   const dataTypeInput = document.createElement("input");
   dataTypeInput.type = "text";
   dataTypeInput.name = "data-type-input";
   dataTypeInput.id = "data-type-input";
+  dataTypeInput.className = "form-input";
 
   dataTypeListItem.append(dataTypeLabel, dataTypeInput);
 
@@ -160,12 +168,14 @@ export const buildCommandListItem = async () => {
   const commandLabel = document.createElement("label");
   commandLabel.setAttribute("for", "command-input");
   commandLabel.textContent = "Command";
+  commandLabel.className = "form-label";
 
   const commandInput = document.createElement("input");
   commandInput.type = "text";
   commandInput.name = "command-input";
   commandInput.id = "command-input";
   commandInput.value = "getUpdates";
+  commandInput.className = "form-input";
 
   commandListItem.append(commandLabel, commandInput);
 
@@ -180,10 +190,12 @@ export const buildTextInputListItem = async () => {
   const textInputLabel = document.createElement("label");
   textInputLabel.setAttribute("for", "text-input");
   textInputLabel.textContent = "Msg Text";
+  textInputLabel.className = "form-label";
 
   const textInputTextarea = document.createElement("textarea");
   textInputTextarea.name = "text-input";
   textInputTextarea.id = "text-input";
+  textInputTextarea.className = "form-input";
 
   textInputListItem.append(textInputLabel, textInputTextarea);
 
@@ -198,11 +210,13 @@ export const buildMessageStartListItem = async () => {
   const messageStartLabel = document.createElement("label");
   messageStartLabel.setAttribute("for", "message-start-input");
   messageStartLabel.textContent = "Start Msg ID";
+  messageStartLabel.className = "form-label";
 
   const messageStartInput = document.createElement("input");
   messageStartInput.type = "text";
   messageStartInput.name = "message-start-input";
   messageStartInput.id = "message-start-input";
+  messageStartInput.className = "form-input";
 
   messageStartListItem.append(messageStartLabel, messageStartInput);
 
@@ -217,11 +231,13 @@ export const buildMessageStopListItem = async () => {
   const messageStopLabel = document.createElement("label");
   messageStopLabel.setAttribute("for", "message-stop-input");
   messageStopLabel.textContent = "Stop Msg ID";
+  messageStopLabel.className = "form-label";
 
   const messageStopInput = document.createElement("input");
   messageStopInput.type = "text";
   messageStopInput.name = "message-stop-input";
   messageStopInput.id = "message-stop-input";
+  messageStopInput.className = "form-input";
 
   messageStopListItem.append(messageStopLabel, messageStopInput);
 
@@ -236,11 +252,13 @@ export const buildEditCaptionsChannelListItem = async () => {
   const editCaptionsChannelLabel = document.createElement("label");
   editCaptionsChannelLabel.setAttribute("for", "edit-captions-channel");
   editCaptionsChannelLabel.textContent = "Edit Channel";
+  editCaptionsChannelLabel.className = "form-label";
 
   const editCaptionsChannelInput = document.createElement("input");
   editCaptionsChannelInput.type = "text";
   editCaptionsChannelInput.name = "edit-captions-channel";
   editCaptionsChannelInput.id = "edit-captions-channel";
+  editCaptionsChannelInput.className = "form-input";
 
   editCaptionsChannelListItem.append(editCaptionsChannelLabel, editCaptionsChannelInput);
 
@@ -255,11 +273,13 @@ export const buildForwardFromChatIdListItem = async () => {
   const forwardFromChatIdLabel = document.createElement("label");
   forwardFromChatIdLabel.setAttribute("for", "from-chat-id-input");
   forwardFromChatIdLabel.textContent = "Fwd FROM";
+  forwardFromChatIdLabel.className = "form-label";
 
   const forwardFromChatIdInput = document.createElement("input");
   forwardFromChatIdInput.type = "text";
   forwardFromChatIdInput.name = "from-chat-id-input";
   forwardFromChatIdInput.id = "from-chat-id-input";
+  forwardFromChatIdInput.className = "form-input";
   forwardFromChatIdInput.value = "-1001706757504"; //REMOVE DEFAULT VALUE
 
   forwardFromChatIdListItem.append(forwardFromChatIdLabel, forwardFromChatIdInput);
@@ -275,11 +295,13 @@ export const buildForwardToChatIdListItem = async () => {
   const forwardToChatIdLabel = document.createElement("label");
   forwardToChatIdLabel.setAttribute("for", "to-chat-id-input");
   forwardToChatIdLabel.textContent = "Fwd TO";
+  forwardToChatIdLabel.className = "form-label";
 
   const forwardToChatIdInput = document.createElement("input");
   forwardToChatIdInput.type = "text";
   forwardToChatIdInput.name = "to-chat-id-input";
   forwardToChatIdInput.id = "to-chat-id-input";
+  forwardToChatIdInput.className = "form-input";
 
   forwardToChatIdListItem.append(forwardToChatIdLabel, forwardToChatIdInput);
 
@@ -294,11 +316,13 @@ export const buildUploadToListItem = async () => {
   const uploadToLabel = document.createElement("label");
   uploadToLabel.setAttribute("for", "upload-to-input");
   uploadToLabel.textContent = "Upload TO";
+  uploadToLabel.className = "form-label";
 
   const uploadToInput = document.createElement("input");
   uploadToInput.type = "text";
   uploadToInput.name = "upload-to-input";
   uploadToInput.id = "upload-to-input";
+  uploadToInput.className = "form-input";
 
   uploadToListItem.append(uploadToLabel, uploadToInput);
 
@@ -313,9 +337,11 @@ export const buildForwardAllStoreTypeListItem = async () => {
   const forwardAllStoreTypeLabel = document.createElement("label");
   forwardAllStoreTypeLabel.setAttribute("for", "forward-all-store-type-input");
   forwardAllStoreTypeLabel.textContent = "Store TYPE";
+  forwardAllStoreTypeLabel.className = "form-label";
 
   const forwardAllStoreTypeSelect = document.createElement("select");
   forwardAllStoreTypeSelect.id = "forward-all-store-type-input";
+  forwardAllStoreTypeSelect.className = "form-select";
 
   const optionArray = [
     { value: "storeVids", text: "Store Vids", selected: true },
@@ -348,9 +374,11 @@ export const buildCaptionLookupTypeListItem = async () => {
   const captionLookupTypeLabel = document.createElement("label");
   captionLookupTypeLabel.setAttribute("for", "lookup-type-caption-input");
   captionLookupTypeLabel.textContent = "Lookup TYPE";
+  captionLookupTypeLabel.className = "form-label";
 
   const captionLookupTypeSelect = document.createElement("select");
   captionLookupTypeSelect.id = "lookup-type-caption-input";
+  captionLookupTypeSelect.className = "form-select";
 
   const optionArray = [
     { value: "setToFileName", text: "Set to Vid File Name", selected: true },
@@ -383,9 +411,11 @@ export const buildUploadPicTypeListItem = async () => {
   const uploadPicTypeLabel = document.createElement("label");
   uploadPicTypeLabel.setAttribute("for", "lookup-type-upload-pic-input");
   uploadPicTypeLabel.textContent = "Upload TYPE";
+  uploadPicTypeLabel.className = "form-label";
 
   const uploadPicTypeSelect = document.createElement("select");
   uploadPicTypeSelect.id = "lookup-type-upload-pic-input";
+  uploadPicTypeSelect.className = "form-select";
 
   const optionArray = [
     { value: "uploadSingleFS", text: "Upload Pic FS", selected: true },
@@ -420,11 +450,13 @@ export const buildPicPathListItem = async () => {
   const picPathLabel = document.createElement("label");
   picPathLabel.setAttribute("for", "pic-path-input");
   picPathLabel.textContent = "Pic Path";
+  picPathLabel.className = "form-label";
 
   const picPathInput = document.createElement("input");
   picPathInput.type = "text";
   picPathInput.name = "pic-path-input";
   picPathInput.id = "pic-path-input";
+  picPathInput.className = "form-input";
 
   picPathListItem.append(picPathLabel, picPathInput);
 
@@ -439,11 +471,13 @@ export const buildCollectionPullFromListItem = async () => {
   const collectionPullFromLabel = document.createElement("label");
   collectionPullFromLabel.setAttribute("for", "collection-pull-from-input");
   collectionPullFromLabel.textContent = "M Pull From";
+  collectionPullFromLabel.className = "form-label";
 
   const collectionPullFromInput = document.createElement("input");
   collectionPullFromInput.type = "text";
   collectionPullFromInput.name = "collection-pull-from-input";
   collectionPullFromInput.id = "collection-pull-from-input";
+  collectionPullFromInput.className = "form-input";
 
   collectionPullFromListItem.append(collectionPullFromLabel, collectionPullFromInput);
 
@@ -458,11 +492,13 @@ export const buildCollectionSaveToListItem = async () => {
   const collectionSaveToLabel = document.createElement("label");
   collectionSaveToLabel.setAttribute("for", "collection-save-to-input");
   collectionSaveToLabel.textContent = "M Save To";
+  collectionSaveToLabel.className = "form-label";
 
   const collectionSaveToInput = document.createElement("input");
   collectionSaveToInput.type = "text";
   collectionSaveToInput.name = "collection-save-to-input";
   collectionSaveToInput.id = "collection-save-to-input";
+  collectionSaveToInput.className = "form-input";
 
   collectionSaveToListItem.append(collectionSaveToLabel, collectionSaveToInput);
 
@@ -477,12 +513,14 @@ export const buildButtonContainer = async () => {
   submitButton.id = "submit-command-button";
   submitButton.className = "btn-submit";
   submitButton.textContent = "SUBMIT";
+  submitButton.setAttribute("data-label", "submit-command");
 
   const stopButton = document.createElement("button");
   stopButton.id = "stop-command-button";
   stopButton.className = "btn-submit";
   stopButton.textContent = "STOP";
-
+  stopButton.setAttribute("data-label", "stop-command");
+  
   buttonContainer.append(submitButton, stopButton);
 
   return buttonContainer;

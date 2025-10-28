@@ -1,4 +1,4 @@
-import { runAuthSubmit, runPwToggle, runChangeActionButton } from "./run.js";
+import { runAuthSubmit, runPwToggle, runChangeActionButton, runSubmitCommand, runStopCommand } from "./run.js";
 // import { changeActionButtonDisplay, changeFormTitle, changePrettyDisplay } from "./display/change-display.js";
 // import { buildReturnDisplay } from "./display/return-display.js";
 // import { sendToBack } from "./util/api-front.js";
@@ -19,46 +19,11 @@ export const clickHandler = async (e) => {
   console.log("CLICK TYPE");
   console.log(clickType);
 
-  switch (clickType) {
-    case "auth-submit":
-      await runAuthSubmit();
-      break;
-
-    case "pwToggle":
-      await runPwToggle();
-      break;
-
-    case "action-button":
-      await runChangeActionButton(clickElement);
-      break;
-
-    default:
-      break;
-  }
-
-  //action buttons
-  // if (clickElement.classList.contains("action-button")) {
-  //   await changeActionButtonDisplay(clickElement);
-  //   await changeFormTitle();
-
-  //   if (clickElement.id !== "get-updates-action-button") return true;
-  // }
-
-  // //submit button
-  // if (clickElement.id !== "submit-button" && clickElement.id !== "get-updates-action-button") return null;
-
-  // //get input params
-  // const inputParams = await buildInputParams();
-
-  // console.log("!!!INPUT PARAMS");
-  // console.log(inputParams);
-
-  // //send to back
-  // const data = await sendToBack(inputParams);
-  // if (!data) return null;
-
-  // //display return
-  // await buildReturnDisplay(data);
+  if (clickType === "auth-submit") await runAuthSubmit();
+  if (clickType === "pwToggle") await runPwToggle();
+  if (clickType === "action-button") await runChangeActionButton(clickElement);
+  if (clickType === "submit-command") await runSubmitCommand();
+  if (clickType === "stop-command") await runStopCommand();
 };
 
 // export const stopClickHandler = async (e) => {
