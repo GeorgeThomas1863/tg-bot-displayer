@@ -58,7 +58,7 @@ export const runSubmitCommand = async () => {
   console.log("!!!SUBMIT COMMAND");
   console.log(params);
   const data = await sendToBack(params);
-  if (!data) return null;
+  // if (!data) return null;
   console.log("!!!DATA");
   console.log(data);
   return true;
