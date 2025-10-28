@@ -23,6 +23,8 @@ export const tgGetUpdates = async (inputParams) => {
 };
 
 export const tgSendMessage = async (inputParams) => {
+  console.log("!!!TG SEND MESSAGE");
+  console.log(inputParams);
   if (!state.active) return null;
   const { baseURL } = CONFIG;
   const { chatId, text } = inputParams;

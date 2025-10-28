@@ -1,5 +1,5 @@
 import { EYE_CLOSED_SVG, EYE_OPEN_SVG } from "./util/define-things.js";
-import { actionButtonMap, listItemsButtonsArray } from "./util/define-things.js";
+import { actionButtonMap, listItemsButtonsArray, commandMap } from "./util/define-things.js";
 import { getAuthParams, buildInputParams } from "./util/params-front.js";
 import { sendToBack } from "./util/api-front.js";
 import { buildReturnDisplay } from "./display/return-display.js";
@@ -45,6 +45,12 @@ export const runChangeActionButton = async (clickElement) => {
 
   const clickId = clickElement.id;
   const actionType = clickId.split("-").slice(0, -2).join("-");
+
+  const commandButton = document.getElementById("command-input");
+  commandButton.value = commandMap[clickId];
+
+  console.log("!!!COMMAND BUTTON");
+  console.log(commandButton.value);
 
   await hideArray(listItemsButtonsArray);
   await unhideArray(actionButtonMap[actionType]);
