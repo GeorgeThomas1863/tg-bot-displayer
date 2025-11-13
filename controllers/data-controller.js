@@ -1,5 +1,5 @@
-import { tgCommandRun } from "../src/tg-command.js";
-import state from "../src/state.js";
+import { tgCommandRun } from "../src/src.js";
+import state from "../src/util/state.js";
 
 export const tgCommandControl = async (req, res) => {
   const inputParams = req.body;
