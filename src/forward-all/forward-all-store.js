@@ -7,7 +7,7 @@ export const runForwardAllStore = async (inputParams) => {
   if (!state.active) return null;
 
   const { messageStart, messageStop, forwardAllType, collectionSaveTo, dataType } = inputParams;
-  // console.log("INPUT PARAMS");
+  // console.log("INPUT FORWARD ALL STOREPARAMS");
   // console.log(inputParams);
 
   const returnDataArray = [];
@@ -19,6 +19,9 @@ export const runForwardAllStore = async (inputParams) => {
 
       //update from forwardAllStore
       forwardParams.commandType = "forwardMessage";
+
+      console.log("FORWARD PARAMS");
+      console.log(forwardParams);
 
       //get forward data
       const forwardData = await tgForwardMessage(forwardParams);
