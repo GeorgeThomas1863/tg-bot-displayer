@@ -30,7 +30,7 @@ class dbModel {
     const { forwardFromChannelId, forwardFromMessageId } = this.dataObject;
 
     if (!forwardFromChannelId || !forwardFromMessageId) {
-      console.log("CANNOT FIND UNIQUE IDENTIFIERS");
+      // console.log("CANNOT FIND UNIQUE IDENTIFIERS");
       return true;
     }
 

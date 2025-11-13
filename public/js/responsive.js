@@ -8,10 +8,10 @@ export const clickHandler = async (e) => {
   const clickId = clickElement.id;
   const clickType = clickElement.getAttribute("data-label");
 
-  console.log("!!!CLICK ELEMENT");
-  console.log(clickElement);
-  console.log("CLICK ID");
-  console.log(clickId);
+  // console.log("!!!CLICK ELEMENT");
+  // console.log(clickElement);
+  // console.log("CLICK ID");
+  // console.log(clickId);
   console.log("CLICK TYPE");
   console.log(clickType);
 
@@ -33,7 +33,7 @@ export const keyHandler = async (e) => {
   const keyId = keyElement.id;
 
   console.log("KEY HANDLER");
-  console.log(keyElement);
+  // console.log(keyElement);
   console.log(keyId);
 
   if (keyId === "auth-pw-input") await runAuthSubmit();

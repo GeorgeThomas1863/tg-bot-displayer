@@ -1,7 +1,7 @@
 import dbModel from "../../models/db-model.js";
-import { tgForwardMessage } from "../tg-api.js";
+import { tgForwardMessage } from "../util/tg-api.js";
 import { buildVidParams, buildEverythingParams, buildTextParams } from "../util/params-back.js";
-import state from "../state.js";
+import state from "../util/state.js";
 
 export const runForwardAllStore = async (inputParams) => {
   if (!state.active) return null;
@@ -28,8 +28,8 @@ export const runForwardAllStore = async (inputParams) => {
       const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
       if (!storeParams) continue;
 
-      console.log("!!!STORE PARAM!!!");
-      console.log(storeParams);
+      // console.log("!!!STORE PARAM!!!");
+      // console.log(storeParams);
 
       const storeModel = new dbModel(storeParams, collectionSaveTo);
 

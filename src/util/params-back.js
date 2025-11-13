@@ -1,4 +1,4 @@
-import state from "../state.js";
+import state from "./state.js";
 
 export const buildEverythingParams = async (inputParams, dataType = null) => {
   if (!state.active) return null;

@@ -1,6 +1,6 @@
 import axios from "axios";
-import CONFIG from "../config/config.js";
-import tokenArray from "../config/tg-bot.js";
+import CONFIG from "../../config/config.js";
+import tokenArray from "../../config/tg-bot.js";
 import state from "./state.js";
 
 let tokenIndex = 0;
@@ -23,8 +23,8 @@ export const tgGetUpdates = async (inputParams) => {
 };
 
 export const tgSendMessage = async (inputParams) => {
-  console.log("!!!TG SEND MESSAGE");
-  console.log(inputParams);
+  // console.log("!!!TG SEND MESSAGE");
+  // console.log(inputParams);
   if (!state.active) return null;
   const { baseURL } = CONFIG;
   const { chatId, text } = inputParams;
@@ -127,8 +127,8 @@ export const checkToken = async (data) => {
 
   if (data && data.error_code && data.error_code !== 429) return true;
 
-  console.log("HERE FAGGOT");
-  console.log(data);
+  // console.log("HERE FAGGOT");
+  // console.log(data);
 
   //otherwise bot fucked, return null
   console.log("AHHHHHHHHHHHHH");

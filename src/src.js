@@ -1,9 +1,9 @@
 import { setInputParamDefaults } from "./util/defaults.js";
-import { tgGetUpdates, tgSendMessage, tgForwardMessage, tgEditMessageCaption } from "./tg-api.js";
+import { tgGetUpdates, tgSendMessage, tgForwardMessage, tgEditMessageCaption } from "./util/tg-api.js";
 import { runForwardAllStore } from "./forward-all/forward-all-store.js";
 import { runCaptionAllLookup } from "./caption-all/caption-all-lookup.js";
 import { runUploadPics } from "./upload-pics/upload-pics.js";
-import state from "./state.js";
+import state from "./util/state.js";
 
 export const tgCommandRun = async (inputParams) => {
   if (!inputParams || !state.active || !inputParams.command) return null;
