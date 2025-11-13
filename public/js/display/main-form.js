@@ -79,7 +79,7 @@ export const buildMainForm = async () => {
 export const buildOffsetListItem = async () => {
   const offsetListItem = document.createElement("li");
   offsetListItem.id = "list-item-offset";
-  offsetListItem.className = "form";
+  offsetListItem.className = "form-list-item";
 
   const offsetLabel = document.createElement("label");
   offsetLabel.setAttribute("for", "offset-input");
@@ -100,7 +100,8 @@ export const buildOffsetListItem = async () => {
 export const buildChatIdListItem = async () => {
   const chatIdListItem = document.createElement("li");
   chatIdListItem.id = "list-item-chat-id";
-  chatIdListItem.className = "form hidden";
+  chatIdListItem.className = "form-list-item";
+  chatIdListItem.classList.add("hidden");
 
   const chatIdLabel = document.createElement("label");
   chatIdLabel.setAttribute("for", "chat-id-input");
@@ -121,7 +122,8 @@ export const buildChatIdListItem = async () => {
 export const buildMessageIdListItem = async () => {
   const messageIdListItem = document.createElement("li");
   messageIdListItem.id = "list-item-message-id";
-  messageIdListItem.className = "form hidden";
+  messageIdListItem.className = "form-list-item";
+  messageIdListItem.classList.add("hidden");
 
   const messageIdLabel = document.createElement("label");
   messageIdLabel.setAttribute("for", "message-id-input");
@@ -142,7 +144,8 @@ export const buildMessageIdListItem = async () => {
 export const buildDataTypeListItem = async () => {
   const dataTypeListItem = document.createElement("li");
   dataTypeListItem.id = "list-item-data-type";
-  dataTypeListItem.className = "form hidden";
+  dataTypeListItem.classList.add("form-list-item");
+  dataTypeListItem.classList.add("hidden");
 
   const dataTypeLabel = document.createElement("label");
   dataTypeLabel.setAttribute("for", "lookup-type-data-input");
@@ -163,7 +166,8 @@ export const buildDataTypeListItem = async () => {
 export const buildCommandListItem = async () => {
   const commandListItem = document.createElement("li");
   commandListItem.id = "list-item-command";
-  commandListItem.className = "form hidden";
+  commandListItem.className = "form-list-item";
+  commandListItem.classList.add("hidden");
 
   const commandLabel = document.createElement("label");
   commandLabel.setAttribute("for", "command-input");
@@ -185,7 +189,8 @@ export const buildCommandListItem = async () => {
 export const buildTextInputListItem = async () => {
   const textInputListItem = document.createElement("li");
   textInputListItem.id = "list-item-text-input";
-  textInputListItem.className = "form hidden";
+  textInputListItem.className = "form-list-item";
+  textInputListItem.classList.add("hidden");
 
   const textInputLabel = document.createElement("label");
   textInputLabel.setAttribute("for", "text-input");
@@ -205,7 +210,8 @@ export const buildTextInputListItem = async () => {
 export const buildMessageStartListItem = async () => {
   const messageStartListItem = document.createElement("li");
   messageStartListItem.id = "list-item-message-start";
-  messageStartListItem.className = "form hidden";
+  messageStartListItem.className = "form-list-item";
+  messageStartListItem.classList.add("hidden");
 
   const messageStartLabel = document.createElement("label");
   messageStartLabel.setAttribute("for", "message-start-input");
@@ -226,7 +232,8 @@ export const buildMessageStartListItem = async () => {
 export const buildMessageStopListItem = async () => {
   const messageStopListItem = document.createElement("li");
   messageStopListItem.id = "list-item-message-stop";
-  messageStopListItem.className = "form hidden";
+  messageStopListItem.className = "form-list-item";
+  messageStopListItem.classList.add("hidden");
 
   const messageStopLabel = document.createElement("label");
   messageStopLabel.setAttribute("for", "message-stop-input");
@@ -247,7 +254,8 @@ export const buildMessageStopListItem = async () => {
 export const buildEditCaptionsChannelListItem = async () => {
   const editCaptionsChannelListItem = document.createElement("li");
   editCaptionsChannelListItem.id = "list-item-edit-captions-channel";
-  editCaptionsChannelListItem.className = "form hidden";
+  editCaptionsChannelListItem.className = "form-list-item";
+  editCaptionsChannelListItem.classList.add("hidden");
 
   const editCaptionsChannelLabel = document.createElement("label");
   editCaptionsChannelLabel.setAttribute("for", "edit-captions-channel");
@@ -268,7 +276,8 @@ export const buildEditCaptionsChannelListItem = async () => {
 export const buildForwardFromChatIdListItem = async () => {
   const forwardFromChatIdListItem = document.createElement("li");
   forwardFromChatIdListItem.id = "list-item-forward-from-chat-id";
-  forwardFromChatIdListItem.className = "form hidden";
+  forwardFromChatIdListItem.className = "form-list-item";
+  forwardFromChatIdListItem.classList.add("hidden");
 
   const forwardFromChatIdLabel = document.createElement("label");
   forwardFromChatIdLabel.setAttribute("for", "from-chat-id-input");
@@ -289,7 +298,8 @@ export const buildForwardFromChatIdListItem = async () => {
 export const buildForwardToChatIdListItem = async () => {
   const forwardToChatIdListItem = document.createElement("li");
   forwardToChatIdListItem.id = "list-item-forward-to-chat-id";
-  forwardToChatIdListItem.className = "form hidden";
+  forwardToChatIdListItem.className = "form-list-item";
+  forwardToChatIdListItem.classList.add("hidden");
 
   const forwardToChatIdLabel = document.createElement("label");
   forwardToChatIdLabel.setAttribute("for", "to-chat-id-input");
@@ -310,7 +320,8 @@ export const buildForwardToChatIdListItem = async () => {
 export const buildUploadToListItem = async () => {
   const uploadToListItem = document.createElement("li");
   uploadToListItem.id = "list-item-upload-to";
-  uploadToListItem.className = "form hidden";
+  uploadToListItem.className = "form-list-item";
+  uploadToListItem.classList.add("hidden");
 
   const uploadToLabel = document.createElement("label");
   uploadToLabel.setAttribute("for", "upload-to-input");
@@ -331,7 +342,8 @@ export const buildUploadToListItem = async () => {
 export const buildForwardAllStoreTypeListItem = async () => {
   const forwardAllStoreTypeListItem = document.createElement("li");
   forwardAllStoreTypeListItem.id = "list-item-forward-all-store-type";
-  forwardAllStoreTypeListItem.className = "form hidden";
+  forwardAllStoreTypeListItem.className = "form-list-item";
+  forwardAllStoreTypeListItem.classList.add("hidden");
 
   const forwardAllStoreTypeLabel = document.createElement("label");
   forwardAllStoreTypeLabel.setAttribute("for", "forward-all-store-type-input");
@@ -368,7 +380,8 @@ export const buildForwardAllStoreTypeListItem = async () => {
 export const buildCaptionLookupTypeListItem = async () => {
   const captionLookupTypeListItem = document.createElement("li");
   captionLookupTypeListItem.id = "list-item-caption-lookup-type";
-  captionLookupTypeListItem.className = "form hidden";
+  captionLookupTypeListItem.className = "form-list-item";
+  captionLookupTypeListItem.classList.add("hidden");
 
   const captionLookupTypeLabel = document.createElement("label");
   captionLookupTypeLabel.setAttribute("for", "lookup-type-caption-input");
@@ -405,7 +418,8 @@ export const buildCaptionLookupTypeListItem = async () => {
 export const buildUploadPicTypeListItem = async () => {
   const uploadPicTypeListItem = document.createElement("li");
   uploadPicTypeListItem.id = "list-item-upload-pic-type";
-  uploadPicTypeListItem.className = "form hidden";
+  uploadPicTypeListItem.className = "form-list-item";
+  uploadPicTypeListItem.classList.add("hidden");
 
   const uploadPicTypeLabel = document.createElement("label");
   uploadPicTypeLabel.setAttribute("for", "lookup-type-upload-pic-input");
@@ -444,7 +458,8 @@ export const buildUploadPicTypeListItem = async () => {
 export const buildPicPathListItem = async () => {
   const picPathListItem = document.createElement("li");
   picPathListItem.id = "list-item-pic-path";
-  picPathListItem.className = "form hidden";
+  picPathListItem.className = "form-list-item";
+  picPathListItem.classList.add("hidden");
 
   const picPathLabel = document.createElement("label");
   picPathLabel.setAttribute("for", "pic-path-input");
@@ -465,7 +480,8 @@ export const buildPicPathListItem = async () => {
 export const buildCollectionPullFromListItem = async () => {
   const collectionPullFromListItem = document.createElement("li");
   collectionPullFromListItem.id = "list-item-collection-pull-from";
-  collectionPullFromListItem.className = "form hidden";
+  collectionPullFromListItem.className = "form-list-item";
+  collectionPullFromListItem.classList.add("hidden");
 
   const collectionPullFromLabel = document.createElement("label");
   collectionPullFromLabel.setAttribute("for", "collection-pull-from-input");
@@ -486,7 +502,8 @@ export const buildCollectionPullFromListItem = async () => {
 export const buildCollectionSaveToListItem = async () => {
   const collectionSaveToListItem = document.createElement("li");
   collectionSaveToListItem.id = "list-item-collection-save-to";
-  collectionSaveToListItem.className = "form hidden";
+  collectionSaveToListItem.className = "form-list-item";
+  collectionSaveToListItem.classList.add("hidden");
 
   const collectionSaveToLabel = document.createElement("label");
   collectionSaveToLabel.setAttribute("for", "collection-save-to-input");
@@ -507,6 +524,7 @@ export const buildCollectionSaveToListItem = async () => {
 export const buildButtonContainer = async () => {
   const buttonContainer = document.createElement("div");
   buttonContainer.id = "button-command-container";
+  // buttonContainer.className = "form-list-item";
 
   const submitButton = document.createElement("button");
   submitButton.id = "submit-command-button";
