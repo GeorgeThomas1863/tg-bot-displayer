@@ -21,6 +21,28 @@ export const runAuthSubmit = async () => {
   }
 };
 
+export const runSubmitCommand = async () => {
+  const params = await buildInputParams();
+  console.log("!!!SUBMIT COMMAND");
+  console.log(params);
+
+  const data = await sendToBack(params);
+  if (!data) return null;
+  console.log("!!!DATA");
+  console.log(data);
+
+  await buildReturnDisplay(data);
+  return true;
+};
+
+export const runStopCommand = async () => {
+  const data = await sendToBack({ route: "/tg-submit-route", command: "stop" });
+  console.log("!!!DATA");
+  console.log(data);
+  await buildReturnDisplay(data);
+  return true;
+};
+
 export const runPwToggle = async () => {
   const pwButton = document.querySelector(".password-toggle-btn");
   const pwInput = document.querySelector(".password-input");
@@ -49,33 +71,10 @@ export const runChangeActionButton = async (clickElement) => {
   const commandButton = document.getElementById("command-input");
   commandButton.value = commandMap[clickId];
 
-  console.log("!!!COMMAND BUTTON");
-  console.log(commandButton.value);
-
   await hideArray(listItemsButtonsArray);
   await unhideArray(actionButtonMap[actionType]);
 
-  return true;
-};
+  if (commandButton.value === "getUpdates") await runSubmitCommand();
 
-export const runSubmitCommand = async () => {
-  const params = await buildInputParams();
-  console.log("!!!SUBMIT COMMAND");
-  console.log(params);
-
-  const data = await sendToBack(params);
-  if (!data) return null;
-  console.log("!!!DATA");
-  console.log(data);
-
-  await buildReturnDisplay(data);
-  return true;
-};
-
-export const runStopCommand = async () => {
-  const data = await sendToBack({ route: "/tg-submit-route", command: "stop" });
-  console.log("!!!DATA");
-  console.log(data);
-  await buildReturnDisplay(data);
   return true;
 };
