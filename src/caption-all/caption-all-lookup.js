@@ -79,7 +79,16 @@ export const getFileNameVid = async (forwardData) => {
 export const getFileNameLookup = async (forwardData, inputObj) => {};
 
 export const getFileNameSpecial = async (forwardData, inputObj) => {
-  console.log("GET FILE NAME SPECIAL");
-  console.log(inputObj);
-  return true;
+  const { collectionPullFrom } = inputObj;
+  const { video } = forwardData.result;
+  if (!video) return null;
+
+  const { file_name } = video;
+  const kinkId = parseInt(file_name.split("_")[0]);
+
+  const dataModel = new dbModel({ keyToLookup: "kinkShootId", itemValue: kinkId }, collectionPullFrom);
+  const itemData = await dataModel.getUniqueItem();
+  if (!itemData || !itemData.labelText) return null;
+
+  return itemData.labelText;
 };
