@@ -44,7 +44,7 @@ const addDefaultParams = async (inputParams) => {
     forwardFromId: -1002123668375, //random stuff
     forwardToId: -1002468318224, //forwardTest53
     uploadToId: -1002468318224,
-    editChannelId: -1002230354437,
+    editChannelId: -1002230354437, //editCaptionsTest11
     collectionPullFrom: "balls1",
     collectionSaveTo: "balls2",
     picPath: "G:/PICS/",

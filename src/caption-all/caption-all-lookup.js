@@ -1,4 +1,4 @@
-import { tgForwardMessage } from "../tg-api.js";
+import { tgForwardMessage, tgEditMessageCaption } from "../tg-api.js";
 import dbModel from "../../models/db-model.js";
 import state from "../util/state.js";
 
@@ -20,10 +20,16 @@ export const runCaptionAllLookup = async (inputParams) => {
       };
 
       const forwardData = await tgForwardMessage(forwardParams);
-      if (!forwardData || !forwardData.result) continue;
+      if (!forwardData) continue;
+
+      console.log("FORWARD DATA");
+      console.log(forwardData);
 
       const captionText = await getCaptionText(forwardData, captionAllType);
       if (!captionText) continue;
+
+      // console.log("CAPTION TEXT");
+      // console.log(captionText);
 
       const editParams = {
         editChannelId: forwardData.result.forward_from_chat.id,
@@ -36,10 +42,11 @@ export const runCaptionAllLookup = async (inputParams) => {
 
       const storeModel = new dbModel(editData, collectionSaveTo);
       const storeData = await storeModel.storeAny();
-      returnDataArray.push(storeData);
 
-      console.log("FORWARD DATA");
-      console.log(forwardData);
+      console.log("STORE DATA");
+      console.log(storeData);
+
+      returnDataArray.push(storeData);
     } catch (e) {
       console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
@@ -51,7 +58,18 @@ export const runCaptionAllLookup = async (inputParams) => {
 export const getCaptionText = async (forwardData, captionAllType) => {
   if (!forwardData || !forwardData.result) return null;
 
+  if (captionAllType === "setToFileName") return await getVidFileName(forwardData);
   if (captionAllType === "clearVidCaptions") return "";
+
+  return true;
+};
+
+export const getVidFileName = async (inputObj) => {
+  if (!inputObj || !inputObj.result) return null;
+  const { video } = inputObj.result;
+  if (!video) return null;
+  const { file_name } = video;
+  return file_name;
 };
 
 // export const runSetToFileName = async (inputParams) => {

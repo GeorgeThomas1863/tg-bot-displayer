@@ -539,7 +539,7 @@ export const buildButtonContainer = async () => {
   stopButton.textContent = "STOP";
   stopButton.setAttribute("data-label", "stop-command");
 
-  buttonContainer.append(submitButton, stopButton);
+  buttonContainer.append(stopButton, submitButton);
 
   return buttonContainer;
 };

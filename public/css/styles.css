@@ -178,12 +178,30 @@ li.action-button-row {
   margin-right: 5rem; */
   display: flex;
   justify-content: right;
-  gap: 1rem;
+  gap: 2rem;
 }
 
-#submit-command-button,
+/* #submit-command-button,
 #stop-command-button {
   width: 45%;
+} */
+
+#submit-command-button {
+  width: 80%;
+}
+
+#stop-command-button {
+  width: 20%;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+#stop-command-button:hover {
+  background: #b91c1c;
+}
+
+#stop-command-button:active {
+  background: #b91c1c;
 }
 
 /* +++++++++++++++++++++++++++++++++++++ */
