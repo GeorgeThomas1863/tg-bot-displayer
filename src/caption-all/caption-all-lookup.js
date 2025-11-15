@@ -25,7 +25,7 @@ export const runCaptionAllLookup = async (inputParams) => {
       console.log("FORWARD DATA");
       console.log(forwardData);
 
-      const captionText = await getCaptionText(forwardData, captionAllType);
+      const captionText = await getCaptionText(forwardData, inputParams);
       if (!captionText) continue;
 
       // console.log("CAPTION TEXT");
@@ -55,55 +55,31 @@ export const runCaptionAllLookup = async (inputParams) => {
   return returnDataArray;
 };
 
-export const getCaptionText = async (forwardData, captionAllType) => {
-  if (!forwardData || !forwardData.result) return null;
+export const getCaptionText = async (forwardData, inputObj) => {
+  if (!forwardData || !forwardData.result || !inputObj) return null;
+  const { captionAllType } = inputObj;
 
-  if (captionAllType === "setToFileName") return await getVidFileName(forwardData);
+  if (captionAllType === "setToFileName") return await getFileNameVid(forwardData);
+  if (captionAllType === "lookupFileName") return await getFileNameLookup(forwardData, inputObj);
+  if (captionAllType === "lookupSpecial") return await getFileNameSpecial(forwardData, inputObj);
   if (captionAllType === "clearVidCaptions") return "";
 
   return true;
 };
 
-export const getVidFileName = async (inputObj) => {
-  if (!inputObj || !inputObj.result) return null;
-  const { video } = inputObj.result;
+export const getFileNameVid = async (forwardData) => {
+  if (!forwardData || !forwardData.result) return null;
+  const { video } = forwardData.result;
   if (!video) return null;
   const { file_name } = video;
   return file_name;
 };
 
-// export const runSetToFileName = async (inputParams) => {
-//   if (!state.active) return null;
-//   // const { collectionPullFrom, collectionSaveTo, messageStart, messageStop, editChannelId, forwardToId } = inputParams;
+//build
+export const getFileNameLookup = async (forwardData, inputObj) => {};
 
-//   // const returnDataArray = [];
-//   // for (let i = messageStart; i < messageStop; i++) {
-//   //   if (!state.active) return null;
-//   //   try {
-//   //     const params = {
-//   //       forwardToId: forwardToId,
-//   //       forwardFromId: editChannelId,
-//   //       messageId: i,
-//   //     };
-
-//   //     const forwardData = await tgForwardMessage(params);
-//   //     if (!forwardData) continue;
-//   //     console.log("FORWARD DATA");
-//   //     console.log(forwardData);
-//   //   } catch (e) {
-//   //     console.log(e.message + "\n" + e.data + "\n" + e.status);
-//   //   }
-//   // }
-// };
-
-export const runLookupFileName = async (inputParams) => {
-  if (!state.active) return null;
-};
-
-export const runLookupSpecial = async (inputParams) => {
-  if (!state.active) return null;
-};
-
-export const runClearVidCaptions = async (inputParams) => {
-  if (!state.active) return null;
+export const getFileNameSpecial = async (forwardData, inputObj) => {
+  console.log("GET FILE NAME SPECIAL");
+  console.log(inputObj);
+  return true;
 };
