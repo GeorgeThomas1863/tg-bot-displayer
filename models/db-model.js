@@ -1,9 +1,9 @@
 //import mongo
-import * as db from "../config/db.js";
+import { dbConnect, dbGet } from "../config/db.js";
 import { ObjectId } from "mongodb";
 
 //connect to db AGAIN here just to be safe
-await db.dbConnect();
+await dbConnect();
 
 class dbModel {
   constructor(dataObject, collection) {
@@ -11,34 +11,107 @@ class dbModel {
     this.collection = collection;
   }
 
-  //STORE DATA
-  async storeAnyData() {
-    const storeVid = await db.dbGet().collection(this.collection).insertOne(this.dataObject);
-    // console.log(storeVid);
+  //STORE STUFF
 
-    return storeVid;
+  async storeAny() {
+    // await db.dbConnect();
+    const storeData = await dbGet().collection(this.collection).insertOne(this.dataObject);
+    return storeData;
   }
 
-  async storeUniqueVid() {
-    await this.vidAlreadyStored();
+  async storeUniqueURL() {
+    // await db.dbConnect();
+    await this.urlNewCheck(); //check if new
 
-    const storeVid = await db.dbGet().collection(this.collection).insertOne(this.dataObject);
-    return storeVid;
+    const storeData = await this.storeAny();
+    return storeData;
   }
 
-  async vidAlreadyStored() {
-    const { forwardFromChannelId, forwardFromMessageId } = this.dataObject;
+  //------------------
 
-    if (!forwardFromChannelId || !forwardFromMessageId) {
-      // console.log("CANNOT FIND UNIQUE IDENTIFIERS");
-      return true;
-    }
+  //GET STUFF
 
-    const vidAlreadyStored = await db.dbGet().collection(this.collection).findOne({ forwardFromChannelId: forwardFromChannelId, forwardFromMessageId: forwardFromMessageId }); //prettier-ignore
-    if (vidAlreadyStored) {
-      const error = new Error("VID ALREADY STORED");
-      throw error;
-    }
+  async getAll() {
+    const arrayData = await dbGet().collection(this.collection).find().toArray();
+    return arrayData;
+  }
+
+  async getUniqueItem() {
+    const { keyToLookup, itemValue } = this.dataObject;
+    const dataArray = await dbGet().collection(this.collection).findOne({ [keyToLookup]: itemValue }); //prettier-ignore
+    return dataArray;
+  }
+
+  //unique array
+  async getUniqueArray() {
+    const { keyToLookup, itemValue } = this.dataObject;
+    const mongoValue = new ObjectId(itemValue); //convert to mongoId
+
+    const dataArray = await dbGet().collection(this.collection).find({ [keyToLookup]: mongoValue }).toArray(); //prettier-ignore
+    return dataArray;
+  }
+
+  //data for single scrape
+  async getScrapeData() {
+    const { scrapeId } = this.dataObject;
+    const mongoValue = new ObjectId(scrapeId); //convert to mongoId
+
+    const scrapeData = await dbGet().collection(this.collection).findOne({ _id: mongoValue }); //prettier-ignore
+    return scrapeData;
+  }
+
+  //------------------------------
+
+  //get NEWEST items return as array
+  async getNewestItemsArray() {
+    const { sortKey, sortKey2, howMany } = this.dataObject;
+
+    //get data
+    const dataArray = await dbGet().collection(this.collection).find().sort({ [sortKey]: -1, [sortKey2]: -1 }).limit(+howMany).toArray(); //prettier-ignore
+
+    return dataArray;
+  }
+
+  //OLD VERSION WITH SECOND SORT KEY
+  // async getNewestItemsByTypeArray() {
+  //     const { sortKey, sortKey2, howMany, filterKey, filterValue } = this.dataObject;
+
+  //     //get data
+  //     const dataArray = await dbGet().collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: -1, [sortKey2]: -1 }).limit(+howMany).toArray(); //prettier-ignore
+
+  //     return dataArray;
+  // }
+
+  async getNewestItemsByTypeArray() {
+    const { sortKey, howMany, filterKey, filterValue } = this.dataObject;
+
+    console.log("INPUT OBJECT");
+    console.log(this.dataObject);
+
+    //get data
+    const dataArray = await dbGet().collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: -1}).limit(+howMany).toArray(); //prettier-ignore
+
+    return dataArray;
+  }
+
+  //get OLDEST ITEMS
+  async getOldestItemsArray() {
+    const { sortKey, sortKey2, howMany } = this.dataObject;
+
+    //get data
+    const dataArray = await dbGet().collection(this.collection).find().sort({ [sortKey]: 1, [sortKey2]: 1 }).limit(+howMany).toArray(); //prettier-ignore
+
+    return dataArray;
+  }
+
+  //get last items by TYPE (for articles)
+  async getOldestItemsByTypeArray() {
+    const { sortKey, sortKey2, howMany, filterKey, filterValue } = this.dataObject;
+
+    //get data
+    const dataArray = await dbGet().collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: 1, [sortKey2]: 1 }).limit(+howMany).toArray(); //prettier-ignore
+
+    return dataArray;
   }
 }
 
