@@ -1,14 +1,14 @@
+import { tgForwardMessage } from "../tg-api.js";
 import state from "../util/state.js";
 
 export const runCaptionAllLookup = async (inputParams) => {
-  if (!inputParams || !state.active || !inputParams.captionaAllType) return null;
-  const { captionaAllType } = inputParams;
+  if (!inputParams || !state.active) return null;
+  const { captionAllType } = inputParams;
 
-  console.log("AHHHHHHHHHHHHHH")
   console.log("CAPTION ALL LOOKUP");
   console.log(inputParams);
 
-  switch (captionaAllType) {
+  switch (captionAllType) {
     case "setToFileName":
       return await runSetToFileName(inputParams);
     case "lookupFileName":
@@ -22,6 +22,26 @@ export const runCaptionAllLookup = async (inputParams) => {
 
 export const runSetToFileName = async (inputParams) => {
   if (!state.active) return null;
+  const { collectionPullFrom, collectionSaveTo, messageStart, messageStop, editChannelId, forwardToId } = inputParams;
+
+  const returnDataArray = [];
+  for (let i = messageStart; i < messageStop; i++) {
+    if (!state.active) return null;
+    try {
+      const params = {
+        forwardToId: forwardToId,
+        forwardFromId: editChannelId,
+        messageId: i,
+      };
+
+      const forwardData = await tgForwardMessage(params);
+      if (!forwardData) continue;
+      console.log("FORWARD DATA");
+      console.log(forwardData);
+    } catch (e) {
+      console.log(e.message + "\n" + e.data + "\n" + e.status);
+    }
+  }
 };
 
 export const runLookupFileName = async (inputParams) => {

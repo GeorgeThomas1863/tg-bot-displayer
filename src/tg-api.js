@@ -1,7 +1,7 @@
 import axios from "axios";
-import CONFIG from "../../config/config.js";
-import tokenArray from "../../config/tg-bot.js";
-import state from "./state.js";
+import CONFIG from "../config/config.js";
+import tokenArray from "../config/tg-bot.js";
+import state from "./util/state.js";
 
 let tokenIndex = 0;
 

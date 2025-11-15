@@ -1,5 +1,5 @@
 import dbModel from "../../models/db-model.js";
-import { tgForwardMessage } from "../util/tg-api.js";
+import { tgForwardMessage } from "../tg-api.js";
 import { buildVidParams, buildEverythingParams, buildTextParams } from "../util/params-back.js";
 import state from "../util/state.js";
 
