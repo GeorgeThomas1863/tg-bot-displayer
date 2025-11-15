@@ -26,10 +26,9 @@ export const runCaptionAllLookup = async (inputParams) => {
       console.log(forwardData);
 
       const captionText = await getCaptionText(forwardData, inputParams);
-      if (!captionText) continue;
 
-      // console.log("CAPTION TEXT");
-      // console.log(captionText);
+      //needed to avoid failing on blank
+      if (captionText === null) continue;
 
       const editParams = {
         editChannelId: forwardData.result.forward_from_chat.id,
@@ -64,7 +63,7 @@ export const getCaptionText = async (forwardData, inputObj) => {
   if (captionAllType === "lookupSpecial") return await getFileNameSpecial(forwardData, inputObj);
   if (captionAllType === "clearVidCaptions") return "";
 
-  return true;
+  return null;
 };
 
 export const getFileNameVid = async (forwardData) => {
@@ -83,8 +82,15 @@ export const getFileNameSpecial = async (forwardData, inputObj) => {
   const { video } = forwardData.result;
   if (!video) return null;
 
+  console.log("GET FILE NAME SPECIAL; VIDEO DATA");
+  console.log(video);
+
   const { file_name } = video;
   const kinkId = parseInt(file_name.split("_")[0]);
+  if (!kinkId) return null;
+
+  console.log("GET FILE NAME SPECIAL; KINK ID");
+  console.log(kinkId);
 
   const dataModel = new dbModel({ keyToLookup: "kinkShootId", itemValue: kinkId }, collectionPullFrom);
   const itemData = await dataModel.getUniqueItem();
