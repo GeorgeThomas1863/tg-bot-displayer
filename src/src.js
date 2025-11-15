@@ -14,8 +14,8 @@ export const tgCommandRun = async (inputParams) => {
   const params = await setInputParamDefaults(inputParams);
   const { command, offset } = params;
 
-  console.log("PARAMS");
-  console.log(params);
+  // console.log("PARAMS");
+  // console.log(params);
 
   if (command === "getUpdates") return await tgGetUpdates({ offset: offset });
   if (command === "sendMessage") return await tgSendMessage(params);

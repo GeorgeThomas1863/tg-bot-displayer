@@ -6,6 +6,10 @@ export const buildMainForm = async () => {
   formWrapper.id = "form-wrapper";
   formWrapper.className = "wrapper collapse-content";
 
+  const forwardAllStoreTypeListItem = await buildForwardAllStoreTypeListItem();
+  const captionLookupTypeListItem = await buildCaptionLookupTypeListItem();
+  const uploadPicTypeListItem = await buildUploadPicTypeListItem();
+
   //build FORM list items
   const offsetListItem = await buildOffsetListItem();
   const chatIdListItem = await buildChatIdListItem();
@@ -23,10 +27,6 @@ export const buildMainForm = async () => {
   const forwardToChatIdListItem = await buildForwardToChatIdListItem();
   const uploadToListItem = await buildUploadToListItem();
 
-  const forwardAllStoreTypeListItem = await buildForwardAllStoreTypeListItem();
-  const captionLookupTypeListItem = await buildCaptionLookupTypeListItem();
-  const uploadPicTypeListItem = await buildUploadPicTypeListItem();
-
   const picPathListItem = await buildPicPathListItem();
   const collectionPullFromListItem = await buildCollectionPullFromListItem();
   const collectionSaveToListItem = await buildCollectionSaveToListItem();
@@ -34,6 +34,9 @@ export const buildMainForm = async () => {
   const buttonContainer = await buildButtonContainer();
 
   formWrapper.append(
+    forwardAllStoreTypeListItem,
+    captionLookupTypeListItem,
+    uploadPicTypeListItem,
     offsetListItem,
     chatIdListItem,
     messageIdListItem,
@@ -46,9 +49,6 @@ export const buildMainForm = async () => {
     forwardFromChatIdListItem,
     forwardToChatIdListItem,
     uploadToListItem,
-    forwardAllStoreTypeListItem,
-    captionLookupTypeListItem,
-    uploadPicTypeListItem,
     picPathListItem,
     collectionPullFromListItem,
     collectionSaveToListItem,
@@ -74,6 +74,123 @@ export const buildMainForm = async () => {
   telegramCollapseContainer.className = "wrapper";
 
   return telegramCollapseContainer;
+};
+
+//BUILD TYPES FIRST
+export const buildForwardAllStoreTypeListItem = async () => {
+  const forwardAllStoreTypeListItem = document.createElement("li");
+  forwardAllStoreTypeListItem.id = "list-item-forward-all-store-type";
+  forwardAllStoreTypeListItem.className = "form-list-item";
+  forwardAllStoreTypeListItem.classList.add("hidden");
+
+  const forwardAllStoreTypeLabel = document.createElement("label");
+  forwardAllStoreTypeLabel.setAttribute("for", "forward-all-store-type-input");
+  forwardAllStoreTypeLabel.textContent = "Store TYPE";
+  forwardAllStoreTypeLabel.className = "form-label";
+
+  const forwardAllStoreTypeSelect = document.createElement("select");
+  forwardAllStoreTypeSelect.id = "forward-all-store-type-input";
+  forwardAllStoreTypeSelect.className = "form-select";
+
+  const optionArray = [
+    { value: "storeVids", text: "Store Vids", selected: true },
+    { value: "storeEverything", text: "Store Everything" },
+    { value: "storeStart", text: "Store Start ID's" },
+    { value: "storeBlanks", text: "Store Blank Captions" },
+  ];
+
+  for (let i = 0; i < optionArray.length; i++) {
+    const optionData = optionArray[i];
+    const option = document.createElement("option");
+    option.value = optionData.value;
+    option.textContent = optionData.text;
+    if (optionData.selected) {
+      option.selected = true;
+    }
+    forwardAllStoreTypeSelect.append(option);
+  }
+
+  forwardAllStoreTypeListItem.append(forwardAllStoreTypeLabel, forwardAllStoreTypeSelect);
+
+  return forwardAllStoreTypeListItem;
+};
+
+export const buildCaptionLookupTypeListItem = async () => {
+  const captionLookupTypeListItem = document.createElement("li");
+  captionLookupTypeListItem.id = "list-item-caption-lookup-type";
+  captionLookupTypeListItem.className = "form-list-item";
+  captionLookupTypeListItem.classList.add("hidden");
+
+  const captionLookupTypeLabel = document.createElement("label");
+  captionLookupTypeLabel.setAttribute("for", "lookup-type-caption-input");
+  captionLookupTypeLabel.textContent = "Lookup TYPE";
+  captionLookupTypeLabel.className = "form-label";
+
+  const captionLookupTypeSelect = document.createElement("select");
+  captionLookupTypeSelect.id = "lookup-type-caption-input";
+  captionLookupTypeSelect.className = "form-select";
+
+  const optionArray = [
+    { value: "setToFileName", text: "Set to Vid File Name", selected: true },
+    { value: "lookupFileName", text: "Lookup File Name" },
+    { value: "lookupSpecial", text: "Lookup Special" },
+    { value: "clearVidCaptions", text: "CLEAR Vid Captions" },
+  ];
+
+  for (let i = 0; i < optionArray.length; i++) {
+    const optionData = optionArray[i];
+    const option = document.createElement("option");
+    option.value = optionData.value;
+    option.textContent = optionData.text;
+    if (optionData.selected) {
+      option.selected = true;
+    }
+    captionLookupTypeSelect.append(option);
+  }
+
+  captionLookupTypeListItem.append(captionLookupTypeLabel, captionLookupTypeSelect);
+
+  return captionLookupTypeListItem;
+};
+
+export const buildUploadPicTypeListItem = async () => {
+  const uploadPicTypeListItem = document.createElement("li");
+  uploadPicTypeListItem.id = "list-item-upload-pic-type";
+  uploadPicTypeListItem.className = "form-list-item";
+  uploadPicTypeListItem.classList.add("hidden");
+
+  const uploadPicTypeLabel = document.createElement("label");
+  uploadPicTypeLabel.setAttribute("for", "lookup-type-upload-pic-input");
+  uploadPicTypeLabel.textContent = "Upload TYPE";
+  uploadPicTypeLabel.className = "form-label";
+
+  const uploadPicTypeSelect = document.createElement("select");
+  uploadPicTypeSelect.id = "lookup-type-upload-pic-input";
+  uploadPicTypeSelect.className = "form-select";
+
+  const optionArray = [
+    { value: "uploadSingleFS", text: "Upload Pic FS", selected: true },
+    { value: "uploadFolderFS", text: "Upload Pic Folder FS" },
+    { value: "uploadSingleURL", text: "Upload Pic URL" },
+    { value: "uploadListURL", text: "Upload Pic URL List DB" },
+    { value: "uploadMultiID", text: "Upload Folder Multi Pic Multi Vid Match ID" },
+    { value: "uploadMultiSpecial", text: "Upload Folder Multi Pic Multi Vid Match Special" },
+  ];
+
+  for (let i = 0; i < optionArray.length; i++) {
+    const optionData = optionArray[i];
+    const option = document.createElement("option");
+    option.value = optionData.value;
+    option.textContent = optionData.text;
+    if (optionData.selected) {
+      option.selected = true;
+    }
+    uploadPicTypeSelect.append(option);
+  }
+
+  uploadPicTypeListItem.append(uploadPicTypeLabel, uploadPicTypeSelect);
+
+  return uploadPicTypeListItem;
 };
 
 export const buildOffsetListItem = async () => {
@@ -337,122 +454,6 @@ export const buildUploadToListItem = async () => {
   uploadToListItem.append(uploadToLabel, uploadToInput);
 
   return uploadToListItem;
-};
-
-export const buildForwardAllStoreTypeListItem = async () => {
-  const forwardAllStoreTypeListItem = document.createElement("li");
-  forwardAllStoreTypeListItem.id = "list-item-forward-all-store-type";
-  forwardAllStoreTypeListItem.className = "form-list-item";
-  forwardAllStoreTypeListItem.classList.add("hidden");
-
-  const forwardAllStoreTypeLabel = document.createElement("label");
-  forwardAllStoreTypeLabel.setAttribute("for", "forward-all-store-type-input");
-  forwardAllStoreTypeLabel.textContent = "Store TYPE";
-  forwardAllStoreTypeLabel.className = "form-label";
-
-  const forwardAllStoreTypeSelect = document.createElement("select");
-  forwardAllStoreTypeSelect.id = "forward-all-store-type-input";
-  forwardAllStoreTypeSelect.className = "form-select";
-
-  const optionArray = [
-    { value: "storeVids", text: "Store Vids", selected: true },
-    { value: "storeEverything", text: "Store Everything" },
-    { value: "storeStart", text: "Store Start ID's" },
-    { value: "storeBlanks", text: "Store Blank Captions" },
-  ];
-
-  for (let i = 0; i < optionArray.length; i++) {
-    const optionData = optionArray[i];
-    const option = document.createElement("option");
-    option.value = optionData.value;
-    option.textContent = optionData.text;
-    if (optionData.selected) {
-      option.selected = true;
-    }
-    forwardAllStoreTypeSelect.append(option);
-  }
-
-  forwardAllStoreTypeListItem.append(forwardAllStoreTypeLabel, forwardAllStoreTypeSelect);
-
-  return forwardAllStoreTypeListItem;
-};
-
-export const buildCaptionLookupTypeListItem = async () => {
-  const captionLookupTypeListItem = document.createElement("li");
-  captionLookupTypeListItem.id = "list-item-caption-lookup-type";
-  captionLookupTypeListItem.className = "form-list-item";
-  captionLookupTypeListItem.classList.add("hidden");
-
-  const captionLookupTypeLabel = document.createElement("label");
-  captionLookupTypeLabel.setAttribute("for", "lookup-type-caption-input");
-  captionLookupTypeLabel.textContent = "Lookup TYPE";
-  captionLookupTypeLabel.className = "form-label";
-
-  const captionLookupTypeSelect = document.createElement("select");
-  captionLookupTypeSelect.id = "lookup-type-caption-input";
-  captionLookupTypeSelect.className = "form-select";
-
-  const optionArray = [
-    { value: "setToFileName", text: "Set to Vid File Name", selected: true },
-    { value: "clearVidCaptions", text: "CLEAR Vid Captions" },
-    { value: "lookupFileName", text: "Lookup File Name" },
-    { value: "lookupSpecial", text: "Lookup Special" },
-  ];
-
-  for (let i = 0; i < optionArray.length; i++) {
-    const optionData = optionArray[i];
-    const option = document.createElement("option");
-    option.value = optionData.value;
-    option.textContent = optionData.text;
-    if (optionData.selected) {
-      option.selected = true;
-    }
-    captionLookupTypeSelect.append(option);
-  }
-
-  captionLookupTypeListItem.append(captionLookupTypeLabel, captionLookupTypeSelect);
-
-  return captionLookupTypeListItem;
-};
-
-export const buildUploadPicTypeListItem = async () => {
-  const uploadPicTypeListItem = document.createElement("li");
-  uploadPicTypeListItem.id = "list-item-upload-pic-type";
-  uploadPicTypeListItem.className = "form-list-item";
-  uploadPicTypeListItem.classList.add("hidden");
-
-  const uploadPicTypeLabel = document.createElement("label");
-  uploadPicTypeLabel.setAttribute("for", "lookup-type-upload-pic-input");
-  uploadPicTypeLabel.textContent = "Upload TYPE";
-  uploadPicTypeLabel.className = "form-label";
-
-  const uploadPicTypeSelect = document.createElement("select");
-  uploadPicTypeSelect.id = "lookup-type-upload-pic-input";
-  uploadPicTypeSelect.className = "form-select";
-
-  const optionArray = [
-    { value: "uploadSingleFS", text: "Upload Pic FS", selected: true },
-    { value: "uploadFolderFS", text: "Upload Pic Folder FS" },
-    { value: "uploadSingleURL", text: "Upload Pic URL" },
-    { value: "uploadListURL", text: "Upload Pic URL List DB" },
-    { value: "uploadMultiID", text: "Upload Folder Multi Pic Multi Vid Match ID" },
-    { value: "uploadMultiSpecial", text: "Upload Folder Multi Pic Multi Vid Match Special" },
-  ];
-
-  for (let i = 0; i < optionArray.length; i++) {
-    const optionData = optionArray[i];
-    const option = document.createElement("option");
-    option.value = optionData.value;
-    option.textContent = optionData.text;
-    if (optionData.selected) {
-      option.selected = true;
-    }
-    uploadPicTypeSelect.append(option);
-  }
-
-  uploadPicTypeListItem.append(uploadPicTypeLabel, uploadPicTypeSelect);
-
-  return uploadPicTypeListItem;
 };
 
 export const buildPicPathListItem = async () => {
