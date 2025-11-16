@@ -19,13 +19,35 @@ class dbModel {
     return storeData;
   }
 
-  async storeUniqueURL() {
-    // await db.dbConnect();
-    await this.urlNewCheck(); //check if new
+  async storeUniqueVid() {
+    await this.vidAlreadyStored();
 
-    const storeData = await this.storeAny();
-    return storeData;
+    const storeVid = await db.dbGet().collection(this.collection).insertOne(this.dataObject);
+    return storeVid;
   }
+
+  async vidAlreadyStored() {
+    const { forwardFromChannelId, forwardFromMessageId } = this.dataObject;
+
+    if (!forwardFromChannelId || !forwardFromMessageId) {
+      // console.log("CANNOT FIND UNIQUE IDENTIFIERS");
+      return true;
+    }
+
+    const vidAlreadyStored = await db.dbGet().collection(this.collection).findOne({ forwardFromChannelId: forwardFromChannelId, forwardFromMessageId: forwardFromMessageId }); //prettier-ignore
+    if (vidAlreadyStored) {
+      const error = new Error("VID ALREADY STORED");
+      throw error;
+    }
+  }
+
+  // async storeUniqueURL() {
+  //   // await db.dbConnect();
+  //   await this.urlNewCheck(); //check if new
+
+  //   const storeData = await this.storeAny();
+  //   return storeData;
+  // }
 
   //------------------
 
