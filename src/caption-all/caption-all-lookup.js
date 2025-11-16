@@ -75,26 +75,36 @@ export const getFileNameVid = async (forwardData) => {
 };
 
 //build
-export const getFileNameLookup = async (forwardData, inputObj) => {};
+export const getFileNameLookup = async (forwardData, inputObj) => {
+  const { dataType } = inputObj;
+
+  if (dataType.toLowerCase().trim() === "primal") return await getPrimalText(forwardData, inputObj);
+};
 
 export const getFileNameSpecial = async (forwardData, inputObj) => {
   const { collectionPullFrom } = inputObj;
   const { video } = forwardData.result;
   if (!video) return null;
 
-  console.log("GET FILE NAME SPECIAL; VIDEO DATA");
-  console.log(video);
-
   const { file_name } = video;
   const kinkId = parseInt(file_name.split("_")[0]);
   if (!kinkId) return null;
 
-  console.log("GET FILE NAME SPECIAL; KINK ID");
-  console.log(kinkId);
+  // console.log("GET FILE NAME SPECIAL; KINK ID");
+  // console.log(kinkId);
 
   const dataModel = new dbModel({ keyToLookup: "kinkShootId", itemValue: kinkId }, collectionPullFrom);
   const itemData = await dataModel.getUniqueItem();
   if (!itemData || !itemData.labelText) return null;
 
   return itemData.labelText;
+};
+
+export const getPrimalText = async (forwardData, inputObj) => {
+  const { collectionPullFrom } = inputObj;
+
+  const { video } = forwardData.result;
+  if (!video) return null;
+
+  const { file_name } = video;
 };
