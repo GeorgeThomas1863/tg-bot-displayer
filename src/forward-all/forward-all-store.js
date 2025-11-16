@@ -1,6 +1,6 @@
 import dbModel from "../../models/db-model.js";
 import { tgForwardMessage } from "../tg-api.js";
-import { buildVidParams, buildEverythingParams, buildTextParams } from "../util/params-back.js";
+// import { buildVidParams, buildEverythingParams, buildTextParams } from "../util/params-back.js";
 import state from "../util/state.js";
 
 export const runForwardAllStore = async (inputParams) => {
@@ -28,40 +28,24 @@ export const runForwardAllStore = async (inputParams) => {
       console.log(forwardData);
 
       const storeObj = await buildStoreObj(forwardData, inputParams);
+      if (!storeObj) continue;
 
-      //parse by type
-      // const storeParams = await parseStoreParams(forwardData, forwardAllType, dataType);
-      // if (!storeParams) continue;
+      console.log("STORE OBJ");
+      console.log(storeObj);
 
-      // // console.log("!!!STORE PARAM!!!");
-      // // console.log(storeParams);
+      const storeModel = new dbModel(storeObj, collectionSaveTo);
+      const storeData = await storeModel.storeAny();
 
-      // const storeModel = new dbModel(storeParams, collectionSaveTo);
+      console.log("STORE DATA");
+      console.log(storeData);
 
-      // //if store everything
-      // if (forwardAllType === "storeEverything") {
-      //   const everythingData = await storeModel.storeAny();
-      //   // console.log("EVERYTHING DATA");
-      //   // console.log(everythingData);
-
-      //   returnDataArray.push(everythingData);
-      //   continue;
-      // }
-
-      // //otherwise store unique
-      // const storeData = await storeModel.storeUniqueVid();
-
-      // console.log("STORE DATA");
-      // console.log(storeData);
-
-      // //for tracking
-      // returnDataArray.push(storeData);
+      returnDataArray.push(storeData);
     } catch (e) {
       console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
   }
 
-  return true;
+  return returnDataArray;
 };
 
 export const buildStoreObj = async (forwardData, inputParams) => {
@@ -77,42 +61,127 @@ export const buildStoreObj = async (forwardData, inputParams) => {
   return null;
 };
 
-export const storeVidObj = async (forwardData) => {
+export const storeEverythingObj = async (forwardData) => {
+  if (!forwardData || !forwardData.result) return null;
   const { result } = forwardData;
+  const { video, photo, document, text } = result;
 
-  console.log("STORE VID OBJ!!!");
-  console.log(forwardData);
-  // const { video, message_id, forward_from_message_id, forward_from_chat, chat, date, forward_date } = result;
-  // if (!video) return null;
+  if (video) return await buildVidParams(result);
+  if (photo) return await buildPicParams(result);
+  if (document) return await buildTextParams(result);
+  if (text) return await buildTextParams(result);
 
-  // const { file_id, file_unique_id, file_name, file_size, duration, caption } = video;
-
-
-
-  // const vidParams = {
-  //   messageId: forwardData.result.message_id,
-  //   forwardFromMessageId: forwardData.result.forward_from_message_id,
-  //   forwardFromChannelId: forwardData.result.forward_from_chat.id,
-  //   forwardFromChannelName: forwardData.result.forward_from_chat.title,
-  //   forwardToId: forwardData.result.chat.id,
-  //   forwardToName: forwardData.result.chat.title,
-  //   fileFullId: forwardData.result.video.file_id,
-  //   fileUniqueId: forwardData.result.video.file_unique_id,
-  //   caption: forwardData.result.caption,
-  //   fileSize: forwardData.result.video.file_size,
-  //   videoLength: forwardData.result.video.duration,
-  //   datePosted: forwardData.result.date,
-  //   dateForwarded: forwardData.result.forward_date,
-  //   paramType: "vidParams",
-  //   storeDate: new Date(),
-  // };
+  return null;
 };
 
-export const storeEverythingObj = async (forwardData) => {};
+export const storeVidObj = async (forwardData) => {
+  if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
+  const { result } = forwardData;
 
-export const storeStartObj = async (forwardData) => {};
+  return await buildVidParams(result);
+};
 
-export const storeBlanksObj = async (forwardData) => {};
+export const storeStartObj = async (forwardData) => {
+  if (!forwardData || !forwardData.result) return null;
+  const { result } = forwardData;
+  const { text, video, caption } = result;
+
+  if (text && (text.slice(0, 10).includes("!!!") || text.slice(0, 10).includes("+++"))) {
+    return await buildTextParams(result);
+  }
+
+  if (video && (caption.slice(0, 10).includes("!!!") || caption.slice(0, 10).includes("+++"))) {
+    return await buildVidParams(result);
+  }
+
+  return null;
+};
+
+export const storeBlanksObj = async (forwardData) => {
+  if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
+  const { result } = forwardData;
+  if (!result.caption || result.caption === "") return await buildVidParams(result);
+  return null;
+};
+
+export const buildVidParams = async (inputObj) => {
+  if (!inputObj || !inputObj.video) return null;
+  const { video, message_id, forward_from_message_id, forward_from_chat, chat, caption, date, forward_date } = inputObj;
+  const { file_id, file_unique_id, file_name, file_size, duration } = video;
+
+  const vidParams = {
+    messageId: message_id,
+    forwardFromMessageId: forward_from_message_id,
+    forwardFromChannelId: forward_from_chat.id,
+    forwardFromChannelName: forward_from_chat.title,
+    forwardToId: chat.id,
+    forwardToName: chat.title,
+    fileFullId: file_id,
+    fileUniqueId: file_unique_id,
+    fileName: file_name,
+    fileSize: file_size,
+    videoLength: duration,
+    caption: caption,
+    datePosted: forward_date,
+    dateForwarded: date,
+    dateStored: new Date(),
+    paramType: "vidParams",
+  };
+
+  return vidParams;
+};
+
+export const buildPicParams = async (inputObj) => {
+  if (!inputObj || !inputObj.photo) return null;
+  const { photo, message_id, forward_from_message_id, forward_from_chat, chat, caption, date, forward_date } = inputObj;
+
+  //get input photo array length
+  const k = photo.length - 1;
+  const { file_id, file_unique_id, file_name, file_size, width, height } = photo[k];
+
+  const picParams = {
+    messageId: message_id,
+    forwardFromMessageId: forward_from_message_id,
+    forwardFromChannelId: forward_from_chat.id,
+    forwardFromChannelName: forward_from_chat.title,
+    forwardToId: chat.id,
+    forwardToName: chat.title,
+    fileFullId: file_id,
+    fileUniqueId: file_unique_id,
+    fileName: file_name,
+    fileSize: file_size,
+    picWidth: width,
+    picHeight: height,
+    caption: caption,
+    datePosted: forward_date,
+    dateForwarded: date,
+    dateStored: new Date(),
+    paramType: "picParams",
+  };
+
+  return picParams;
+};
+
+export const buildTextParams = async (inputObj) => {
+  if (!inputObj || !inputObj.text) return null;
+  const { text, message_id, forward_from_message_id, forward_from_chat, chat, date, forward_date } = inputObj;
+
+  const textParams = {
+    messageId: message_id,
+    forwardFromMessageId: forward_from_message_id,
+    forwardFromChannelId: forward_from_chat.id,
+    forwardFromChannelName: forward_from_chat.title,
+    forwardToId: chat.id,
+    forwardToName: chat.title,
+    text: text,
+    datePosted: forward_date,
+    dateForwarded: date,
+    dateStored: new Date(),
+    paramType: "textParams",
+  };
+
+  return textParams;
+};
 
 // export const parseStoreParams = async (inputData, forwardAllType, dataType) => {
 //   if (!state.active) return null;
