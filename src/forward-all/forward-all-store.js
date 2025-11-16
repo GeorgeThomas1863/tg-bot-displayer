@@ -90,7 +90,7 @@ export const storeStartObj = async (forwardData) => {
     return await buildTextParams(result);
   }
 
-  if (video && (caption.slice(0, 10).includes("!!!") || caption.slice(0, 10).includes("+++"))) {
+  if (video && caption && (caption.slice(0, 10).includes("!!!") || caption.slice(0, 10).includes("+++"))) {
     return await buildVidParams(result);
   }
 
