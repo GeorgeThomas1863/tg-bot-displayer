@@ -119,6 +119,9 @@ export const getPrimalText = async (forwardData, inputObj) => {
 
   const dataModel = new dbModel({ keyToLookup: "realId", itemValue: primalVidId }, collectionPullFrom);
   const itemData = await dataModel.getUniqueItem();
+  console.log("ITEM DATA");
+  console.log(itemData);
+  
   if (!itemData || !itemData.labelText) return null;
 
   console.log("LABEL TEXT!!");
