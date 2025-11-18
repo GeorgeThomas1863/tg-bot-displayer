@@ -103,8 +103,26 @@ export const getFileNameSpecial = async (forwardData, inputObj) => {
 export const getPrimalText = async (forwardData, inputObj) => {
   const { collectionPullFrom } = inputObj;
 
+  console.log("GET PRIMAL TEXT");
+  console.log("FORWARD DATA");
+  console.log(forwardData);
+  console.log("INPUT OBJ");
+  console.log(inputObj);
+
   const { video } = forwardData.result;
   if (!video) return null;
 
   const { file_name } = video;
+
+  const primalVidId = file_name.split("_")[0];
+  if (!primalVidId) return null;
+
+  const dataModel = new dbModel({ keyToLookup: "realId", itemValue: primalVidId }, collectionPullFrom);
+  const itemData = await dataModel.getUniqueItem();
+  if (!itemData || !itemData.labelText) return null;
+
+  console.log("LABEL TEXT!!");
+  console.log(itemData.labelText);
+
+  return itemData.labelText;
 };
