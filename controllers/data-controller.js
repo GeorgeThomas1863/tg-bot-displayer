@@ -6,6 +6,7 @@ export const tgCommandControl = async (req, res) => {
 
   if (inputParams.command === "stop") {
     state.active = false;
+    console.log("STOPPED EXECUTION");
     return res.json({ message: "STOPPED" });
   }
 
