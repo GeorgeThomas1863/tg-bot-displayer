@@ -17,18 +17,6 @@ body {
   opacity: 0.2;
 }
 
-/* #auth-background-pic {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  opacity: 0.2;
-} */
-
 h1,
 h2,
 p {
@@ -330,6 +318,7 @@ li.action-button-row {
   background: #3f3f46;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(82, 82, 91, 0.35);
+  cursor: pointer;
 }
 
 .btn-submit:active {
@@ -366,6 +355,19 @@ li.action-button-row {
   font-weight: bold;
   border-radius: 8px;
   margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.pretty-button:hover {
+  background: #3f3f46;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(82, 82, 91, 0.35);
+  cursor: pointer;
+}
+
+.pretty-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(82, 82, 91, 0.35);
 }
 
 #return-wrapper {

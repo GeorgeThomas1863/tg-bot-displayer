@@ -3,15 +3,14 @@ import { tgGetUpdates, tgSendMessage, tgForwardMessage, tgEditMessageCaption } f
 import { runForwardAllStore } from "./forward-all/forward-all-store.js";
 import { runCaptionAllLookup } from "./caption-all/caption-all-lookup.js";
 import { runUploadPics } from "./upload-pics/upload-pics.js";
+import CONFIG from "../config/config.js";
 import state from "./util/state.js";
 
 export const tgCommandRun = async (inputParams) => {
   if (!inputParams || !state.active || !inputParams.command) return null;
-  // console.log("!!!INPUT PARAMS RAW");
-  // console.log(inputParams);
 
   // add defaults
-  const params = await setInputParamDefaults(inputParams);
+  const params = await addDefaultParams(inputParams);
   const { command, offset } = params;
 
   console.log("INPUT PARAMS PARSE");
@@ -28,34 +27,11 @@ export const tgCommandRun = async (inputParams) => {
   return null;
 };
 
-//Set to default
-export const setInputParamDefaults = async (inputParams) => {
-  const paramsDefaultAdded = await addDefaultParams(inputParams);
-  const finishedParams = await addCallParams(paramsDefaultAdded);
-
-  return finishedParams;
-};
-
+//Set defaults
 const addDefaultParams = async (inputParams) => {
+  const { defaultObject } = CONFIG;
+  if (!inputParams || !defaultObject) return inputParams;
   //DEFAULTS
-  const defaultObject = {
-    messageStart: 0,
-    messageStop: 20,
-    forwardFromId: -1002123668375, //random stuff
-    forwardToId: -1002468318224, //forwardTest53
-    uploadToId: -1002468318224,
-    editChannelId: -1002230354437, //editCaptionsTest11
-    collectionPullFrom: "balls1",
-    collectionSaveTo: "balls2",
-    picPath: "G:/PICS/",
-    //picPath: "/home/george/code/pics/",
-    chatId: 552805041,
-    messageId: 1,
-    text: "bundle of sticks",
-    caption: "",
-    offset: "",
-    dataType: "kink",
-  };
 
   for (let key1 in inputParams) {
     if (inputParams[key1] !== "" && inputParams[key1] !== 0) {
@@ -68,25 +44,5 @@ const addDefaultParams = async (inputParams) => {
       }
     }
   }
-  return inputParams;
-};
-
-const addCallParams = async (inputParams) => {
-  const methodObject = {
-    // 1: "tgGet",
-    // 2: "tgPost",
-    // 3: "tgPost",
-    // 4: "tgPost",
-    5: "forwardLoop",
-    6: "captionLoop",
-    7: "picLoop",
-  };
-
-  for (let key in methodObject) {
-    if (+key === +inputParams.commandId) {
-      inputParams.call = methodObject[key];
-    }
-  }
-
   return inputParams;
 };
