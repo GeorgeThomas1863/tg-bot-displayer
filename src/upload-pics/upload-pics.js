@@ -33,7 +33,7 @@ export const runUploadPics = async (inputParams) => {
     if (!data) continue;
     console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
     console.log("POSTED PIC DATA");
-    console.log(data);
+    console.log(data.result);
     postPicDataArray.push(data);
 
     if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") continue;
