@@ -117,6 +117,28 @@ export const tgPostPicFS = async (inputParams) => {
   return data;
 };
 
+export const tgPostPicURL = async (inputParams) => {
+  if (!state.active) return null;
+  const { baseURL } = CONFIG;
+  const { chatId, picURL } = inputParams;
+  const token = tokenArray[tokenIndex];
+
+  const params = {
+    chat_id: chatId,
+    photo: picURL,
+  };
+
+  const url = `${baseURL}${token}/sendPhoto`;
+  const data = await tgPostReq(url, params);
+
+  const checkData = await checkToken(data);
+
+  //try again
+  if (!checkData) return await tgPostPicURL(inputParams);
+
+  return data;
+};
+
 //------------------------------
 
 export const tgGetReq = async (url) => {

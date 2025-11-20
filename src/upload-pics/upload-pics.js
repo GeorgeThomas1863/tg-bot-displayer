@@ -3,32 +3,24 @@ import path from "path";
 import state from "../util/state.js";
 
 import { tgPostPicFS } from "../tg-api.js";
+import { checkPicURL } from "../util/util.js";
 
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType, uploadToId, picPath } = inputParams;
 
-  if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") return await uploadPicsFS(inputParams);
-
-  //   console.log("RUN UPLOAD PICS");
-  //   console.log(inputParams);
-
-  //   const params = {
-  //     chatId: uploadToId,
-  //     picPath: picPath,
-  //   };
-
-  //   const data = await tgPostPicFS(params);
-  //   console.log("DATA");
-  //   console.log(data);
-  //   return data;
+  if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") return await uploadPicFS(inputParams);
+  if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return await uploadPicURL(inputParams);
 };
 
-export const uploadPicsFS = async (inputParams) => {
+export const uploadPicFS = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadToId } = inputParams;
 
-  const uploadPicArray = await getUploadPicArray(inputParams);
+  const uploadPicArray = await getPicArrayFS(inputParams);
+  console.log("UPLOAD PIC ARRAY");
+  console.log(uploadPicArray);
+
   if (!uploadPicArray) return null;
 
   const postPicDataArray = [];
@@ -41,20 +33,48 @@ export const uploadPicsFS = async (inputParams) => {
     };
     const data = await tgPostPicFS(params);
     if (!data) continue;
+    console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
+    console.log("POSTED PIC DATA");
+    console.log(data);
     postPicDataArray.push(data);
   }
 
   return postPicDataArray;
 };
 
-export const getUploadPicArray = async (inputParams) => {
+
+//make capable of handling array of URLs
+export const uploadPicURL = async (inputParams) => {
+  if (!inputParams || !state.active) return null;
+  const { picPath, uploadToId } = inputParams;
+
+  const picCheck = await checkPicURL(picPath);
+  if (!picCheck) {
+    console.log(`PIC URL IS INVALID: ${picPath}`);
+    return null;
+  }
+
+  const params = {
+    chatId: uploadToId,
+    picURL: picPath,
+  };
+
+  const data = await tgPostPicURL(params);
+  if (!data) return null;
+  console.log("POSTED PIC URL DATA");
+  console.log(data);
+
+  return data;
+};
+
+export const getPicArrayFS = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType } = inputParams;
   let picPath = inputParams.picPath;
 
   if (uploadPicType === "uploadSingleFS") {
-    if (!fs.existsSync(picPath)) {
-      console.log(`PIC PATH DOES NOT EXIST: ${picPath}`);
+    if (!fs.existsSync(picPath) || !fs.statSync(picPath).isFile()) {
+      console.log(`PIC PATH DOES NOT EXIST OR IS NOT A FILE: ${picPath}`);
       return null;
     }
     return [picPath];
@@ -62,19 +82,19 @@ export const getUploadPicArray = async (inputParams) => {
 
   if (uploadPicType !== "uploadFolderFS") return null;
 
-  if (picPath.endsWith("/")) picPath = picPath.slice(0, -1);
-  if (!fs.existsSync(picPath)) {
-    console.log(`PIC PATH DOES NOT EXIST: ${picPath}`);
-    return null;
-  }
+  if (picPath.endsWith("/") || picPath.endsWith("\\")) picPath = picPath.slice(0, -1);
 
   //build folder
   const uploadPicArray = [];
   const folder = fs.readdirSync(picPath);
+
   for (let i = 0; i < folder.length; i++) {
     const file = folder[i];
     const filePath = path.join(picPath, file);
-    if (!fs.statSync(filePath).isFile()) continue;
+    if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+      console.log(`PIC PATH IS NOT A FILE OR DOES NOT EXIST: ${filePath}`);
+      continue;
+    }
     uploadPicArray.push(filePath);
   }
 
