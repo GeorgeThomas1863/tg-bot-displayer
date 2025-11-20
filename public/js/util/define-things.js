@@ -1,21 +1,4 @@
 const d = {
-  //define action buttons
-  // getUpdatesActionButton: document.getElementById("get-updates-action-button"),
-  // sendMessageActionButton: document.getElementById("send-message-action-button"),
-  // forwardMessageActionButton: document.getElementById("forward-message-action-button"),
-  // editCaptionActionButton: document.getElementById("edit-caption-action-button"),
-  // forwardAllStoreActionButton: document.getElementById("forward-all-store-action-button"),
-  // captionAllLookupActionButton: document.getElementById("caption-all-lookup-action-button"),
-
-  //define submit buttons
-  // getUpdatesSubmitElement: document.getElementById("get-updates-submit"),
-  // sendMessageSubmitElement: document.getElementById("send-message-submit"),
-  // forwardMessageSubmitElement: document.getElementById("forward-message-submit"),
-  // editCaptionSubmitElement: document.getElementById("edit-caption-submit"),
-  // forwardAllStoreSubmitElement: document.getElementById("forward-all-store-submit"),
-  // captionAllLookupSubmitElement: document.getElementById("caption-all-lookup-submit"),
-  // uploadPicsSubmitElement: document.getElementById("upload-pics-submit"),
-
   //define form list items
   offsetListItem: document.getElementById("list-item-offset"),
   messageIdListItem: document.getElementById("list-item-message-id"),
@@ -35,28 +18,6 @@ const d = {
   uploadPicTypeListItem: document.getElementById("list-item-upload-pic-type"),
   commandListItem: document.getElementById("list-item-command"),
   textInputListItem: document.getElementById("list-item-text-input"),
-
-  //define inputs elements
-  // updateIdElement: document.getElementById("update-id-input"),
-  // chatIdElement: document.getElementById("chat-id-input"),
-  // messageIdElement: document.getElementById("message-id-input"),
-  // messageStartElement: document.getElementById("message-start-input"),
-  // messageStopElement: document.getElementById("message-stop-input"),
-  // forwardFromElement: document.getElementById("from-chat-id-input"),
-  // forwardToElement: document.getElementById("to-chat-id-input"),
-  // uploadToElement: document.getElementById("upload-to-input"),
-  // editCaptionsChannelElement: document.getElementById("edit-captions-channel"),
-  // collectionPullFromElement: document.getElementById("collection-pull-from-input"),
-  // collectionSaveToElement: document.getElementById("collection-save-to-input"),
-  // picPathElement: document.getElementById("pic-path-input"),
-  // commandInputElement: document.getElementById("command-input"),
-  // textInputElement: document.getElementById("text-input"),
-  // dataTypeElement: document.getElementById("data-type-input"),
-
-  // //define drop down options; forward all drop downs
-  // forwardAllStoreType: document.getElementById("forward-all-store-type-input"),
-  // captionLookupTypeInput: document.getElementById("lookup-type-caption-input"),
-  // uploadPicTypeInput: document.getElementById("lookup-type-upload-pic-input"),
 
   //define return display and make pretty elements
   sectionReturnWrapper: document.getElementById("data-return-section"),
@@ -152,7 +113,14 @@ export const actionButtonMap = {
     d.forwardToListItem,
     d.dataTypeListItem,
   ],
-  "upload-pics": [d.uploadToListItem, d.uploadPicTypeListItem, d.picPathListItem, d.collectionPullFromListItem, d.collectionSaveToListItem],
+  "upload-pics": [
+    d.uploadToListItem,
+    d.dataTypeListItem,
+    d.uploadPicTypeListItem,
+    d.picPathListItem,
+    d.collectionPullFromListItem,
+    d.collectionSaveToListItem,
+  ],
 };
 
 export const EYE_CLOSED_SVG = `

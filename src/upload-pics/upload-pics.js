@@ -2,20 +2,17 @@ import fs from "fs";
 import path from "path";
 import state from "../util/state.js";
 
-import { tgPostPicFS } from "../tg-api.js";
+import { tgPostPicFS, tgPostPicURL } from "../tg-api.js";
 import { checkPicURL } from "../util/util.js";
 
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId, picPath } = inputParams;
+  const { uploadPicType, uploadToId } = inputParams;
 
-  if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") return await uploadPicFS(inputParams);
   if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return await uploadPicURL(inputParams);
-};
 
-export const uploadPicFS = async (inputParams) => {
-  if (!inputParams || !state.active) return null;
-  const { uploadToId } = inputParams;
+  //   if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") return await uploadPicFS(inputParams);
+  //   if (uploadPicType === "uploadMultiID" || uploadPicType === "uploadMultiSpecial") return await uploadPicMatch(inputParams);
 
   const uploadPicArray = await getPicArrayFS(inputParams);
   console.log("UPLOAD PIC ARRAY");
@@ -26,22 +23,24 @@ export const uploadPicFS = async (inputParams) => {
   const postPicDataArray = [];
   for (let i = 0; i < uploadPicArray.length; i++) {
     if (!state.active) return null;
-    const picPath = uploadPicArray[i];
+    const filePath = uploadPicArray[i];
     const params = {
       chatId: uploadToId,
-      picPath: picPath,
+      picPath: filePath,
     };
+
     const data = await tgPostPicFS(params);
     if (!data) continue;
     console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
     console.log("POSTED PIC DATA");
     console.log(data);
     postPicDataArray.push(data);
+
+    if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") continue;
   }
 
   return postPicDataArray;
 };
-
 
 //make capable of handling array of URLs
 export const uploadPicURL = async (inputParams) => {
@@ -59,6 +58,9 @@ export const uploadPicURL = async (inputParams) => {
     picURL: picPath,
   };
 
+  console.log("PARAMS");
+  console.log(params);
+
   const data = await tgPostPicURL(params);
   if (!data) return null;
   console.log("POSTED PIC URL DATA");
@@ -66,6 +68,10 @@ export const uploadPicURL = async (inputParams) => {
 
   return data;
 };
+
+// export const uploadPicMatch = async (inputParams) => {
+//   if (!inputParams || !state.active) return null;
+// };
 
 export const getPicArrayFS = async (inputParams) => {
   if (!inputParams || !state.active) return null;
@@ -80,7 +86,7 @@ export const getPicArrayFS = async (inputParams) => {
     return [picPath];
   }
 
-  if (uploadPicType !== "uploadFolderFS") return null;
+  if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return null;
 
   if (picPath.endsWith("/") || picPath.endsWith("\\")) picPath = picPath.slice(0, -1);
 
