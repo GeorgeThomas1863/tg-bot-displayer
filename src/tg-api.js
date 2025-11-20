@@ -1,4 +1,7 @@
 import axios from "axios";
+import fs from "fs";
+import FormData from "form-data";
+
 import CONFIG from "../config/config.js";
 import tokenArray from "../config/tg-bot.js";
 import state from "./util/state.js";
@@ -88,6 +91,28 @@ export const tgEditMessageCaption = async (inputParams) => {
 
   //try again
   if (!checkData) return await tgEditMessageCaption(inputParams);
+
+  return data;
+};
+
+export const tgPostPicFS = async (inputParams) => {
+  if (!state.active) return null;
+  const { baseURL } = CONFIG;
+  const { chatId, picPath } = inputParams;
+  const token = tokenArray[tokenIndex];
+
+  const form = new FormData();
+
+  form.append("chat_id", chatId);
+  form.append("photo", fs.createReadStream(picPath));
+
+  const url = `${baseURL}${token}/sendPhoto`;
+  const data = await tgPostReq(url, form);
+
+  const checkData = await checkToken(data);
+
+  //try again
+  if (!checkData) return await tgSendPhotoFS(inputParams);
 
   return data;
 };
