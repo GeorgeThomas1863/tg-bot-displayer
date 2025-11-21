@@ -101,9 +101,6 @@ export const tgPostPicFS = async (inputParams) => {
   const { chatId, picPath } = inputParams;
   const token = tokenArray[tokenIndex];
 
-  console.log("POST PIC FS TOKEN");
-  console.log(token);
-
   const form = new FormData();
 
   form.append("chat_id", chatId);

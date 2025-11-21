@@ -21,58 +21,62 @@ export const runUploadPics = async (inputParams) => {
   const postPicDataArray = [];
   for (let i = 0; i < uploadPicArray.length; i++) {
     if (!state.active) return null;
-    const filePath = uploadPicArray[i];
-    const params = {
-      chatId: uploadToId,
-      picPath: filePath,
-    };
+    try {
+      const filePath = uploadPicArray[i];
+      const params = {
+        chatId: uploadToId,
+        picPath: filePath,
+      };
 
-    const data = await tgPostPicFS(params);
-    if (!data) continue;
-    console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
-    console.log("POSTED PIC DATA");
-    console.log(data.result);
+      const data = await tgPostPicFS(params);
+      if (!data) continue;
+      console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
+      console.log("POSTED PIC DATA");
+      console.log(data.result);
 
-    if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") {
-      postPicDataArray.push(data);
-      continue;
+      if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") {
+        postPicDataArray.push(data);
+        continue;
+      }
+
+      const basePath = path.basename(filePath);
+
+      const picMatchId = await getPicMatchId(basePath, inputParams);
+      if (!picMatchId) continue;
+      console.log("PIC MATCH ID");
+      console.log(picMatchId);
+
+      const regexParams = {
+        keyToLookup: "fileName",
+        regexValue: picMatchId,
+      };
+
+      const fileDataModel = new dbModel(regexParams, collectionPullFrom);
+      const fileData = await fileDataModel.getRegexItem();
+      if (!fileData) continue;
+      console.log("FILE DATA");
+      console.log(fileData);
+
+      const forwardParams = {
+        forwardToId: uploadToId,
+        forwardFromId: fileData.forwardFromChannelId,
+        messageId: fileData.forwardFromMessageId,
+      };
+
+      const forwardData = await tgForwardMessage(forwardParams);
+      if (!forwardData) continue;
+      console.log("FORWARD DATA");
+      console.log(forwardData);
+
+      const storeModel = new dbModel(forwardData, collectionSaveTo);
+      const storeData = await storeModel.storeAny();
+      console.log("STORE DATA");
+      console.log(storeData);
+
+      postPicDataArray.push(forwardData);
+    } catch (e) {
+      console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
-
-    const basePath = path.basename(filePath);
-
-    const picMatchId = await getPicMatchId(basePath, inputParams);
-    if (!picMatchId) continue;
-    console.log("PIC MATCH ID");
-    console.log(picMatchId);
-
-    const regexParams = {
-      keyToLookup: "fileName",
-      regexValue: picMatchId,
-    };
-
-    const fileDataModel = new dbModel(regexParams, collectionPullFrom);
-    const fileData = await fileDataModel.getRegexItem();
-    if (!fileData) continue;
-    console.log("FILE DATA");
-    console.log(fileData);
-
-    const forwardParams = {
-      forwardToId: uploadToId,
-      forwardFromId: fileData.forwardFromChannelId,
-      messageId: fileData.forwardFromMessageId,
-    };
-
-    const forwardData = await tgForwardMessage(forwardParams);
-    if (!forwardData) continue;
-    console.log("FORWARD DATA");
-    console.log(forwardData);
-
-    const storeModel = new dbModel(forwardData, collectionSaveTo);
-    const storeData = await storeModel.storeAny();
-    console.log("STORE DATA");
-    console.log(storeData);
-
-    postPicDataArray.push(forwardData);
   }
 
   return postPicDataArray;
