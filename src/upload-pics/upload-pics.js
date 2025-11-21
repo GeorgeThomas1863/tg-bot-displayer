@@ -128,7 +128,7 @@ export const getPicArrayFS = async (inputParams) => {
 
   //build folder
   const uploadPicArray = [];
-  const folder = fs.readdirSync(picPath);
+  const folder = fs.readdirSync(picPath).sort();
 
   for (let i = 0; i < folder.length; i++) {
     const file = folder[i];
