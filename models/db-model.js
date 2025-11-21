@@ -64,6 +64,12 @@ class dbModel {
     return dataArray;
   }
 
+  async getRegexItem() {
+    const { keyToLookup, regexValue } = this.dataObject;
+    const dataArray = await dbGet().collection(this.collection).findOne({ [keyToLookup]: { $regex: regexValue, $options: "i" } }); //prettier-ignore
+    return dataArray;
+  }
+
   //unique array
   async getUniqueArray() {
     const { keyToLookup, itemValue } = this.dataObject;

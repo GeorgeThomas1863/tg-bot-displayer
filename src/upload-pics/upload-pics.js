@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
 import state from "../util/state.js";
+import dbModel from "../../models/db-model.js";
 
-import { tgPostPicFS, tgPostPicURL } from "../tg-api.js";
+import { tgPostPicFS, tgPostPicURL, tgForwardMessage } from "../tg-api.js";
 import { checkPicURL } from "../util/util.js";
 
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId, dataType } = inputParams;
+  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo } = inputParams;
 
   if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return await uploadPicURL(inputParams);
 
@@ -31,16 +32,47 @@ export const runUploadPics = async (inputParams) => {
     console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
     console.log("POSTED PIC DATA");
     console.log(data.result);
-    postPicDataArray.push(data);
 
-    if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") continue;
+    if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") {
+      postPicDataArray.push(data);
+      continue;
+    }
 
     const basePath = path.basename(filePath);
 
-    const picId = await getPicId(basePath, dataType);
+    const picMatchId = await getPicMatchId(basePath, inputParams);
+    if (!picMatchId) continue;
+    console.log("PIC MATCH ID");
+    console.log(picMatchId);
 
-    console.log("BASE PATH");
-    console.log(basePath);
+    const regexParams = {
+      keyToLookup: "fileName",
+      regexValue: picMatchId,
+    };
+
+    const fileDataModel = new dbModel(regexParams, collectionPullFrom);
+    const fileData = await fileDataModel.getRegexItem();
+    if (!fileData) continue;
+    console.log("FILE DATA");
+    console.log(fileData);
+
+    const forwardParams = {
+      forwardToId: uploadToId,
+      forwardFromId: fileData.forwardFromChannelId,
+      messageId: fileData.forwardFromMessageId,
+    };
+
+    const forwardData = await tgForwardMessage(forwardParams);
+    if (!forwardData) continue;
+    console.log("FORWARD DATA");
+    console.log(forwardData);
+
+    const storeModel = new dbModel(forwardData, collectionSaveTo);
+    const storeData = await storeModel.storeAny();
+    console.log("STORE DATA");
+    console.log(storeData);
+
+    postPicDataArray.push(forwardData);
   }
 
   return postPicDataArray;
@@ -111,11 +143,26 @@ export const getPicArrayFS = async (inputParams) => {
   return uploadPicArray;
 };
 
-export const getPicId = async (basePath, dataType) => {
-  if (!basePath) return null;
+export const getPicMatchId = async (basePath, inputParams) => {
+  if (!basePath || !inputParams) return null;
+  const { dataType, collectionExtra } = inputParams;
 
   //make unique for primal
   if (dataType.toLowerCase().trim() !== "primal") return basePath;
 
   const picRawId = basePath.split("_")[0];
+
+  const dataModel1 = new dbModel({ keyToLookup: "realId", itemValue: picRawId }, collectionExtra);
+  const dataCheck1 = await dataModel1.getUniqueItem();
+  if (dataCheck1 && dataCheck1.realId) return dataCheck1.realId;
+
+  const dataModel2 = new dbModel({ keyToLookup: "vidRealId", itemValue: picRawId }, collectionExtra);
+  const dataCheck2 = await dataModel2.getUniqueItem();
+  if (dataCheck2 && dataCheck2.realId) return dataCheck2.realId;
+
+  const dataModel3 = new dbModel({ keyToLookup: "primalId", itemValue: picRawId }, collectionExtra);
+  const dataCheck3 = await dataModel3.getUniqueItem();
+  if (dataCheck3 && dataCheck3.realId) return dataCheck3.realId;
+
+  return null;
 };
