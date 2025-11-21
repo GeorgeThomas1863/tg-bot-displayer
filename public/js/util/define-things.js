@@ -12,6 +12,7 @@ const d = {
   editCaptionChannelListItem: document.getElementById("list-item-edit-captions-channel"),
   picPathListItem: document.getElementById("list-item-pic-path"),
   collectionPullFromListItem: document.getElementById("list-item-collection-pull-from"),
+  collectionExtraListItem: document.getElementById("list-item-collection-extra"),
   collectionSaveToListItem: document.getElementById("list-item-collection-save-to"),
   forwardAllStoreTypeListItem: document.getElementById("list-item-forward-all-store-type"),
   captionLookupTypeListItem: document.getElementById("list-item-caption-lookup-type"),
@@ -38,6 +39,7 @@ export const listItemsButtonsArray = [
   d.uploadToListItem,
   d.editCaptionChannelListItem,
   d.collectionPullFromListItem,
+  d.collectionExtraListItem,
   d.collectionSaveToListItem,
   d.forwardAllStoreTypeListItem,
   d.captionLookupTypeListItem,
@@ -119,6 +121,7 @@ export const actionButtonMap = {
     d.uploadPicTypeListItem,
     d.picPathListItem,
     d.collectionPullFromListItem,
+    d.collectionExtraListItem,
     d.collectionSaveToListItem,
   ],
 };

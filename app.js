@@ -1,10 +1,3 @@
-//CURRENT STEP: ADD EVENT LISTENER FOR ENTER KEY SUBMIT\
-
-//TO DO:
-//TEST / REBUILD ALL BACKEND COMMANDS
-
-//KEEP BUILDING FORWARD ALL / CAPTION ALL
-
 import express from "express";
 import session from "express-session";
 import routes from "./routes/router.js";

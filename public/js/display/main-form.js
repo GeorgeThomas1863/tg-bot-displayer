@@ -29,6 +29,7 @@ export const buildMainForm = async () => {
 
   const picPathListItem = await buildPicPathListItem();
   const collectionPullFromListItem = await buildCollectionPullFromListItem();
+  const collectionExtraListItem = await buildCollectionExtraListItem();
   const collectionSaveToListItem = await buildCollectionSaveToListItem();
 
   const buttonContainer = await buildButtonContainer();
@@ -51,6 +52,7 @@ export const buildMainForm = async () => {
     uploadToListItem,
     picPathListItem,
     collectionPullFromListItem,
+    collectionExtraListItem,
     collectionSaveToListItem,
     buttonContainer
   );
@@ -498,6 +500,28 @@ export const buildCollectionPullFromListItem = async () => {
   collectionPullFromListItem.append(collectionPullFromLabel, collectionPullFromInput);
 
   return collectionPullFromListItem;
+};
+
+export const buildCollectionExtraListItem = async () => {
+  const collectionExtraListItem = document.createElement("li");
+  collectionExtraListItem.id = "list-item-collection-extra";
+  collectionExtraListItem.className = "form-list-item";
+  collectionExtraListItem.classList.add("hidden");
+
+  const collectionExtraLabel = document.createElement("label");
+  collectionExtraLabel.setAttribute("for", "collection-extra-input");
+  collectionExtraLabel.textContent = "M Extra Data";
+  collectionExtraLabel.className = "form-label";
+
+  const collectionExtraInput = document.createElement("input");
+  collectionExtraInput.type = "text";
+  collectionExtraInput.name = "collection-extra-input";
+  collectionExtraInput.id = "collection-extra-input";
+  collectionExtraInput.className = "form-input";
+
+  collectionExtraListItem.append(collectionExtraLabel, collectionExtraInput);
+
+  return collectionExtraListItem;
 };
 
 export const buildCollectionSaveToListItem = async () => {

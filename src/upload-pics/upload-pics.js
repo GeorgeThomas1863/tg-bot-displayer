@@ -7,12 +7,9 @@ import { checkPicURL } from "../util/util.js";
 
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId } = inputParams;
+  const { uploadPicType, uploadToId, dataType } = inputParams;
 
   if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return await uploadPicURL(inputParams);
-
-  //   if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") return await uploadPicFS(inputParams);
-  //   if (uploadPicType === "uploadMultiID" || uploadPicType === "uploadMultiSpecial") return await uploadPicMatch(inputParams);
 
   const uploadPicArray = await getPicArrayFS(inputParams);
   console.log("UPLOAD PIC ARRAY");
@@ -37,6 +34,13 @@ export const runUploadPics = async (inputParams) => {
     postPicDataArray.push(data);
 
     if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") continue;
+
+    const basePath = path.basename(filePath);
+
+    const picId = await getPicId(basePath, dataType);
+
+    console.log("BASE PATH");
+    console.log(basePath);
   }
 
   return postPicDataArray;
@@ -105,4 +109,13 @@ export const getPicArrayFS = async (inputParams) => {
   }
 
   return uploadPicArray;
+};
+
+export const getPicId = async (basePath, dataType) => {
+  if (!basePath) return null;
+
+  //make unique for primal
+  if (dataType.toLowerCase().trim() !== "primal") return basePath;
+
+  const picRawId = basePath.split("_")[0];
 };
