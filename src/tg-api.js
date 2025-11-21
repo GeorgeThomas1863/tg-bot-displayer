@@ -101,6 +101,9 @@ export const tgPostPicFS = async (inputParams) => {
   const { chatId, picPath } = inputParams;
   const token = tokenArray[tokenIndex];
 
+  console.log("POST PIC FS TOKEN");
+  console.log(token);
+
   const form = new FormData();
 
   form.append("chat_id", chatId);
@@ -112,7 +115,7 @@ export const tgPostPicFS = async (inputParams) => {
   const checkData = await checkToken(data);
 
   //try again
-  if (!checkData) return await tgSendPhotoFS(inputParams);
+  if (!checkData) return await tgPostPicFS(inputParams);
 
   return data;
 };
@@ -174,8 +177,8 @@ export const checkToken = async (data) => {
 
   if (data && data.error_code && data.error_code !== 429) return true;
 
-  // console.log("HERE FAGGOT");
-  // console.log(data);
+  console.log("HERE FAGGOT");
+  console.log(data);
 
   //otherwise bot fucked, return null
   console.log("AHHHHHHHHHHHHH");
