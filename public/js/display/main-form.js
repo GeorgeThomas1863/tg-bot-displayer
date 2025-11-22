@@ -175,7 +175,7 @@ export const buildUploadPicTypeListItem = async () => {
     { value: "uploadFolderFS", text: "Upload Pic Folder FS" },
     { value: "uploadSingleURL", text: "Upload Pic URL" },
     { value: "uploadListURL", text: "Upload Pic URL List DB" },
-    { value: "uploadMultiID", text: "Upload Pic Match ID" },
+    { value: "uploadMultiId", text: "Upload Pic Match ID" },
     { value: "uploadMultiSpecial", text: "Upload Pic Match Special" },
   ];
 
