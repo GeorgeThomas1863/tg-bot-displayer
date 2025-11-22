@@ -29,7 +29,7 @@ export const buildMainForm = async () => {
 
   const picPathListItem = await buildPicPathListItem();
   const collectionPullFromListItem = await buildCollectionPullFromListItem();
-  const collectionExtraListItem = await buildCollectionExtraListItem();
+  const collectionPicListItem = await buildCollectionPicListItem();
   const collectionSaveToListItem = await buildCollectionSaveToListItem();
 
   const buttonContainer = await buildButtonContainer();
@@ -52,7 +52,7 @@ export const buildMainForm = async () => {
     uploadToListItem,
     picPathListItem,
     collectionPullFromListItem,
-    collectionExtraListItem,
+    collectionPicListItem,
     collectionSaveToListItem,
     buttonContainer
   );
@@ -502,26 +502,26 @@ export const buildCollectionPullFromListItem = async () => {
   return collectionPullFromListItem;
 };
 
-export const buildCollectionExtraListItem = async () => {
-  const collectionExtraListItem = document.createElement("li");
-  collectionExtraListItem.id = "list-item-collection-extra";
-  collectionExtraListItem.className = "form-list-item";
-  collectionExtraListItem.classList.add("hidden");
+export const buildCollectionPicListItem = async () => {
+  const collectionPicListItem = document.createElement("li");
+  collectionPicListItem.id = "list-item-collection-pic";
+  collectionPicListItem.className = "form-list-item";
+  collectionPicListItem.classList.add("hidden");
 
-  const collectionExtraLabel = document.createElement("label");
-  collectionExtraLabel.setAttribute("for", "collection-extra-input");
-  collectionExtraLabel.textContent = "M Extra Data";
-  collectionExtraLabel.className = "form-label";
+  const collectionPicLabel = document.createElement("label");
+  collectionPicLabel.setAttribute("for", "collection-pic-input");
+  collectionPicLabel.textContent = "M Pic Data";
+  collectionPicLabel.className = "form-label";
 
-  const collectionExtraInput = document.createElement("input");
-  collectionExtraInput.type = "text";
-  collectionExtraInput.name = "collection-extra-input";
-  collectionExtraInput.id = "collection-extra-input";
-  collectionExtraInput.className = "form-input";
+  const collectionPicInput = document.createElement("input");
+  collectionPicInput.type = "text";
+  collectionPicInput.name = "collection-pic-input";
+  collectionPicInput.id = "collection-pic-input";
+  collectionPicInput.className = "form-input";
 
-  collectionExtraListItem.append(collectionExtraLabel, collectionExtraInput);
+  collectionPicListItem.append(collectionPicLabel, collectionPicInput);
 
-  return collectionExtraListItem;
+  return collectionPicListItem;
 };
 
 export const buildCollectionSaveToListItem = async () => {

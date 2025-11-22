@@ -1,99 +1,81 @@
-export const uploadPicMatch = async (inputParams) => {};
+import path from "path";
+import state from "../util/state.js";
+import dbModel from "../../models/db-model.js";
 
-// export const runUploadPics = async (inputParams) => {
-//     if (!inputParams || !state.active) return null;
-//     const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionExtra } = inputParams;
-  
-//     if (uploadPicType === "uploadMultiId" || uploadPicType === "uploadMultiSpecial") return await uploadPicMatch(inputParams);
-  
-//     if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return await uploadPicURL(inputParams);
-  
-//     const uploadPicArray = await getPicArrayFS(inputParams);
-//     console.log("UPLOAD PIC ARRAY");
-//     console.log(uploadPicArray);
-  
-//     if (!uploadPicArray) return null;
-  
-//     const postPicDataArray = [];
-//     for (let i = 0; i < uploadPicArray.length; i++) {
-//       if (!state.active) return null;
-//       try {
-//         const filePath = uploadPicArray[i];
-//         const params = {
-//           chatId: uploadToId,
-//           picPath: filePath,
-//         };
-  
-//         const data = await tgPostPicFS(params);
-//         if (!data) continue;
-//         console.log(`POSTED PIC ${i + 1} OF ${uploadPicArray.length}`);
-//         console.log("POSTED PIC DATA");
-//         console.log(data.result);
-  
-//         if (uploadPicType === "uploadSingleFS" || uploadPicType === "uploadFolderFS") {
-//           postPicDataArray.push(data);
-//           continue;
-//         }
-  
-//         const picBasePath = path.basename(filePath).trim();
-//         const picId = picBasePath.split("_")[0];
-  
-//         console.log("PIC ID");
-//         console.log(picId);
-  
-//         //KEEP PLAYING WITH IT HERE
-  
-//         const vidNameParams = {
-//           keyToLookup: "picId",
-//           itemValue: picId,
-//         };
-  
-//         const vidNameModel = new dbModel(vidNameParams, collectionExtra);
-//         const vidNameData = await vidNameModel.getUniqueItem();
-//         if (!vidNameData) continue;
-  
-//         console.log("VID NAME DATA");
-//         console.log(vidNameData);
-  
-//         // const regexParams = {
-//         //   keyToLookup: "fileName",
-//         //   regexValue: vidNameData.vidSaveName,
-//         // };
-  
-//         const fileDataParams = {
-//           keyToLookup: "fileName",
-//           itemValue: vidNameData.vidSaveName,
-//         };
-  
-//         const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
-//         const fileData = await fileDataModel.getUniqueItem();
-//         if (!fileData) continue;
-  
-//         console.log("FILE DATA");
-//         console.log(fileData);
-  
-//         const forwardParams = {
-//           forwardToId: uploadToId,
-//           forwardFromId: fileData.forwardFromChannelId,
-//           messageId: fileData.forwardFromMessageId,
-//         };
-  
-//         const forwardData = await tgForwardMessage(forwardParams);
-//         if (!forwardData) continue;
-//         console.log("FORWARD DATA");
-//         console.log(forwardData);
-  
-//         const storeModel = new dbModel(forwardData, collectionSaveTo);
-//         const storeData = await storeModel.storeAny();
-//         console.log("STORE DATA");
-//         console.log(storeData);
-  
-//         postPicDataArray.push(forwardData);
-//       } catch (e) {
-//         console.log(e.message + "\n" + e.data + "\n" + e.status);
-//       }
-//     }
-  
-//     return postPicDataArray;
-//   };
-  
+export const uploadPicMatch = async (inputParams) => {
+  if (!inputParams || !state.active) return null;
+  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic } = inputParams;
+
+  if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
+
+  const uploadPicArray = await getPicArrayFS(inputParams);
+  if (!uploadPicArray) return null;
+  console.log("UPLOAD PIC ARRAY");
+  console.log(uploadPicArray);
+
+  const postPicDataArray = [];
+  for (let i = 0; i < uploadPicArray.length; i++) {
+    if (!state.active) return null;
+    const uploadPicPath = uploadPicArray[i];
+    const uploadPicBasePath = path.basename(uploadPicPath).trim();
+    const uploadPicId = uploadPicBasePath.split("_")[0];
+
+    //check if in pic in colleciton
+    const picCheckParams = {
+      keyToLookup: "picId",
+      itemValue: uploadPicId,
+    };
+
+    const picCheckModel = new dbModel(picCheckParams, collectionPic);
+    const picCheckData = await picCheckModel.getUniqueItem();
+    console.log("PIC CHECK DATA");
+    console.log(picCheckData);
+    if (!picCheckData || !picCheckData.vidSaveName) continue;
+
+    //find vid in forward data
+    const vidCheckParams = {
+      keyToLookup: "fileName",
+      itemValue: picCheckData.vidSaveName,
+    };
+
+    const vidCheckModel = new dbModel(vidCheckParams, collectionPullFrom);
+    const vidCheckData = await vidCheckModel.getUniqueItem();
+    console.log("VID CHECK DATA");
+    console.log(vidCheckData);
+    if (!vidCheckData) continue;
+
+    //ADD VID DOUBLE CHECK HERE
+
+    //post pic
+    const postPicParams = {
+      chatId: uploadToId,
+      picPath: uploadPicPath,
+    };
+
+    const postPicData = await tgPostPicFS(postPicParams);
+    console.log("POSTED PIC DATA");
+    console.log(postPicData.result);
+    if (!postPicData) continue;
+
+    //foward vid
+    const forwardVidParams = {
+      forwardToId: uploadToId,
+      forwardFromId: vidCheckData.forwardFromChannelId,
+      messageId: vidCheckData.forwardFromMessageId,
+    };
+
+    const forwardVidData = await tgForwardMessage(forwardVidParams);
+    console.log("FORWARD VID DATA");
+    console.log(forwardVidData);
+    if (!forwardVidData) continue;
+
+    const storeModel = new dbModel(forwardVidData, collectionSaveTo);
+    const storeData = await storeModel.storeAny();
+    console.log("STORE DATA");
+    console.log(storeData);
+
+    postPicDataArray.push(storeData);
+  }
+
+  return postPicDataArray;
+};

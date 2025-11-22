@@ -48,7 +48,7 @@ export const buildInputParams = async () => {
     uploadPicType: document.getElementById("lookup-type-upload-pic-input").value,
     picPath: document.getElementById("pic-path-input").value,
     collectionPullFrom: document.getElementById("collection-pull-from-input").value,
-    collectionExtra: document.getElementById("collection-extra-input").value,
+    collectionPic: document.getElementById("collection-pic-input").value,
     collectionSaveTo: document.getElementById("collection-save-to-input").value,
   };
 
