@@ -6,6 +6,7 @@ import dbModel from "../../models/db-model.js";
 import { tgPostPicFS, tgPostPicURL, tgForwardMessage } from "../tg-api.js";
 import { checkPicURL } from "../util/util.js";
 
+//MAKE SO CHECKS PIC / VID EXISTS FIRST
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionExtra } = inputParams;
