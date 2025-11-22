@@ -39,15 +39,23 @@ export const runUploadPics = async (inputParams) => {
         continue;
       }
 
-      const vidNameParams = {
-        keyToLookup: "picPath",
-        itemValue: filePath,
+      const picBasePath = path.basename(filePath).trim();
+      const picId = picBasePath.split("_")[0];
+
+      console.log("PIC BASE PATH");
+      console.log(picBasePath);
+
+      //KEEP PLAYING WITH IT HERE
+
+      const vidNamePararms = {
+        keyToLookup: "picId",
+        itemValue: picId,
       };
 
-      const vidNameModel = new dbModel(vidNameParams, collectionExtra);
-      const vidNameData = await vidNameModel.getUniqueItem();
-      if (!vidNameData) continue;
-      console.log("VID NAME");
+      const vidNameModel = new dbModel(regexParams, collectionExtra);
+      const vidNameData = await vidNameModel.getRegexItem();
+
+      console.log("VID NAME DATA");
       console.log(vidNameData);
 
       // const regexParams = {
@@ -55,34 +63,34 @@ export const runUploadPics = async (inputParams) => {
       //   regexValue: vidNameData.vidSaveName,
       // };
 
-      const fileDataParams = {
-        keyToLookup: "fileName",
-        itemValue: vidNameData.vidSaveName,
-      };
+      // const fileDataParams = {
+      //   keyToLookup: "fileName",
+      //   itemValue: vidNameData.vidSaveName,
+      // };
 
-      const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
-      const fileData = await fileDataModel.getUniqueItem();
-      if (!fileData) continue;
-      console.log("FILE DATA");
-      console.log(fileData);
+      // const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
+      // const fileData = await fileDataModel.getUniqueItem();
 
-      const forwardParams = {
-        forwardToId: uploadToId,
-        forwardFromId: fileData.forwardFromChannelId,
-        messageId: fileData.forwardFromMessageId,
-      };
+      // console.log("FILE DATA");
+      // console.log(fileData);
 
-      const forwardData = await tgForwardMessage(forwardParams);
-      if (!forwardData) continue;
-      console.log("FORWARD DATA");
-      console.log(forwardData);
+      // const forwardParams = {
+      //   forwardToId: uploadToId,
+      //   forwardFromId: fileData.forwardFromChannelId,
+      //   messageId: fileData.forwardFromMessageId,
+      // };
 
-      const storeModel = new dbModel(forwardData, collectionSaveTo);
-      const storeData = await storeModel.storeAny();
-      console.log("STORE DATA");
-      console.log(storeData);
+      // const forwardData = await tgForwardMessage(forwardParams);
+      // if (!forwardData) continue;
+      // console.log("FORWARD DATA");
+      // console.log(forwardData);
 
-      postPicDataArray.push(forwardData);
+      // const storeModel = new dbModel(forwardData, collectionSaveTo);
+      // const storeData = await storeModel.storeAny();
+      // console.log("STORE DATA");
+      // console.log(storeData);
+
+      // postPicDataArray.push(forwardData);
     } catch (e) {
       console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
