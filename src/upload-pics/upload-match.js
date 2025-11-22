@@ -2,6 +2,8 @@ import path from "path";
 import state from "../util/state.js";
 import dbModel from "../../models/db-model.js";
 
+import { getPicArrayFS } from "./upload-pics.js";
+
 export const uploadPicMatch = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic } = inputParams;
@@ -19,6 +21,9 @@ export const uploadPicMatch = async (inputParams) => {
     const uploadPicPath = uploadPicArray[i];
     const uploadPicBasePath = path.basename(uploadPicPath).trim();
     const uploadPicId = uploadPicBasePath.split("_")[0];
+
+    console.log("UPLOAD PIC PATH");
+    console.log(uploadPicPath);
 
     //check if in pic in colleciton
     const picCheckParams = {
