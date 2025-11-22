@@ -54,6 +54,7 @@ export const runUploadPics = async (inputParams) => {
 
       const vidNameModel = new dbModel(vidNameParams, collectionExtra);
       const vidNameData = await vidNameModel.getUniqueItem();
+      if (!vidNameData) continue;
 
       console.log("VID NAME DATA");
       console.log(vidNameData);
@@ -70,6 +71,7 @@ export const runUploadPics = async (inputParams) => {
 
       const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
       const fileData = await fileDataModel.getUniqueItem();
+      if (!fileData) continue;
 
       console.log("FILE DATA");
       console.log(fileData);
