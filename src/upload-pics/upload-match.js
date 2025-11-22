@@ -3,6 +3,7 @@ import state from "../util/state.js";
 import dbModel from "../../models/db-model.js";
 
 import { getPicArrayFS } from "./upload-pics.js";
+import { tgPostPicFS, tgForwardMessage } from "../tg-api.js";
 
 export const uploadPicMatch = async (inputParams) => {
   if (!inputParams || !state.active) return null;
