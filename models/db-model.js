@@ -60,6 +60,10 @@ class dbModel {
 
   async getUniqueItem() {
     const { keyToLookup, itemValue } = this.dataObject;
+    console.log("GET UNIQUE ITEM");
+    console.log(this.dataObject);
+    console.log("COLLECTION");
+    console.log(this.collection);
 
     const dataArray = await dbGet().collection(this.collection).findOne({ [keyToLookup]: itemValue }); //prettier-ignore
     return dataArray;

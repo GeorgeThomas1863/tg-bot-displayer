@@ -42,18 +42,18 @@ export const runUploadPics = async (inputParams) => {
       const picBasePath = path.basename(filePath).trim();
       const picId = picBasePath.split("_")[0];
 
-      console.log("PIC BASE PATH");
-      console.log(picBasePath);
+      console.log("PIC ID");
+      console.log(picId);
 
       //KEEP PLAYING WITH IT HERE
 
-      const vidNamePararms = {
+      const vidNameParams = {
         keyToLookup: "picId",
         itemValue: picId,
       };
 
-      const vidNameModel = new dbModel(regexParams, collectionExtra);
-      const vidNameData = await vidNameModel.getRegexItem();
+      const vidNameModel = new dbModel(vidNameParams, collectionExtra);
+      const vidNameData = await vidNameModel.getUniqueItem();
 
       console.log("VID NAME DATA");
       console.log(vidNameData);
@@ -63,34 +63,34 @@ export const runUploadPics = async (inputParams) => {
       //   regexValue: vidNameData.vidSaveName,
       // };
 
-      // const fileDataParams = {
-      //   keyToLookup: "fileName",
-      //   itemValue: vidNameData.vidSaveName,
-      // };
+      const fileDataParams = {
+        keyToLookup: "fileName",
+        itemValue: vidNameData.vidSaveName,
+      };
 
-      // const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
-      // const fileData = await fileDataModel.getUniqueItem();
+      const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
+      const fileData = await fileDataModel.getUniqueItem();
 
-      // console.log("FILE DATA");
-      // console.log(fileData);
+      console.log("FILE DATA");
+      console.log(fileData);
 
-      // const forwardParams = {
-      //   forwardToId: uploadToId,
-      //   forwardFromId: fileData.forwardFromChannelId,
-      //   messageId: fileData.forwardFromMessageId,
-      // };
+      const forwardParams = {
+        forwardToId: uploadToId,
+        forwardFromId: fileData.forwardFromChannelId,
+        messageId: fileData.forwardFromMessageId,
+      };
 
-      // const forwardData = await tgForwardMessage(forwardParams);
-      // if (!forwardData) continue;
-      // console.log("FORWARD DATA");
-      // console.log(forwardData);
+      const forwardData = await tgForwardMessage(forwardParams);
+      if (!forwardData) continue;
+      console.log("FORWARD DATA");
+      console.log(forwardData);
 
-      // const storeModel = new dbModel(forwardData, collectionSaveTo);
-      // const storeData = await storeModel.storeAny();
-      // console.log("STORE DATA");
-      // console.log(storeData);
+      const storeModel = new dbModel(forwardData, collectionSaveTo);
+      const storeData = await storeModel.storeAny();
+      console.log("STORE DATA");
+      console.log(storeData);
 
-      // postPicDataArray.push(forwardData);
+      postPicDataArray.push(forwardData);
     } catch (e) {
       console.log(e.message + "\n" + e.data + "\n" + e.status);
     }
