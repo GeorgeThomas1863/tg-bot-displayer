@@ -8,7 +8,7 @@ import { checkPicURL } from "../util/util.js";
 
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo } = inputParams;
+  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionExtra } = inputParams;
 
   if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return await uploadPicURL(inputParams);
 
@@ -39,20 +39,29 @@ export const runUploadPics = async (inputParams) => {
         continue;
       }
 
-      const basePath = path.basename(filePath);
-
-      const picMatchId = await getPicMatchId(basePath, inputParams);
-      if (!picMatchId) continue;
-      console.log("PIC MATCH ID");
-      console.log(picMatchId);
-
-      const regexParams = {
-        keyToLookup: "fileName",
-        regexValue: picMatchId,
+      const vidNameParams = {
+        keyToLookup: "picPath",
+        itemValue: filePath,
       };
 
-      const fileDataModel = new dbModel(regexParams, collectionPullFrom);
-      const fileData = await fileDataModel.getRegexItem();
+      const vidNameModel = new dbModel(vidNameParams, collectionExtra);
+      const vidNameData = await vidNameModel.getUniqueItem();
+      if (!vidNameData) continue;
+      console.log("VID NAME");
+      console.log(vidNameData);
+
+      // const regexParams = {
+      //   keyToLookup: "fileName",
+      //   regexValue: vidNameData.vidSaveName,
+      // };
+
+      const fileDataParams = {
+        keyToLookup: "fileName",
+        itemValue: vidNameData.vidSaveName,
+      };
+
+      const fileDataModel = new dbModel(fileDataParams, collectionPullFrom);
+      const fileData = await fileDataModel.getUniqueItem();
       if (!fileData) continue;
       console.log("FILE DATA");
       console.log(fileData);
@@ -109,10 +118,6 @@ export const uploadPicURL = async (inputParams) => {
   return data;
 };
 
-// export const uploadPicMatch = async (inputParams) => {
-//   if (!inputParams || !state.active) return null;
-// };
-
 export const getPicArrayFS = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType } = inputParams;
@@ -147,26 +152,26 @@ export const getPicArrayFS = async (inputParams) => {
   return uploadPicArray;
 };
 
-export const getPicMatchId = async (basePath, inputParams) => {
-  if (!basePath || !inputParams) return null;
-  const { dataType, collectionExtra } = inputParams;
+// export const getPicMatchId = async (filePath, inputParams) => {
+//   if (!filePath || !inputParams) return null;
+//   const { dataType, collectionExtra } = inputParams;
 
-  //make unique for primal
-  if (dataType.toLowerCase().trim() !== "primal") return basePath;
+//   //make unique for primal
+//   if (dataType.toLowerCase().trim() !== "primal") return filePath;
 
-  const picRawId = basePath.split("_")[0];
+//   const picRawId = basePath.split("_")[0];
 
-  const dataModel1 = new dbModel({ keyToLookup: "realId", itemValue: picRawId }, collectionExtra);
-  const dataCheck1 = await dataModel1.getUniqueItem();
-  if (dataCheck1 && dataCheck1.realId) return dataCheck1.realId;
+//   const dataModel1 = new dbModel({ keyToLookup: "realId", itemValue: picRawId }, collectionExtra);
+//   const dataCheck1 = await dataModel1.getUniqueItem();
+//   if (dataCheck1 && dataCheck1.realId) return dataCheck1.realId;
 
-  const dataModel2 = new dbModel({ keyToLookup: "vidRealId", itemValue: picRawId }, collectionExtra);
-  const dataCheck2 = await dataModel2.getUniqueItem();
-  if (dataCheck2 && dataCheck2.realId) return dataCheck2.realId;
+//   const dataModel2 = new dbModel({ keyToLookup: "vidRealId", itemValue: picRawId }, collectionExtra);
+//   const dataCheck2 = await dataModel2.getUniqueItem();
+//   if (dataCheck2 && dataCheck2.realId) return dataCheck2.realId;
 
-  const dataModel3 = new dbModel({ keyToLookup: "primalId", itemValue: picRawId }, collectionExtra);
-  const dataCheck3 = await dataModel3.getUniqueItem();
-  if (dataCheck3 && dataCheck3.realId) return dataCheck3.realId;
+//   const dataModel3 = new dbModel({ keyToLookup: "primalId", itemValue: picRawId }, collectionExtra);
+//   const dataCheck3 = await dataModel3.getUniqueItem();
+//   if (dataCheck3 && dataCheck3.realId) return dataCheck3.realId;
 
-  return null;
-};
+//   return null;
+// };
