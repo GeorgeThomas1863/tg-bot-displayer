@@ -137,7 +137,6 @@ export const buildCaptionLookupTypeListItem = async () => {
     { value: "lookupFileName", text: "Lookup File Name" },
     { value: "lookupSpecial", text: "Lookup Special" },
     { value: "clearVidCaptions", text: "CLEAR Vid Captions" },
-    { value: "reorder", text: "Reorder Vids" },
   ];
 
   for (let i = 0; i < optionArray.length; i++) {
@@ -176,7 +175,8 @@ export const buildUploadPicTypeListItem = async () => {
     { value: "uploadFolderFS", text: "Upload Pic Folder FS" },
     { value: "uploadSingleURL", text: "Upload Pic URL" },
     { value: "uploadListURL", text: "Upload Pic URL List DB" },
-    { value: "uploadMultiId", text: "Upload Pic Match ID" },
+    { value: "uploadPicMatchVid", text: "Upload Pic Match Vid" },
+    { value: "forwardVidMatchPic", text: "Forward Vid Match Pic" },
     { value: "uploadMultiSpecial", text: "Upload Pic Match Special" },
   ];
 

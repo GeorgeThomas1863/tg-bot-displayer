@@ -85,3 +85,70 @@ export const uploadPicMatch = async (inputParams) => {
 
   return postPicDataArray;
 };
+
+//--------------------
+
+export const forwardVidMatchPic = async (inputParams) => {
+  if (!inputParams || !state.active) return null;
+  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic, picPath } = inputParams;
+
+  if (uploadPicType !== "forwardVidMatchPic") return null;
+
+  const postVidModel = new dbModel("", collectionPullFrom);
+  const postVidArray = await postVidModel.getAll();
+  if (!postVidArray || !postVidArray.length) return null;
+  console.log("POST VID ARRAY");
+  console.log(postVidArray);
+
+  const postPicDataArray = [];
+  for (let i = 0; i < postVidArray.length; i++) {
+    const postVidItem = postVidArray[i];
+    const { fileName, forwardFromChannelId, forwardFromMessageId } = postVidItem;
+    if (!fileName) continue;
+
+    const fileNameId = fileName.split("_")[0];
+    if (!fileNameId) continue;
+
+    const fileNameCheckParams = {
+      keyToLookup: "realId",
+      itemValue: fileNameId,
+    };
+
+    const fileNameCheckModel = new dbModel(fileNameCheckParams, collectionPic);
+    const fileNameCheckData = await fileNameCheckModel.getUniqueItem();
+    if (!fileNameCheckData || !fileNameCheckData.picBasePath) continue;
+
+    const uploadPicPath = path.join(picPath, fileNameCheckData.picBasePath);
+
+    const postPicParams = {
+      chatId: uploadToId,
+      picPath: uploadPicPath,
+    };
+
+    const postPicData = await tgPostPicFS(postPicParams);
+    console.log("POSTED PIC DATA");
+    console.log(postPicData.result);
+    if (!postPicData) continue;
+
+    //foward vid
+    const forwardVidParams = {
+      forwardToId: uploadToId,
+      forwardFromId: forwardFromChannelId,
+      messageId: forwardFromMessageId,
+    };
+
+    const forwardVidData = await tgForwardMessage(forwardVidParams);
+    console.log("FORWARD VID DATA");
+    console.log(forwardVidData);
+    if (!forwardVidData) continue;
+
+    const storeModel = new dbModel(forwardVidData, collectionSaveTo);
+    const storeData = await storeModel.storeAny();
+    console.log("STORE DATA");
+    console.log(storeData);
+
+    postPicDataArray.push(storeData);
+  }
+
+  return postPicDataArray;
+};

@@ -132,13 +132,4 @@ export const getPrimalText = async (forwardData, inputObj) => {
   return itemData.labelText;
 };
 
-//---------------------------
 
-export const reorderVids = async (inputParams) => {
-  if (!inputParams || !state.active) return null;
-
-  console.log("REORDER VIDS");
-  console.log(inputParams);
-
-  return null;
-};
