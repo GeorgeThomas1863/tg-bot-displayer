@@ -137,6 +137,7 @@ export const buildCaptionLookupTypeListItem = async () => {
     { value: "lookupFileName", text: "Lookup File Name" },
     { value: "lookupSpecial", text: "Lookup Special" },
     { value: "clearVidCaptions", text: "CLEAR Vid Captions" },
+    { value: "reorder", text: "Reorder Vids" },
   ];
 
   for (let i = 0; i < optionArray.length; i++) {

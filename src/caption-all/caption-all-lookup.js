@@ -6,6 +6,8 @@ export const runCaptionAllLookup = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { captionAllType, messageStart, messageStop, collectionPullFrom, collectionSaveTo, editChannelId, forwardToId } = inputParams;
 
+  if (captionAllType === "reorder") return await reorderVids(inputParams);
+
   console.log("CAPTION ALL LOOKUP");
   console.log(inputParams);
 
@@ -121,11 +123,22 @@ export const getPrimalText = async (forwardData, inputObj) => {
   const itemData = await dataModel.getUniqueItem();
   console.log("ITEM DATA");
   console.log(itemData);
-  
+
   if (!itemData || !itemData.labelText) return null;
 
   console.log("LABEL TEXT!!");
   console.log(itemData.labelText);
 
   return itemData.labelText;
+};
+
+//---------------------------
+
+export const reorderVids = async (inputParams) => {
+  if (!inputParams || !state.active) return null;
+
+  console.log("REORDER VIDS");
+  console.log(inputParams);
+
+  return null;
 };
