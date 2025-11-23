@@ -102,52 +102,57 @@ export const forwardVidMatchPic = async (inputParams) => {
 
   const postPicDataArray = [];
   for (let i = 0; i < postVidArray.length; i++) {
-    const postVidItem = postVidArray[i];
-    const { fileName, forwardFromChannelId, forwardFromMessageId } = postVidItem;
-    if (!fileName) continue;
+    try {
+      if (!state.active) return null;
+      const postVidItem = postVidArray[i];
+      const { fileName, forwardFromChannelId, forwardFromMessageId } = postVidItem;
+      if (!fileName) continue;
 
-    const fileNameId = fileName.split("_")[0];
-    if (!fileNameId) continue;
+      const fileNameId = fileName.split("_")[0].trim().toLowerCase();
+      if (!fileNameId) continue;
 
-    const fileNameCheckParams = {
-      keyToLookup: "realId",
-      itemValue: fileNameId,
-    };
+      const fileNameCheckParams = {
+        keyToLookup: "realId",
+        itemValue: fileNameId,
+      };
 
-    const fileNameCheckModel = new dbModel(fileNameCheckParams, collectionPic);
-    const fileNameCheckData = await fileNameCheckModel.getUniqueItem();
-    if (!fileNameCheckData || !fileNameCheckData.picBasePath) continue;
+      const fileNameCheckModel = new dbModel(fileNameCheckParams, collectionPic);
+      const fileNameCheckData = await fileNameCheckModel.getUniqueItem();
+      if (!fileNameCheckData || !fileNameCheckData.picBasePath) continue;
 
-    const uploadPicPath = path.join(picPath, fileNameCheckData.picBasePath);
+      const uploadPicPath = path.join(picPath, fileNameCheckData.picBasePath);
 
-    const postPicParams = {
-      chatId: uploadToId,
-      picPath: uploadPicPath,
-    };
+      const postPicParams = {
+        chatId: uploadToId,
+        picPath: uploadPicPath,
+      };
 
-    const postPicData = await tgPostPicFS(postPicParams);
-    console.log("POSTED PIC DATA");
-    console.log(postPicData.result);
-    if (!postPicData) continue;
+      const postPicData = await tgPostPicFS(postPicParams);
+      console.log("POSTED PIC DATA");
+      console.log(postPicData.result);
+      if (!postPicData) continue;
 
-    //foward vid
-    const forwardVidParams = {
-      forwardToId: uploadToId,
-      forwardFromId: forwardFromChannelId,
-      messageId: forwardFromMessageId,
-    };
+      //foward vid
+      const forwardVidParams = {
+        forwardToId: uploadToId,
+        forwardFromId: forwardFromChannelId,
+        messageId: forwardFromMessageId,
+      };
 
-    const forwardVidData = await tgForwardMessage(forwardVidParams);
-    console.log("FORWARD VID DATA");
-    console.log(forwardVidData);
-    if (!forwardVidData) continue;
+      const forwardVidData = await tgForwardMessage(forwardVidParams);
+      console.log("FORWARD VID DATA");
+      console.log(forwardVidData);
+      if (!forwardVidData) continue;
 
-    const storeModel = new dbModel(forwardVidData, collectionSaveTo);
-    const storeData = await storeModel.storeAny();
-    console.log("STORE DATA");
-    console.log(storeData);
+      const storeModel = new dbModel(forwardVidData, collectionSaveTo);
+      const storeData = await storeModel.storeAny();
+      console.log("STORE DATA");
+      console.log(storeData);
 
-    postPicDataArray.push(storeData);
+      postPicDataArray.push(storeData);
+    } catch (e) {
+      console.log(e.message + "\n" + e.data + "\n" + e.status);
+    }
   }
 
   return postPicDataArray;
