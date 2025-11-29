@@ -3,6 +3,7 @@ import { actionButtonMap, listItemsButtonsArray, commandMap } from "./util/defin
 import { getAuthParams, buildInputParams } from "./util/params-front.js";
 import { sendToBack } from "./util/api-front.js";
 import { buildReturnDisplay } from "./display/return-display.js";
+import { undoPretty } from "./util/make-pretty.js";
 
 import { hideArray, unhideArray } from "./util/collapse.js";
 
@@ -30,6 +31,9 @@ export const runSubmitCommand = async () => {
   if (!data) return null;
   console.log("!!!DATA");
   console.log(data);
+
+  //reset make pretty button
+  await undoPretty();
 
   await buildReturnDisplay(data);
   return true;
