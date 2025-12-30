@@ -11,6 +11,14 @@ export const runCaptionAllLookup = async (inputParams) => {
   console.log("CAPTION ALL LOOKUP");
   console.log(inputParams);
 
+  console.log("STATE");
+  console.log(state);
+
+  console.log("MESSAGE START");
+  console.log(messageStart);
+  console.log("MESSAGE STOP");
+  console.log(messageStop);
+
   const returnDataArray = [];
   for (let i = messageStart; i < messageStop; i++) {
     if (!state.active) return null;
@@ -20,6 +28,9 @@ export const runCaptionAllLookup = async (inputParams) => {
         forwardFromId: editChannelId,
         messageId: i,
       };
+
+      console.log("FORWARD PARAMS");
+      console.log(forwardParams);
 
       const forwardData = await tgForwardMessage(forwardParams);
       if (!forwardData) continue;
@@ -76,13 +87,6 @@ export const getFileNameVid = async (forwardData) => {
   return file_name;
 };
 
-//build
-export const getFileNameLookup = async (forwardData, inputObj) => {
-  const { dataType } = inputObj;
-
-  if (dataType.toLowerCase().trim() === "primal") return await getPrimalText(forwardData, inputObj);
-};
-
 export const getFileNameSpecial = async (forwardData, inputObj) => {
   const { collectionPullFrom } = inputObj;
   const { video } = forwardData.result;
@@ -102,14 +106,22 @@ export const getFileNameSpecial = async (forwardData, inputObj) => {
   return itemData.labelText;
 };
 
+//catch all
+export const getFileNameLookup = async (forwardData, inputObj) => {
+  const { dataType } = inputObj;
+
+  if (dataType.toLowerCase().trim() === "primal") return await getPrimalText(forwardData, inputObj);
+  if (dataType.toLowerCase().trim() === "defeated") return await getDefeatedText(forwardData, inputObj);
+};
+
 export const getPrimalText = async (forwardData, inputObj) => {
   const { collectionPullFrom } = inputObj;
 
-  console.log("GET PRIMAL TEXT");
-  console.log("FORWARD DATA");
-  console.log(forwardData);
-  console.log("INPUT OBJ");
-  console.log(inputObj);
+  // console.log("GET PRIMAL TEXT");
+  // console.log("FORWARD DATA");
+  // console.log(forwardData);
+  // console.log("INPUT OBJ");
+  // console.log(inputObj);
 
   const { video } = forwardData.result;
   if (!video) return null;
@@ -132,4 +144,18 @@ export const getPrimalText = async (forwardData, inputObj) => {
   return itemData.labelText;
 };
 
+export const getDefeatedText = async (forwardData, inputObj) => {
+  const { collectionPullFrom } = inputObj;
+  if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
+  const { file_name } = forwardData.result.video;
 
+  const dataModel1 = new dbModel({ keyToLookup: "vidName", itemValue: file_name }, collectionPullFrom);
+  const itemData1 = await dataModel1.getUniqueItem();
+  if (itemData1 && itemData1.labelText) return itemData1.labelText;
+
+  const dataModel2 = new dbModel({ keyToLookup: "vidId", itemValue: file_name.split("-")[0] }, collectionPullFrom);
+  const itemData2 = await dataModel2.getUniqueItem();
+  if (itemData2 && itemData2.labelText) return itemData2.labelText;
+
+  return null;
+};
