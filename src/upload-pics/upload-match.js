@@ -9,6 +9,9 @@ export const uploadPicMatch = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic } = inputParams;
 
+  // console.log("UPLOAD PIC MATCH")
+  // console.log(inputParams)
+
   if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
 
   const uploadPicArray = await getPicArrayFS(inputParams);
@@ -20,28 +23,14 @@ export const uploadPicMatch = async (inputParams) => {
   for (let i = 0; i < uploadPicArray.length; i++) {
     if (!state.active) return null;
     const uploadPicPath = uploadPicArray[i];
-    const uploadPicBasePath = path.basename(uploadPicPath).trim();
-    const uploadPicId = uploadPicBasePath.split("_")[0];
-
-    console.log("UPLOAD PIC PATH");
-    console.log(uploadPicPath);
-
-    //check if in pic in colleciton
-    const picCheckParams = {
-      keyToLookup: "picId",
-      itemValue: uploadPicId,
-    };
-
-    const picCheckModel = new dbModel(picCheckParams, collectionPic);
-    const picCheckData = await picCheckModel.getUniqueItem();
-    console.log("PIC CHECK DATA");
-    console.log(picCheckData);
-    if (!picCheckData || !picCheckData.vidSaveName) continue;
+    const matchString = await getMatchString(uploadPicPath, inputParams);
+    console.log("MATCH STRING");
+    console.log(matchString);
 
     //find vid in forward data
     const vidCheckParams = {
       keyToLookup: "fileName",
-      itemValue: picCheckData.vidSaveName,
+      itemValue: matchString,
     };
 
     const vidCheckModel = new dbModel(vidCheckParams, collectionPullFrom);
@@ -156,4 +145,24 @@ export const forwardVidMatchPic = async (inputParams) => {
   }
 
   return postPicDataArray;
+};
+
+export const getMatchString = async (picPath, inputParams) => {
+  if (!picPath || !inputParams) return null;
+  const { collectionPic } = inputParams;
+
+  //method for defeated
+  const pathStr = picPath.split("_comp")[0];
+  if (!pathStr) return null;
+
+  const regexParams = {
+    keyToLookup: "pageURL",
+    regexValue: `/${pathStr}`,
+  };
+
+  const regexModel = new dbModel(regexParams, collectionPic);
+  const regexData = await regexModel.getRegexItem();
+  if (!regexData || !regexData.vidName) return null;
+
+  return regexData.vidName;
 };
