@@ -9,8 +9,8 @@ export const uploadPicMatch = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic } = inputParams;
 
-  console.log("UPLOAD PIC MATCH")
-  console.log(inputParams)
+  console.log("UPLOAD PIC MATCH");
+  console.log(inputParams);
 
   // if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
 
@@ -152,17 +152,29 @@ export const getMatchString = async (picPath, inputParams) => {
   if (!picPath || !inputParams) return null;
   const { collectionPic } = inputParams;
 
+  const lastSlash = picPath.lastIndexOf("\\");
+  const compIndex = picPath.indexOf("_comp");
+  const pathStr = picPath.substring(lastSlash + 1, compIndex);
+  console.log("PATH STR");
+  console.log(pathStr);
+
   //method for defeated
-  const pathStr = picPath.split("_comp")[0];
-  if (!pathStr) return null;
+  // const pathStr = picPath.split("_comp")[0];
+  // if (!pathStr) return null;
+
+  console.log("COLLECTION PIC");
+  console.log(collectionPic);
 
   const regexParams = {
     keyToLookup: "pageURL",
-    regexValue: `/${pathStr}`,
+    regexValue: pathStr,
   };
 
   const regexModel = new dbModel(regexParams, collectionPic);
   const regexData = await regexModel.getRegexItem();
+  console.log("REGEX DATA");
+  console.log(regexData);
+
   if (!regexData || !regexData.vidName) return null;
 
   return regexData.vidName;
