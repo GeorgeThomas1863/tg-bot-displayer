@@ -70,15 +70,7 @@ class dbModel {
   }
 
   async getRegexItem() {
-    console.log("GET REGEX ITEM");
-    console.log(this.dataObject);
     const { keyToLookup, regexValue } = this.dataObject;
-    console.log("KEY TO LOOKUP");
-    console.log(keyToLookup);
-    console.log("REGEX VALUE");
-    console.log(regexValue);
-    console.log("COLLECTION");
-    console.log(this.collection);
 
     const dataArray = await dbGet().collection(this.collection).findOne({ [keyToLookup]: { $regex: regexValue, $options: "i" } }); //prettier-ignore
     return dataArray;
