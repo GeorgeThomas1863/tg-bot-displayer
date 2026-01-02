@@ -9,15 +9,16 @@ export const uploadPicMatch = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic } = inputParams;
 
-  // console.log("UPLOAD PIC MATCH")
-  // console.log(inputParams)
+  console.log("UPLOAD PIC MATCH")
+  console.log(inputParams)
 
-  if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
+  // if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
 
   const uploadPicArray = await getPicArrayFS(inputParams);
-  if (!uploadPicArray) return null;
   console.log("UPLOAD PIC ARRAY");
   console.log(uploadPicArray);
+
+  if (!uploadPicArray) return null;
 
   const postPicDataArray = [];
   for (let i = 0; i < uploadPicArray.length; i++) {

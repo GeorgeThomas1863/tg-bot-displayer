@@ -86,6 +86,8 @@ export const getPicArrayFS = async (inputParams) => {
   const { uploadPicType } = inputParams;
   let picPath = inputParams.picPath;
 
+  console.log("AHHHHHHHH")
+
   if (uploadPicType === "uploadSingleFS") {
     if (!fs.existsSync(picPath) || !fs.statSync(picPath).isFile()) {
       console.log(`PIC PATH DOES NOT EXIST OR IS NOT A FILE: ${picPath}`);
