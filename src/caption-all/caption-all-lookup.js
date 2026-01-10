@@ -149,7 +149,7 @@ export const getDefeatedText = async (forwardData, inputObj) => {
   if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
   const { file_name } = forwardData.result.video;
 
-  const dataModel1 = new dbModel({ keyToLookup: "vidName", itemValue: file_name }, collectionPullFrom);
+  const dataModel1 = new dbModel({ keyToLookup: "filename", itemValue: file_name }, collectionPullFrom);
   const itemData1 = await dataModel1.getUniqueItem();
   if (itemData1 && itemData1.labelText) return itemData1.labelText;
 
