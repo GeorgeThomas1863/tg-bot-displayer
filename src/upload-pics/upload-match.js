@@ -152,13 +152,15 @@ export const getMatchString = async (picPath, inputParams) => {
   if (!picPath || !inputParams) return null;
   const { collectionPic } = inputParams;
 
-  const lastSlash = picPath.lastIndexOf("\\");
-  const compIndex = picPath.indexOf("_comp");
-  const pathStr = picPath.substring(lastSlash + 1, compIndex);
+  //FOR DEFEX (remove otehrwise)
+  // const lastSlash = picPath.lastIndexOf("\\");
+  // const compIndex = picPath.indexOf("_comp");
+  const pathStr = picPath.substring(0, picPath.indexOf('-')).trim().toLowerCase();
   console.log("PATH STR");
   console.log(pathStr);
+  if (!pathStr) return null;
 
-  //method for defeated
+  // method for defeated
   // const pathStr = picPath.split("_comp")[0];
   // if (!pathStr) return null;
 
@@ -166,16 +168,17 @@ export const getMatchString = async (picPath, inputParams) => {
   console.log(collectionPic);
 
   const regexParams = {
-    keyToLookup: "pageURL",
+    keyToLookup: "vidId",
     regexValue: pathStr,
   };
 
   const regexModel = new dbModel(regexParams, collectionPic);
-  const regexData = await regexModel.getRegexItem();
+  // const regexData = await regexModel.getRegexItem();
+  const regexData = await regexModel.getUniqueItem();
   console.log("REGEX DATA");
   console.log(regexData);
 
-  if (!regexData || !regexData.vidName) return null;
+  if (!regexData || !regexData.filename) return null;
 
-  return regexData.vidName;
+  return regexData.filename;
 };

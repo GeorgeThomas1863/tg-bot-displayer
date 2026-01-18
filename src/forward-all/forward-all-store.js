@@ -30,6 +30,10 @@ export const runForwardAllStore = async (inputParams) => {
       const storeObj = await buildStoreObj(forwardData, inputParams);
       if (!storeObj) continue;
 
+      //for defx (remove otehrwise)
+      const vidId = storeObj.fileName.substring(0, storeObj.fileName.indexOf('-')).trim().toLowerCase();
+      storeObj.vidId = vidId || null;
+
       console.log("STORE OBJ");
       console.log(storeObj);
 
