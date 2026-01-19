@@ -153,9 +153,11 @@ export const getMatchString = async (picPath, inputParams) => {
   const { collectionPic } = inputParams;
 
   //FOR DEFEX (remove otehrwise)
-  // const lastSlash = picPath.lastIndexOf("\\");
+  const picName = picPath.substring(picPath.lastIndexOf("\\") + 1)
+  console.log("LAST SLASH");
+  console.log(picName);
   // const compIndex = picPath.indexOf("_comp");
-  const pathStr = picPath.substring(0, picPath.indexOf('-')).trim().toLowerCase();
+  const pathStr = picName.substring(0, picName.indexOf('-')).trim().toLowerCase();
   console.log("PATH STR");
   console.log(pathStr);
   if (!pathStr) return null;
@@ -173,8 +175,8 @@ export const getMatchString = async (picPath, inputParams) => {
   };
 
   const regexModel = new dbModel(regexParams, collectionPic);
-  // const regexData = await regexModel.getRegexItem();
-  const regexData = await regexModel.getUniqueItem();
+  const regexData = await regexModel.getRegexItem();
+  //const regexData = await regexModel.getUniqueItem();
   console.log("REGEX DATA");
   console.log(regexData);
 
