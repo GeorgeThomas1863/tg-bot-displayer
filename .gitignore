@@ -2,7 +2,15 @@
 config/
 /config*
 /config/*
+
+# dotenv environment variable files
 .env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+.env.*
+
 
 # logs
 logs
@@ -24,13 +32,6 @@ package-lock.json
 .npm
 
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-.env.*
 
 
 # vitepress build output

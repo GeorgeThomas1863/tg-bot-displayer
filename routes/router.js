@@ -1,7 +1,6 @@
 import express from "express";
 
-// import CONFIG from "../config/config.js";
-import { requireAuth } from "./auth.js";
+import requireAuth from "../middleware/auth-config.js";
 import { tgDisplay, display401, display404, display500 } from "../controllers/display-controller.js";
 import { tgCommandControl } from "../controllers/data-controller.js";
 import { authController } from "../controllers/auth-controller.js";

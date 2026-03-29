@@ -3,8 +3,28 @@ import { tgGetUpdates, tgSendMessage, tgForwardMessage, tgEditMessageCaption } f
 import { runForwardAllStore } from "./forward-all/forward-all-store.js";
 import { runCaptionAllLookup } from "./caption-all/caption-all-lookup.js";
 import { runUploadPics } from "./upload-pics/upload-pics.js";
-import CONFIG from "../config/config.js";
+
 import state from "./util/state.js";
+
+//define default object
+const defaultObject = {
+  messageStart: process.env.MESSAGE_START,
+  messageStop: process.env.MESSAGE_STOP,
+  forwardFromId: process.env.FORWARD_FROM_ID, //random stuff
+  forwardToId: process.env.FORWARD_TO_ID, //forwardTest21
+  uploadToId: process.env.UPLOAD_TO_ID,
+  editChannelId: process.env.EDIT_CHANNEL_ID, //editCaptionsTest11
+  collectionPullFrom: process.env.COLLECTION_PULL_FROM,
+  collectionExtra: process.env.COLLECTION_EXTRA,
+  collectionSaveTo: process.env.COLLECTION_SAVE_TO,
+  picPath: process.env.PIC_PATH,
+  chatId: process.env.CHAT_ID,
+  messageId: process.env.MESSAGE_ID,
+  text: process.env.TEXT,
+  caption: process.env.CAPTION,
+  offset: process.env.OFFSET,
+  dataType: process.env.DATA_TYPE,
+};
 
 export const tgCommandRun = async (inputParams) => {
   if (!inputParams || !state.active || !inputParams.command) return null;
@@ -29,7 +49,6 @@ export const tgCommandRun = async (inputParams) => {
 
 //Set defaults
 const addDefaultParams = async (inputParams) => {
-  const { defaultObject } = CONFIG;
   if (!inputParams || !defaultObject) return inputParams;
   //DEFAULTS
 

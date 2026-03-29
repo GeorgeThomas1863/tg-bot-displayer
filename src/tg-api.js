@@ -1,16 +1,27 @@
 import axios from "axios";
 import fs from "fs";
 import FormData from "form-data";
-
-import CONFIG from "../config/config.js";
-import tokenArray from "../config/tg-bot.js";
 import state from "./util/state.js";
 
 let tokenIndex = 0;
 
+const tokenArray = [
+  process.env.TOKEN_1,
+  process.env.TOKEN_2,
+  process.env.TOKEN_3,
+  process.env.TOKEN_4,
+  process.env.TOKEN_5,
+  process.env.TOKEN_6,
+  process.env.TOKEN_7,
+  process.env.TOKEN_8,
+  process.env.TOKEN_9,
+  process.env.TOKEN_10,
+  process.env.TOKEN_11,
+];
+
 export const tgGetUpdates = async (inputParams) => {
   if (!state.active) return null;
-  const { baseURL } = CONFIG;
+  const baseURL = process.env.BASE_URL;
   const { offset } = inputParams;
   const token = tokenArray[tokenIndex];
 
@@ -29,7 +40,7 @@ export const tgSendMessage = async (inputParams) => {
   // console.log("!!!TG SEND MESSAGE");
   // console.log(inputParams);
   if (!state.active) return null;
-  const { baseURL } = CONFIG;
+  const baseURL = process.env.BASE_URL;
   const { chatId, text } = inputParams;
   const token = tokenArray[tokenIndex];
 
@@ -51,7 +62,7 @@ export const tgSendMessage = async (inputParams) => {
 
 export const tgForwardMessage = async (inputParams) => {
   if (!state.active) return null;
-  const { baseURL } = CONFIG;
+  const baseURL = process.env.BASE_URL;
   const { forwardToId, forwardFromId, messageId } = inputParams;
   const token = tokenArray[tokenIndex];
 
@@ -74,7 +85,7 @@ export const tgForwardMessage = async (inputParams) => {
 
 export const tgEditMessageCaption = async (inputParams) => {
   if (!state.active) return null;
-  const { baseURL } = CONFIG;
+  const baseURL = process.env.BASE_URL;
   const { editChannelId, messageId, caption } = inputParams;
   const token = tokenArray[tokenIndex];
 
@@ -97,7 +108,7 @@ export const tgEditMessageCaption = async (inputParams) => {
 
 export const tgPostPicFS = async (inputParams) => {
   if (!state.active) return null;
-  const { baseURL } = CONFIG;
+  const baseURL = process.env.BASE_URL;
   const { chatId, picPath } = inputParams;
   const token = tokenArray[tokenIndex];
 
@@ -119,7 +130,7 @@ export const tgPostPicFS = async (inputParams) => {
 
 export const tgPostPicURL = async (inputParams) => {
   if (!state.active) return null;
-  const { baseURL } = CONFIG;
+  const baseURL = process.env.BASE_URL;
   const { chatId, picURL } = inputParams;
   const token = tokenArray[tokenIndex];
 
