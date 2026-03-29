@@ -3,21 +3,13 @@ import fs from "fs";
 import FormData from "form-data";
 import state from "./util/state.js";
 
+import dotenv from "dotenv";
+dotenv.config({ path: ".env" });
+dotenv.config({ path: ".env.local", override: true });
+
 let tokenIndex = 0;
 
-const tokenArray = [
-  process.env.TOKEN_1,
-  process.env.TOKEN_2,
-  process.env.TOKEN_3,
-  process.env.TOKEN_4,
-  process.env.TOKEN_5,
-  process.env.TOKEN_6,
-  process.env.TOKEN_7,
-  process.env.TOKEN_8,
-  process.env.TOKEN_9,
-  process.env.TOKEN_10,
-  process.env.TOKEN_11,
-];
+const tokenArray = process.env.TOKEN_ARRAY.split(",").map((key) => process.env[key.trim()]).filter(Boolean); //prettier-ignore
 
 export const tgGetUpdates = async (inputParams) => {
   if (!state.active) return null;
@@ -153,6 +145,8 @@ export const tgPostPicURL = async (inputParams) => {
 //------------------------------
 
 export const tgGetReq = async (url) => {
+  console.log("TG GET REQ");
+  console.log(url);
   if (!state.active) return null;
   if (!url) return null;
   try {

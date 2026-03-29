@@ -22,7 +22,6 @@ const defaultObject = {
   messageId: process.env.MESSAGE_ID,
   text: process.env.TEXT,
   caption: process.env.CAPTION,
-  offset: process.env.OFFSET,
   dataType: process.env.DATA_TYPE,
 };
 
