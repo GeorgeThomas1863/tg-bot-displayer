@@ -12,6 +12,8 @@ config/
 .env.*
 
 .claude/pics/*
+.playwright-mcp
+.playwright-mcp/*
 
 # logs
 logs
