@@ -112,6 +112,8 @@ export const getFileNameLookup = async (forwardData, inputObj) => {
 
   if (dataType.toLowerCase().trim() === "primal") return await getPrimalText(forwardData, inputObj);
   if (dataType.toLowerCase().trim() === "defeated") return await getDefeatedText(forwardData, inputObj);
+  if (dataType.toLowerCase().trim() === "xfights") return await getXfightsText(forwardData, inputObj);
+
 };
 
 export const getPrimalText = async (forwardData, inputObj) => {
@@ -154,6 +156,22 @@ export const getDefeatedText = async (forwardData, inputObj) => {
   if (itemData1 && itemData1.labelText) return itemData1.labelText;
 
   const dataModel2 = new dbModel({ keyToLookup: "vidId", itemValue: file_name.split("-")[0] }, collectionPullFrom);
+  const itemData2 = await dataModel2.getUniqueItem();
+  if (itemData2 && itemData2.labelText) return itemData2.labelText;
+
+  return null;
+};
+
+export const getXfightsText = async (forwardData, inputObj) => {
+  const { collectionPullFrom } = inputObj;
+  if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
+  const { file_name } = forwardData.result.video;
+
+  const dataModel1 = new dbModel({ keyToLookup: "uniqueName", itemValue: file_name }, collectionPullFrom);
+  const itemData1 = await dataModel1.getUniqueItem();
+  if (itemData1 && itemData1.labelText) return itemData1.labelText;
+
+  const dataModel2 = new dbModel({ keyToLookup: "url", itemValue: file_name }, collectionPullFrom);
   const itemData2 = await dataModel2.getUniqueItem();
   if (itemData2 && itemData2.labelText) return itemData2.labelText;
 
