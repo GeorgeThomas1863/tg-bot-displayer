@@ -112,7 +112,7 @@ export const getFileNameLookup = async (forwardData, inputObj) => {
 
   if (dataType.toLowerCase().trim() === "primal") return await getPrimalText(forwardData, inputObj);
   if (dataType.toLowerCase().trim() === "defeated") return await getDefeatedText(forwardData, inputObj);
-  if (dataType.toLowerCase().trim() === "xfights") return await getXfightsText(forwardData, inputObj);
+  if (dataType.toLowerCase().trim() === "xfights" || dataType.toLowerCase().trim() === "xfight") return await getXfightsText(forwardData, inputObj);
 
 };
 
