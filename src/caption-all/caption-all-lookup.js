@@ -166,13 +166,13 @@ export const getXfightsText = async (forwardData, inputObj) => {
   const { collectionPullFrom } = inputObj;
   if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
   const { file_name } = forwardData.result.video;
-
+  const dashName = file_name.replaceAll("_", "-")
 
   const dataModel1 = new dbModel({ keyToLookup: "fileName", itemValue: file_name }, collectionPullFrom);
   const itemData1 = await dataModel1.getUniqueItem();
   if (itemData1 && itemData1.labelText) return itemData1.labelText;
 
-  const dataModel2 = new dbModel({ keyToLookup: "uniqueName", itemValue: file_name }, collectionPullFrom);
+  const dataModel2 = new dbModel({ keyToLookup: "fileName", itemValue: dashName }, collectionPullFrom);
   const itemData2 = await dataModel2.getUniqueItem();
   if (itemData2 && itemData2.labelText) return itemData2.labelText;
 
