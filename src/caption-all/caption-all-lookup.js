@@ -34,6 +34,10 @@ export const runCaptionAllLookup = async (inputParams) => {
 
       const forwardData = await tgForwardMessage(forwardParams);
       if (!forwardData) continue;
+      if (forwardData.caption) {
+        console.log("ALREADY DONE");
+        continue;
+      }
 
       console.log("FORWARD DATA");
       console.log(forwardData);
@@ -172,10 +176,6 @@ export const getXfightsText = async (forwardData, inputObj) => {
   const dataModel1 = new dbModel({ keyToLookup: "fileName", itemValue: file_name }, collectionPullFrom);
   const itemData1 = await dataModel1.getUniqueItem();
   if (itemData1 && itemData1.labelText) return itemData1.labelText;
-
-  const dataModel2 = new dbModel({ keyToLookup: "fileName", itemValue: dashName }, collectionPullFrom);
-  const itemData2 = await dataModel2.getUniqueItem();
-  if (itemData2 && itemData2.labelText) return itemData2.labelText;
 
   const dataModel2 = new dbModel({ keyToLookup: "fileName", itemValue: dashName }, collectionPullFrom);
   const itemData2 = await dataModel2.getUniqueItem();
