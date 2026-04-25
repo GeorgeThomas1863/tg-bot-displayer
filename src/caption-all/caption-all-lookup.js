@@ -34,11 +34,11 @@ export const runCaptionAllLookup = async (inputParams) => {
 
       const forwardData = await tgForwardMessage(forwardParams);
       if (!forwardData) continue;
-      
-      if (forwardData.caption) {
-        console.log("ALREADY DONE");
-        continue;
-      }
+
+      // if (forwardData.caption) {
+      //   console.log("ALREADY DONE");
+      //   continue;
+      // }
 
       console.log("FORWARD DATA");
       console.log(forwardData);
