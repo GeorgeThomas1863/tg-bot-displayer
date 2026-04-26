@@ -171,8 +171,6 @@ export const getXfightsText = async (forwardData, inputObj) => {
   if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
   const { file_name } = forwardData.result.video;
   const dashName = file_name.replaceAll("_", "-");
-  const name720 = dashName.slice(0, -5);
-  const name1080 = dashName.slice(0, -6);
 
   const dataModel1 = new dbModel({ keyToLookup: "fileName", itemValue: file_name }, collectionPullFrom);
   const itemData1 = await dataModel1.getUniqueItem();
@@ -181,14 +179,6 @@ export const getXfightsText = async (forwardData, inputObj) => {
   const dataModel2 = new dbModel({ keyToLookup: "fileName", itemValue: dashName }, collectionPullFrom);
   const itemData2 = await dataModel2.getUniqueItem();
   if (itemData2 && itemData2.labelText) return itemData2.labelText;
-
-  const dataModel3 = new dbModel({ keyToLookup: "fileName", itemValue: name720 }, collectionPullFrom);
-  const itemData3 = await dataModel3.getUniqueItem();
-  if (itemData3 && itemData3.labelText) return itemData3.labelText;
-
-  const dataModel4 = new dbModel({ keyToLookup: "fileName", itemValue: name1080 }, collectionPullFrom);
-  const itemData4 = await dataModel4.getUniqueItem();
-  if (itemData4 && itemData4.labelText) return itemData4.labelText;
 
   return null;
 };
