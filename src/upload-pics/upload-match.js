@@ -12,8 +12,6 @@ export const uploadPicMatch = async (inputParams) => {
   console.log("UPLOAD PIC MATCH");
   console.log(inputParams);
 
-  // if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
-
   const uploadPicArray = await getPicArrayFS(inputParams);
 
   //sort by number
@@ -28,50 +26,55 @@ export const uploadPicMatch = async (inputParams) => {
 
   if (!uploadPicArray) return null;
 
-  const postPicDataArray = [];
-  for (let i = 0; i < uploadPicArray.length; i++) {
-    if (!state.active) return null;
-    const uploadPicPath = uploadPicArray[i];
-    console.log("UPLOAD PIC PATH");
-    console.log(uploadPicPath);
+  // Group sorted paths by number prefix (e.g. "9" → [9_comp1.png, 9_comp2.png, ...])
+  const groups = new Map();
+  for (const picPath of uploadPicArray) {
+    const fileId = path.basename(picPath).split("_")[0].trim();
+    if (!groups.has(fileId)) groups.set(fileId, []);
+    groups.get(fileId).push(picPath);
+  }
 
-    const matchString = await getMatchString(uploadPicPath, inputParams);
+  const postPicDataArray = [];
+  for (const [, picPaths] of groups) {
+    if (!state.active) return null;
+
+    // One DB lookup per group — all pics share the same fileId and vid
+    const matchString = await getMatchString(picPaths[0], inputParams);
     if (!matchString) continue;
     console.log("MATCH STRING");
     console.log(matchString);
 
-    //find vid in forward data
     const vidCheckParams = {
-      keyToLookup: "fileName",
+      keyToLookup: "caption",
       itemValue: matchString,
     };
-
     const vidCheckModel = new dbModel(vidCheckParams, collectionPullFrom);
     const vidCheckData = await vidCheckModel.getUniqueItem();
     console.log("VID CHECK DATA");
     console.log(vidCheckData);
     if (!vidCheckData) continue;
 
-    //ADD VID DOUBLE CHECK HERE
+    // Post all pics in group sequentially
+    for (const picPath of picPaths) {
+      if (!state.active) return null;
+      console.log("UPLOAD PIC PATH");
+      console.log(picPath);
+      const postPicParams = {
+        chatId: uploadToId,
+        picPath,
+      };
+      const postPicData = await tgPostPicFS(postPicParams);
+      console.log("POSTED PIC DATA");
+      console.log(postPicData?.result);
+      if (!postPicData) continue;
+    }
 
-    //post pic
-    const postPicParams = {
-      chatId: uploadToId,
-      picPath: uploadPicPath,
-    };
-
-    const postPicData = await tgPostPicFS(postPicParams);
-    console.log("POSTED PIC DATA");
-    console.log(postPicData.result);
-    if (!postPicData) continue;
-
-    //foward vid
+    // Forward vid once per group
     const forwardVidParams = {
       forwardToId: uploadToId,
       forwardFromId: vidCheckData.forwardFromChannelId,
       messageId: vidCheckData.forwardFromMessageId,
     };
-
     const forwardVidData = await tgForwardMessage(forwardVidParams);
     console.log("FORWARD VID DATA");
     console.log(forwardVidData);
@@ -178,16 +181,17 @@ export const getMatchString = async (picPath, inputParams) => {
 
   const regexParams = {
     keyToLookup: "uniqueId",
-    regexValue: +fileId,
+    itemValue: +fileId,
   };
 
   const regexModel = new dbModel(regexParams, collectionPic);
-  const regexData = await regexModel.getRegexItem();
-  //const regexData = await regexModel.getUniqueItem();
+  //const regexData = await regexModel.getRegexItem();
+  const regexData = await regexModel.getUniqueItem();
   console.log("REGEX DATA");
   console.log(regexData);
 
   if (!regexData || !regexData.fileName) return null;
 
-  return regexData.fileName;
+  // return regexData.fileName;
+  return regexData.labelText;
 };
