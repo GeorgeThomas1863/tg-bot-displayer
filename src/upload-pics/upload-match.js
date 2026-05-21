@@ -15,6 +15,14 @@ export const uploadPicMatch = async (inputParams) => {
   // if (uploadPicType !== "uploadMultiId" && uploadPicType !== "uploadMultiSpecial") return null;
 
   const uploadPicArray = await getPicArrayFS(inputParams);
+
+  //sort by number
+  uploadPicArray.sort((a, b) => {
+    const numA = parseInt(path.basename(a).match(/^(\d+)/)?.[1] ?? 0, 10);
+    const numB = parseInt(path.basename(b).match(/^(\d+)/)?.[1] ?? 0, 10);
+    return numA - numB;
+  });
+
   console.log("UPLOAD PIC ARRAY");
   console.log(uploadPicArray);
 
@@ -24,7 +32,11 @@ export const uploadPicMatch = async (inputParams) => {
   for (let i = 0; i < uploadPicArray.length; i++) {
     if (!state.active) return null;
     const uploadPicPath = uploadPicArray[i];
+    console.log("UPLOAD PIC PATH");
+    console.log(uploadPicPath);
+
     const matchString = await getMatchString(uploadPicPath, inputParams);
+    if (!matchString) continue;
     console.log("MATCH STRING");
     console.log(matchString);
 
@@ -153,25 +165,20 @@ export const getMatchString = async (picPath, inputParams) => {
   const { collectionPic } = inputParams;
 
   //FOR DEFEX (remove otehrwise)
-  const picName = picPath.substring(picPath.lastIndexOf("\\") + 1)
-  console.log("LAST SLASH");
+  const picName = picPath.substring(picPath.lastIndexOf("\\") + 1);
+  console.log("PIC NAME");
   console.log(picName);
   // const compIndex = picPath.indexOf("_comp");
-  const pathStr = picName.substring(0, picName.indexOf('-')).trim().toLowerCase();
-  console.log("PATH STR");
-  console.log(pathStr);
-  if (!pathStr) return null;
-
-  // method for defeated
-  // const pathStr = picPath.split("_comp")[0];
-  // if (!pathStr) return null;
+  const fileId = picName.split("_")[0].trim();
+  console.log("fileId");
+  console.log(fileId);
 
   console.log("COLLECTION PIC");
   console.log(collectionPic);
 
   const regexParams = {
-    keyToLookup: "vidId",
-    regexValue: pathStr,
+    keyToLookup: "uniqueId",
+    regexValue: +fileId,
   };
 
   const regexModel = new dbModel(regexParams, collectionPic);
@@ -180,7 +187,7 @@ export const getMatchString = async (picPath, inputParams) => {
   console.log("REGEX DATA");
   console.log(regexData);
 
-  if (!regexData || !regexData.filename) return null;
+  if (!regexData || !regexData.fileName) return null;
 
-  return regexData.filename;
+  return regexData.fileName;
 };
