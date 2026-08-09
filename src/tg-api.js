@@ -9,153 +9,110 @@ dotenv.config({ path: ".env.local", override: true });
 
 let tokenIndex = 0;
 
-const tokenArray = process.env.TOKEN_ARRAY.split(",").map((key) => process.env[key.trim()]).filter(Boolean); //prettier-ignore
+const tokenArray = loadTokens();
 
 export const tgGetUpdates = async (inputParams) => {
   if (!state.active) return null;
   const baseURL = process.env.BASE_URL;
   const { offset } = inputParams;
-  const token = tokenArray[tokenIndex];
 
-  const url = `${baseURL}${token}/getUpdates?offset=${offset}`;
-  const data = await tgGetReq(url);
-
-  const checkData = await checkToken(data);
-
-  //if fucked run again
-  if (!checkData) return await tgGetUpdates(inputParams);
-
-  return data;
+  return await runWithTokenRetry(async (token) => {
+    const url = `${baseURL}${token}/getUpdates?offset=${offset}`;
+    return await tgGetReq(url);
+  });
 };
 
 export const tgSendMessage = async (inputParams) => {
-  // console.log("!!!TG SEND MESSAGE");
-  // console.log(inputParams);
   if (!state.active) return null;
   const baseURL = process.env.BASE_URL;
   const { chatId, text } = inputParams;
-  const token = tokenArray[tokenIndex];
-
   const params = {
     chat_id: chatId,
     text: text,
   };
 
-  const url = `${baseURL}${token}/sendMessage`;
-  const data = await tgPostReq(url, params);
-
-  const checkData = await checkToken(data);
-
-  //try again
-  if (!checkData) return await tgSendMessage(inputParams);
-
-  return data;
+  return await runWithTokenRetry(async (token) => {
+    const url = `${baseURL}${token}/sendMessage`;
+    return await tgPostReq(url, params);
+  });
 };
 
 export const tgForwardMessage = async (inputParams) => {
   if (!state.active) return null;
   const baseURL = process.env.BASE_URL;
   const { forwardToId, forwardFromId, messageId } = inputParams;
-  const token = tokenArray[tokenIndex];
-
   const params = {
     chat_id: forwardToId,
     from_chat_id: forwardFromId,
     message_id: messageId,
   };
 
-  const url = `${baseURL}${token}/forwardMessage`;
-  const data = await tgPostReq(url, params);
-
-  const checkData = await checkToken(data);
-
-  //try again
-  if (!checkData) return await tgForwardMessage(inputParams);
-
-  return data;
+  return await runWithTokenRetry(async (token) => {
+    const url = `${baseURL}${token}/forwardMessage`;
+    return await tgPostReq(url, params);
+  });
 };
 
 export const tgEditMessageCaption = async (inputParams) => {
   if (!state.active) return null;
   const baseURL = process.env.BASE_URL;
   const { editChannelId, messageId, caption } = inputParams;
-  const token = tokenArray[tokenIndex];
-
   const params = {
     chat_id: editChannelId,
     message_id: messageId,
     caption: caption,
   };
 
-  const url = `${baseURL}${token}/editMessageCaption`;
-  const data = await tgPostReq(url, params);
-
-  const checkData = await checkToken(data);
-
-  //try again
-  if (!checkData) return await tgEditMessageCaption(inputParams);
-
-  return data;
+  return await runWithTokenRetry(async (token) => {
+    const url = `${baseURL}${token}/editMessageCaption`;
+    return await tgPostReq(url, params);
+  });
 };
 
 export const tgPostPicFS = async (inputParams) => {
   if (!state.active) return null;
   const baseURL = process.env.BASE_URL;
   const { chatId, picPath } = inputParams;
-  const token = tokenArray[tokenIndex];
 
-  const form = new FormData();
+  return await runWithTokenRetry(async (token) => {
+    const form = new FormData();
+    form.append("chat_id", chatId);
+    form.append("photo", fs.createReadStream(picPath));
 
-  form.append("chat_id", chatId);
-  form.append("photo", fs.createReadStream(picPath));
-
-  const url = `${baseURL}${token}/sendPhoto`;
-  const data = await tgPostReq(url, form);
-
-  const checkData = await checkToken(data);
-
-  //try again
-  if (!checkData) return await tgPostPicFS(inputParams);
-
-  return data;
+    const url = `${baseURL}${token}/sendPhoto`;
+    return await tgPostReq(url, form);
+  });
 };
 
 export const tgPostPicURL = async (inputParams) => {
   if (!state.active) return null;
   const baseURL = process.env.BASE_URL;
   const { chatId, picURL } = inputParams;
-  const token = tokenArray[tokenIndex];
-
   const params = {
     chat_id: chatId,
     photo: picURL,
   };
 
-  const url = `${baseURL}${token}/sendPhoto`;
-  const data = await tgPostReq(url, params);
-
-  const checkData = await checkToken(data);
-
-  //try again
-  if (!checkData) return await tgPostPicURL(inputParams);
-
-  return data;
+  return await runWithTokenRetry(async (token) => {
+    const url = `${baseURL}${token}/sendPhoto`;
+    return await tgPostReq(url, params);
+  });
 };
 
 //------------------------------
 
 export const tgGetReq = async (url) => {
-  console.log("TG GET REQ");
-  console.log(url);
   if (!state.active) return null;
   if (!url) return null;
+
   try {
     const res = await axios.get(url);
     return res.data;
   } catch (e) {
-    console.log(e.response.data);
-    //axios throws error on 429, so need to return
-    return e.response.data;
+    const responseData = e.response?.data;
+    if (!responseData) return null;
+    console.log(responseData);
+    return responseData;
   }
 };
 
@@ -167,27 +124,68 @@ export const tgPostReq = async (url, params) => {
     const res = await axios.post(url, params);
     return res.data;
   } catch (e) {
-    console.log(e.response.data);
-    //axios throws error on 429, so need to return
-    return e.response.data;
+    const responseData = e.response?.data;
+    if (!responseData) return null;
+    console.log(responseData);
+    return responseData;
   }
 };
 
 export const checkToken = async (data) => {
   if (!state.active) return null;
-  if (data && data.ok) return true;
-
+  if (data && data.ok === true) return true;
   if (data && data.error_code && data.error_code !== 429) return true;
 
-  console.log("HERE FAGGOT");
-  console.log(data);
-
-  //otherwise bot fucked, return null
-  console.log("AHHHHHHHHHHHHH");
   tokenIndex++;
+  if (tokenIndex >= tokenArray.length) tokenIndex = 0;
 
-  if (tokenIndex > 10) tokenIndex = 0;
-
-  console.log("CANT GET UPDATES TRYING NEW FUCKING BOT. TOKEN INDEX:" + tokenIndex);
+  console.log(`token rejected, rotating; index now ${tokenIndex}`);
   return null;
 };
+
+const runWithTokenRetry = async (requestToken) => {
+  for (let attempt = 0; attempt < tokenArray.length; attempt++) {
+    if (!state.active) return null;
+
+    const token = tokenArray[tokenIndex];
+    const data = await requestToken(token);
+    const isAccepted = await checkToken(data);
+    if (isAccepted) return data;
+
+    if (attempt === tokenArray.length - 1) return null;
+    await waitForRetry(data);
+  }
+
+  return null;
+};
+
+const waitForRetry = async (data) => {
+  if (data?.error_code !== 429) return;
+
+  const retryAfter = Number(data.parameters?.retry_after);
+  if (!Number.isFinite(retryAfter) || retryAfter <= 0) return;
+
+  await sleep(Math.min(retryAfter, 60) * 1000);
+};
+
+const sleep = async (milliseconds) => {
+  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
+
+function loadTokens() {
+  const tokenKeys = process.env.TOKEN_ARRAY;
+  if (!tokenKeys) {
+    throw new Error("TOKEN_ARRAY is not set or contains no usable tokens");
+  }
+
+  const tokens = tokenKeys
+    .split(",")
+    .map((key) => process.env[key.trim()]?.trim())
+    .filter(Boolean);
+
+  if (!tokens.length) {
+    throw new Error("TOKEN_ARRAY is not set or contains no usable tokens");
+  }
+
+  return tokens;
+}

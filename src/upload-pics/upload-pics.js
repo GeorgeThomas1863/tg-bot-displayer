@@ -98,7 +98,17 @@ export const getPicArrayFS = async (inputParams) => {
 
   if (uploadPicType === "uploadSingleURL" || uploadPicType === "uploadListURL") return null;
 
+  if (!picPath) {
+    console.log(`PIC PATH DOES NOT EXIST OR IS NOT A DIRECTORY: ${picPath}`);
+    return null;
+  }
+
   if (picPath.endsWith("/") || picPath.endsWith("\\")) picPath = picPath.slice(0, -1);
+
+  if (!fs.existsSync(picPath) || !fs.statSync(picPath).isDirectory()) {
+    console.log(`PIC PATH DOES NOT EXIST OR IS NOT A DIRECTORY: ${picPath}`);
+    return null;
+  }
 
   //build folder
   const uploadPicArray = [];

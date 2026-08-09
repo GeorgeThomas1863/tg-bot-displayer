@@ -1,12 +1,18 @@
 export const hideArray = async (inputs) => {
-  for (const input of inputs) {
+  if (!inputs) return null;
+
+  for (const inputId of inputs) {
+    const input = document.getElementById(inputId);
     if (!input) continue;
     input.classList.add("hidden");
   }
 };
 
 export const unhideArray = async (inputs) => {
-  for (const input of inputs) {
+  if (!inputs) return null;
+
+  for (const inputId of inputs) {
+    const input = document.getElementById(inputId);
     if (!input) continue;
     input.classList.remove("hidden");
   }

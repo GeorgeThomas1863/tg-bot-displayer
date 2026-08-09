@@ -16,6 +16,7 @@
     "express-session": "^1.18.2",
     "form-data": "^4.0.5",
     "mongodb": "^6.17.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "vitest": "^4.1.10"
   }
 }

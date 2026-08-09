@@ -1,5 +1,11 @@
 export const buildVidParams = async (inputObj) => {
-  if (!inputObj || !inputObj.video) return null;
+  if (
+    !inputObj ||
+    !inputObj.video ||
+    inputObj.forward_from_chat?.id == null ||
+    inputObj.chat?.id == null
+  )
+    return null;
   const { video, message_id, forward_from_message_id, forward_from_chat, chat, caption, date, forward_date } = inputObj;
   const { file_id, file_unique_id, file_name, file_size, duration } = video;
 
@@ -26,7 +32,15 @@ export const buildVidParams = async (inputObj) => {
 };
 
 export const buildPicParams = async (inputObj) => {
-  if (!inputObj || !inputObj.photo) return null;
+  if (
+    !inputObj ||
+    !Array.isArray(inputObj.photo) ||
+    inputObj.photo.length === 0 ||
+    !inputObj.photo[inputObj.photo.length - 1] ||
+    inputObj.forward_from_chat?.id == null ||
+    inputObj.chat?.id == null
+  )
+    return null;
   const { photo, message_id, forward_from_message_id, forward_from_chat, chat, caption, date, forward_date } = inputObj;
 
   //get input photo array length
@@ -57,7 +71,13 @@ export const buildPicParams = async (inputObj) => {
 };
 
 export const buildTextParams = async (inputObj) => {
-  if (!inputObj || !inputObj.text) return null;
+  if (
+    !inputObj ||
+    !inputObj.text ||
+    inputObj.forward_from_chat?.id == null ||
+    inputObj.chat?.id == null
+  )
+    return null;
   const { text, message_id, forward_from_message_id, forward_from_chat, chat, date, forward_date } = inputObj;
 
   const textParams = {

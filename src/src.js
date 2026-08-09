@@ -28,9 +28,16 @@ const defaultObject = {
 export const tgCommandRun = async (inputParams) => {
   if (!inputParams || !state.active || !inputParams.command) return null;
 
+  const submittedCaption = inputParams.caption;
+  const submittedText = inputParams.text;
+
   // add defaults
   const params = await addDefaultParams(inputParams);
   const { command, offset } = params;
+
+  if (command === "editMessageCaption") {
+    params.caption = getCaption(submittedCaption, submittedText);
+  }
 
   console.log("INPUT PARAMS PARSE");
   console.log(params);
@@ -44,6 +51,12 @@ export const tgCommandRun = async (inputParams) => {
   if (command === "sendPhoto") return await runUploadPics(params);
 
   return null;
+};
+
+const getCaption = (caption, text) => {
+  if (typeof caption === "string" && caption !== "") return caption;
+  if (typeof text === "string" && text !== "") return text;
+  return process.env.CAPTION;
 };
 
 //Set defaults

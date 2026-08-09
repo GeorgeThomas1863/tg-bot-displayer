@@ -14,6 +14,8 @@ export const uploadPicMatch = async (inputParams) => {
 
   const uploadPicArray = await getPicArrayFS(inputParams);
 
+  if (!uploadPicArray || !uploadPicArray.length) return null;
+
   //sort by number
   uploadPicArray.sort((a, b) => {
     const numA = parseInt(path.basename(a).match(/^(\d+)/)?.[1] ?? 0, 10);
@@ -23,8 +25,6 @@ export const uploadPicMatch = async (inputParams) => {
 
   console.log("UPLOAD PIC ARRAY");
   console.log(uploadPicArray);
-
-  if (!uploadPicArray) return null;
 
   // Group sorted paths by number prefix (e.g. "9" → [9_comp1.png, 9_comp2.png, ...])
   const groups = new Map();
@@ -133,9 +133,9 @@ export const forwardVidMatchPic = async (inputParams) => {
       };
 
       const postPicData = await tgPostPicFS(postPicParams);
+      if (!postPicData) continue;
       console.log("POSTED PIC DATA");
       console.log(postPicData.result);
-      if (!postPicData) continue;
 
       //foward vid
       const forwardVidParams = {
@@ -168,7 +168,7 @@ export const getMatchString = async (picPath, inputParams) => {
   const { collectionPic } = inputParams;
 
   //FOR DEFEX (remove otehrwise)
-  const picName = picPath.substring(picPath.lastIndexOf("\\") + 1);
+  const picName = path.basename(picPath);
   console.log("PIC NAME");
   console.log(picName);
   // const compIndex = picPath.indexOf("_comp");

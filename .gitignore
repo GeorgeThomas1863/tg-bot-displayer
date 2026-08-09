@@ -12,6 +12,8 @@ config/
 .env.*
 
 .claude/pics/*
+.claude/.tmp/
+.claude/.pics/
 .playwright-mcp
 .playwright-mcp/*
 

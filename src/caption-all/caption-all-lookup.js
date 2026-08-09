@@ -6,8 +6,6 @@ export const runCaptionAllLookup = async (inputParams) => {
   if (!inputParams || !state.active) return null;
   const { captionAllType, messageStart, messageStop, collectionPullFrom, collectionSaveTo, editChannelId, forwardToId } = inputParams;
 
-  if (captionAllType === "reorder") return await reorderVids(inputParams);
-
   console.log("CAPTION ALL LOOKUP");
   console.log(inputParams);
 
@@ -46,7 +44,7 @@ export const runCaptionAllLookup = async (inputParams) => {
       const captionText = await getCaptionText(forwardData, inputParams);
 
       //needed to avoid failing on blank
-      if (captionText === null) continue;
+      if (captionText == null) continue;
 
       const editParams = {
         editChannelId: forwardData.result.forward_from_chat.id,
@@ -118,6 +116,8 @@ export const getFileNameLookup = async (forwardData, inputObj) => {
   if (dataType.toLowerCase().trim() === "primal") return await getPrimalText(forwardData, inputObj);
   if (dataType.toLowerCase().trim() === "defeated") return await getDefeatedText(forwardData, inputObj);
   if (dataType.toLowerCase().trim() === "xfights" || dataType.toLowerCase().trim() === "xfight") return await getXfightsText(forwardData, inputObj);
+
+  return null;
 };
 
 export const getPrimalText = async (forwardData, inputObj) => {

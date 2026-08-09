@@ -1,7 +1,6 @@
 export const sendToBack = async (inputParams) => {
   const { route } = inputParams;
 
-  //send all to backend
   try {
     const res = await fetch(route, {
       method: "POST",
@@ -11,9 +10,21 @@ export const sendToBack = async (inputParams) => {
       },
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch (error) {
+      console.log("BACKEND RESPONSE JSON ERROR:", error);
+      return { error: `${res.status} ${res.statusText}` };
+    }
+
+    if (!res.ok) {
+      return data?.error ? data : { error: `${res.status} ${res.statusText}` };
+    }
+
     return data;
   } catch (error) {
-    console.log(error);
+    console.log("BACKEND REQUEST ERROR:", error);
+    return { error: error?.message || String(error) };
   }
 };

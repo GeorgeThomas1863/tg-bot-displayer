@@ -12,9 +12,14 @@ export const tgCommandControl = async (req, res) => {
 
   state.active = true;
 
-  const data = await tgCommandRun(inputParams);
-
-  state.active = false;
-
-  res.json(data);
+  try {
+    const data = await tgCommandRun(inputParams);
+    res.json(data);
+  } catch (error) {
+    console.log("TG COMMAND ERROR:", error);
+    const message = error?.message || String(error);
+    res.status(500).json({ error: message });
+  } finally {
+    state.active = false;
+  }
 };
