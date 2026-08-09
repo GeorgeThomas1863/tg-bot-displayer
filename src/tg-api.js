@@ -144,10 +144,12 @@ export const checkToken = async (data) => {
 };
 
 const runWithTokenRetry = async (requestToken) => {
+  const startIndex = tokenIndex;
+
   for (let attempt = 0; attempt < tokenArray.length; attempt++) {
     if (!state.active) return null;
 
-    const token = tokenArray[tokenIndex];
+    const token = tokenArray[(startIndex + attempt) % tokenArray.length];
     const data = await requestToken(token);
     const isAccepted = await checkToken(data);
     if (isAccepted) return data;
