@@ -81,15 +81,19 @@ const addDefaultParams = async (inputParams) => {
 
 // Coerce range bounds to numbers so range loops (e.g. `for (let i = messageStart; i < messageStop; i++)`)
 // compare numerically instead of lexicographically ("9" < "10" is false as strings).
+// Throws on non-numeric input — a NaN bound would make the range loops silently no-op.
+// Mutates params in place; returns nothing.
 const coerceRangeBounds = (params) => {
-  if (!params) return params;
+  if (!params) return;
 
   const rangeKeys = ["messageStart", "messageStop"];
   for (let i = 0; i < rangeKeys.length; i++) {
     const key = rangeKeys[i];
-    if (params[key] === undefined || params[key] === null || params[key] === "") continue;
-    params[key] = Number(params[key]);
-  }
+    const value = params[key];
+    if (value === undefined || value === null || value === "") continue;
 
-  return params;
+    const numberValue = Number(value);
+    if (Number.isNaN(numberValue)) throw new Error(`Invalid ${key}: "${value}" is not a number`);
+    params[key] = numberValue;
+  }
 };

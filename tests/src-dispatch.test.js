@@ -155,6 +155,13 @@ describe("env-default merging (through the params the handler receives)", () => 
     expect(received.messageStart).toBe(9);
     expect(received.messageStop).toBe(10);
   });
+
+  it("a non-numeric range bound throws instead of silently producing a NaN no-op range", async () => {
+    const runPromise = tgCommandRun({ command: "forwardAllStore", messageStart: "10a", messageStop: "20", forwardAllType: "storeEverything" });
+
+    await expect(runPromise).rejects.toThrow('Invalid messageStart: "10a" is not a number');
+    expect(forwardAll.runForwardAllStore).not.toHaveBeenCalled();
+  });
 });
 
 describe("editMessageCaption caption resolution", () => {

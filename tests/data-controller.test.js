@@ -137,7 +137,7 @@ describe("tgCommandControl (controllers/data-controller.js)", () => {
     await tgCommandControl({}, res);
 
     expect(res.statusCalls).toEqual([400]);
-    expect(typeof res.jsonCalls[0].error).toBe("string");
+    expect(res.jsonCalls).toEqual([{ error: "Missing request body" }]);
     expect(tgCommandRun).not.toHaveBeenCalled();
   });
 
@@ -147,7 +147,7 @@ describe("tgCommandControl (controllers/data-controller.js)", () => {
     await tgCommandControl(undefined, res);
 
     expect(res.statusCalls).toEqual([400]);
-    expect(typeof res.jsonCalls[0].error).toBe("string");
+    expect(res.jsonCalls).toEqual([{ error: "Missing request body" }]);
     expect(tgCommandRun).not.toHaveBeenCalled();
   });
 });
