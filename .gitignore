@@ -11,6 +11,11 @@ config/
 .env.local
 .env.*
 
+todo.txt
+
+.codex/
+.claude/settings.local.json
+
 .claude/pics/*
 .claude/.tmp/
 .claude/.pics/

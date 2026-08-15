@@ -2,6 +2,7 @@ import { tgCommandRun } from "../src/src.js";
 import state from "../src/util/state.js";
 
 export const tgCommandControl = async (req, res) => {
+  if (!req || !req.body) return res.status(400).json({ error: "Missing request body" });
   const inputParams = req.body;
 
   if (inputParams.command === "stop") {

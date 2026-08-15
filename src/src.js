@@ -33,6 +33,7 @@ export const tgCommandRun = async (inputParams) => {
 
   // add defaults
   const params = await addDefaultParams(inputParams);
+  coerceRangeBounds(params);
   const { command, offset } = params;
 
   if (command === "editMessageCaption") {
@@ -76,4 +77,19 @@ const addDefaultParams = async (inputParams) => {
     }
   }
   return inputParams;
+};
+
+// Coerce range bounds to numbers so range loops (e.g. `for (let i = messageStart; i < messageStop; i++)`)
+// compare numerically instead of lexicographically ("9" < "10" is false as strings).
+const coerceRangeBounds = (params) => {
+  if (!params) return params;
+
+  const rangeKeys = ["messageStart", "messageStop"];
+  for (let i = 0; i < rangeKeys.length; i++) {
+    const key = rangeKeys[i];
+    if (params[key] === undefined || params[key] === null || params[key] === "") continue;
+    params[key] = Number(params[key]);
+  }
+
+  return params;
 };
