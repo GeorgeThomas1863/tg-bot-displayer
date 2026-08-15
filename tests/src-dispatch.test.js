@@ -197,6 +197,23 @@ describe("handler routing", () => {
     expect(Object.keys(received)).toEqual(["offset"]);
   });
 
+  it("a malformed range-bound env default does not break commands that never use ranges (getUpdates)", async () => {
+    // Real-world repro: the browser sends messageStart as +"" = 0 for every
+    // command, addDefaultParams swaps 0 for the env default, and a malformed
+    // MESSAGE_START like "0," must only matter to the range commands.
+    vi.stubEnv("MESSAGE_START", "0,");
+    vi.resetModules();
+    tgApi = await import("../src/tg-api.js");
+    state = (await import("../src/util/state.js")).default;
+    ({ tgCommandRun } = await import("../src/src.js"));
+    state.active = true;
+
+    const result = await tgCommandRun({ command: "getUpdates", offset: 7, messageStart: 0, messageStop: 0 });
+
+    expect(result).toBe("getUpdates-result");
+    expect(tgApi.tgGetUpdates).toHaveBeenCalledWith({ offset: 7 });
+  });
+
   it("returns the handler's result for a dispatched command", async () => {
     const result = await tgCommandRun({ command: "captionAllLookup" });
     expect(result).toBe("captionAllLookup-result");

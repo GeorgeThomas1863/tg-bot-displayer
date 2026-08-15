@@ -82,9 +82,14 @@ const addDefaultParams = async (inputParams) => {
 // Coerce range bounds to numbers so range loops (e.g. `for (let i = messageStart; i < messageStop; i++)`)
 // compare numerically instead of lexicographically ("9" < "10" is false as strings).
 // Throws on non-numeric input — a NaN bound would make the range loops silently no-op.
+// Only the range commands are checked: the browser submits messageStart/messageStop
+// for every command, so validating them globally would break commands that never use them.
 // Mutates params in place; returns nothing.
+const rangeCommands = ["forwardAllStore", "captionAllLookup"];
+
 const coerceRangeBounds = (params) => {
   if (!params) return;
+  if (!rangeCommands.includes(params.command)) return;
 
   const rangeKeys = ["messageStart", "messageStop"];
   for (let i = 0; i < rangeKeys.length; i++) {
