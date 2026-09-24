@@ -9,8 +9,8 @@
 //   dynamic import per test.
 // - state.js is a real shared singleton; a fresh instance is imported per test
 //   and state.active set true (most functions bail early when false).
-// All 429 fixtures deliberately omit parameters.retry_after so waitForRetry
-// never sleeps — tests stay deterministic and fast.
+// A 429's parameters.retry_after is intentionally ignored: the wait applies to
+// the bot being rotated away from, so rotation to the next token is immediate.
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getFirstArgs } from "./helpers/mock-calls.js";
@@ -52,6 +52,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   vi.restoreAllMocks();
   vi.unstubAllEnvs();
 });
@@ -140,19 +141,133 @@ describe("token rotation through request URLs", () => {
     expect(result).toEqual(OK_BODY);
   });
 
-  it("gives up and returns null after exactly tokenArray.length attempts when every token is rate-limited", async () => {
+  it("a 429 carrying retry_after rotates to the next token immediately, without sleeping", async () => {
     const { api, axios } = await importFresh();
-    axios.post.mockResolvedValue({ data: RATE_LIMIT_BODY });
+    const RATE_LIMIT_WITH_WAIT = { ...RATE_LIMIT_BODY, parameters: { retry_after: 3600 } };
+    axios.post.mockResolvedValueOnce({ data: RATE_LIMIT_WITH_WAIT }).mockResolvedValueOnce({ data: OK_BODY });
+    const started = Date.now();
+    const result = await api.tgSendMessage({ chatId: 1, text: "hi" });
+    expect(result).toEqual(OK_BODY);
+    expect(Date.now() - started).toBeLessThan(1000);
+    expect(getFirstArgs(axios.post)[1]).toContain("token-b");
+  });
 
-    const result = await api.tgSendMessage({ chatId: 42, text: "hello" });
+  it("waits for the smallest retry_after after a rejected pass, then succeeds on the next pass", async () => {
+    vi.useFakeTimers();
+    const { api, axios } = await importFresh();
+    axios.post
+      .mockResolvedValueOnce({ data: { ...RATE_LIMIT_BODY, parameters: { retry_after: 4 } } })
+      .mockResolvedValueOnce({ data: { ...RATE_LIMIT_BODY, parameters: { retry_after: 2 } } })
+      .mockResolvedValueOnce({ data: { ...RATE_LIMIT_BODY, parameters: { retry_after: 3 } } })
+      .mockResolvedValueOnce({ data: OK_BODY });
 
-    expect(result).toBeNull();
+    const resultPromise = api.tgSendMessage({ chatId: 42, text: "hello" });
+    await vi.advanceTimersByTimeAsync(1999);
     expect(axios.post).toHaveBeenCalledTimes(3);
+    await vi.advanceTimersByTimeAsync(1);
+
+    await expect(resultPromise).resolves.toEqual(OK_BODY);
+    expect(axios.post).toHaveBeenCalledTimes(4);
+    expect(vi.getTimerCount()).toBe(0);
     expect(getFirstArgs(axios.post)).toEqual([
       `${BASE_URL}token-a/sendMessage`,
       `${BASE_URL}token-b/sendMessage`,
       `${BASE_URL}token-c/sendMessage`,
+      `${BASE_URL}token-a/sendMessage`,
     ]);
+  });
+
+  it("uses exponential waits when rejected passes have no retry_after", async () => {
+    vi.useFakeTimers();
+    const { api, axios } = await importFresh();
+    axios.post
+      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
+      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
+      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
+      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
+      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
+      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
+      .mockResolvedValueOnce({ data: OK_BODY });
+
+    const resultPromise = api.tgSendMessage({ chatId: 1, text: "hi" });
+    await vi.advanceTimersByTimeAsync(999);
+    expect(axios.post).toHaveBeenCalledTimes(3);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(axios.post).toHaveBeenCalledTimes(6);
+    await vi.advanceTimersByTimeAsync(1999);
+    expect(axios.post).toHaveBeenCalledTimes(6);
+    await vi.advanceTimersByTimeAsync(1);
+
+    await expect(resultPromise).resolves.toEqual(OK_BODY);
+    expect(axios.post).toHaveBeenCalledTimes(7);
+  });
+
+  it("caps retry_after waits at 60 seconds", async () => {
+    vi.useFakeTimers();
+    const { api, axios } = await importFresh();
+    const LONG_RATE_LIMIT = { ...RATE_LIMIT_BODY, parameters: { retry_after: 3600 } };
+    axios.post
+      .mockResolvedValueOnce({ data: LONG_RATE_LIMIT })
+      .mockResolvedValueOnce({ data: LONG_RATE_LIMIT })
+      .mockResolvedValueOnce({ data: LONG_RATE_LIMIT })
+      .mockResolvedValueOnce({ data: OK_BODY });
+
+    const resultPromise = api.tgSendMessage({ chatId: 1, text: "hi" });
+    await vi.advanceTimersByTimeAsync(59_999);
+    expect(axios.post).toHaveBeenCalledTimes(3);
+    await vi.advanceTimersByTimeAsync(1);
+
+    await expect(resultPromise).resolves.toEqual(OK_BODY);
+  });
+
+  it("caps exponential backoff waits at 60 seconds", async () => {
+    vi.useFakeTimers();
+    const { api, axios } = await importFresh();
+    for (let call = 0; call < 21; call++) {
+      axios.post.mockResolvedValueOnce({ data: RATE_LIMIT_BODY });
+    }
+    axios.post.mockResolvedValueOnce({ data: OK_BODY });
+
+    const resultPromise = api.tgSendMessage({ chatId: 1, text: "hi" });
+    await vi.advanceTimersByTimeAsync(122_999);
+    expect(axios.post).toHaveBeenCalledTimes(21);
+    await vi.advanceTimersByTimeAsync(1);
+
+    await expect(resultPromise).resolves.toEqual(OK_BODY);
+  });
+
+  it("returns null promptly when stopped during a backoff wait", async () => {
+    vi.useFakeTimers();
+    const { api, axios, state } = await importFresh();
+    axios.post.mockResolvedValue({
+      data: { ...RATE_LIMIT_BODY, parameters: { retry_after: 60 } },
+    });
+
+    const resultPromise = api.tgSendMessage({ chatId: 1, text: "hi" });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(axios.post).toHaveBeenCalledTimes(3);
+    state.active = false;
+    await vi.advanceTimersByTimeAsync(1000);
+
+    await expect(resultPromise).resolves.toBeNull();
+    expect(axios.post).toHaveBeenCalledTimes(3);
+  });
+
+  it("throws and stops all work when rate limiting reaches the 60-minute deadline", async () => {
+    vi.useFakeTimers();
+    const { api, axios, state } = await importFresh();
+    axios.post.mockResolvedValue({
+      data: { ...RATE_LIMIT_BODY, parameters: { retry_after: 60 } },
+    });
+
+    const resultPromise = api.tgSendMessage({ chatId: 1, text: "hi" });
+    const rejection = expect(resultPromise).rejects.toThrow("Rate limit deadline exceeded");
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000);
+
+    await rejection;
+    expect(state.active).toBe(false);
+    expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/ERROR.*Rate limit deadline exceeded/));
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it("rotated index persists across operations — after two 429s the next operation starts at the third token", async () => {
@@ -169,20 +284,6 @@ describe("token rotation through request URLs", () => {
     expect(axios.post.mock.calls[3][0]).toBe(`${BASE_URL}token-c/sendMessage`);
   });
 
-  it("after full exhaustion (all tokens 429) the next operation wraps back to the first token", async () => {
-    const { api, axios } = await importFresh();
-    axios.post
-      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
-      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
-      .mockResolvedValueOnce({ data: RATE_LIMIT_BODY })
-      .mockResolvedValueOnce({ data: OK_BODY });
-
-    const exhausted = await api.tgSendMessage({ chatId: 1, text: "first" });
-    expect(exhausted).toBeNull();
-
-    await api.tgSendMessage({ chatId: 1, text: "second" });
-    expect(axios.post.mock.calls[3][0]).toBe(`${BASE_URL}token-a/sendMessage`);
-  });
 });
 
 describe("error bodies and guards", () => {
@@ -199,13 +300,17 @@ describe("error bodies and guards", () => {
     expect(axios.post).toHaveBeenCalledTimes(1);
   });
 
-  it("a network error with no response body exhausts every token and returns null", async () => {
-    const { api, axios } = await importFresh();
+  it("a network error with no response body keeps retrying until stopped", async () => {
+    vi.useFakeTimers();
+    const { api, axios, state } = await importFresh();
     axios.post.mockRejectedValue(new Error("ECONNREFUSED"));
 
-    const result = await api.tgSendMessage({ chatId: 42, text: "hello" });
+    const resultPromise = api.tgSendMessage({ chatId: 42, text: "hello" });
+    await vi.advanceTimersByTimeAsync(0);
+    state.active = false;
+    await vi.advanceTimersByTimeAsync(1000);
 
-    expect(result).toBeNull();
+    await expect(resultPromise).resolves.toBeNull();
     expect(axios.post).toHaveBeenCalledTimes(3);
   });
 

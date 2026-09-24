@@ -9,6 +9,11 @@ dotenv.config({ path: ".env.local", override: true });
 
 let tokenIndex = 0;
 
+const INITIAL_BACKOFF_MS = 1000;
+const MAX_BACKOFF_MS = 60 * 1000;
+const MAX_RATE_LIMIT_WAIT_MS = 60 * 60 * 1000;
+const SLEEP_SLICE_MS = 1000;
+
 const tokenArray = loadTokens();
 
 export const tgGetUpdates = async (inputParams) => {
@@ -110,7 +115,7 @@ export const tgGetReq = async (url) => {
     return res.data;
   } catch (e) {
     const responseData = e.response?.data;
-    if (!responseData) return null;
+    if (!responseData) return logTransportError(e);
     console.log(responseData);
     return responseData;
   }
@@ -125,10 +130,15 @@ export const tgPostReq = async (url, params) => {
     return res.data;
   } catch (e) {
     const responseData = e.response?.data;
-    if (!responseData) return null;
+    if (!responseData) return logTransportError(e);
     console.log(responseData);
     return responseData;
   }
+};
+
+const logTransportError = (e) => {
+  console.log(`TG TRANSPORT ERROR (no response from API): ${e?.code || ""} ${e?.message || e}`);
+  return null;
 };
 
 export const checkToken = async (data) => {
@@ -144,34 +154,79 @@ export const checkToken = async (data) => {
 };
 
 const runWithTokenRetry = async (requestToken) => {
-  const startIndex = tokenIndex;
+  const deadlineMs = Date.now() + MAX_RATE_LIMIT_WAIT_MS;
+  let backoffMs = INITIAL_BACKOFF_MS;
 
-  for (let attempt = 0; attempt < tokenArray.length; attempt++) {
+  while (state.active) {
+    const result = await runTokenPass(requestToken);
+    if (result.data !== null) return result.data;
     if (!state.active) return null;
+    if (Date.now() >= deadlineMs) stopForRateLimitDeadline();
 
-    const token = tokenArray[(startIndex + attempt) % tokenArray.length];
-    const data = await requestToken(token);
-    const isAccepted = await checkToken(data);
-    if (isAccepted) return data;
+    const waitMs = pickWaitMs(result.retryAfterSeconds, backoffMs);
+    const isStillActive = await sleepWhileActive(waitMs);
+    if (!isStillActive) return null;
 
-    if (attempt === tokenArray.length - 1) return null;
-    await waitForRetry(data);
+    backoffMs = Math.min(backoffMs * 2, MAX_BACKOFF_MS);
   }
 
   return null;
 };
 
-const waitForRetry = async (data) => {
-  if (data?.error_code !== 429) return;
+const runTokenPass = async (requestToken) => {
+  const startIndex = tokenIndex;
+  let retryAfterSeconds = null;
 
-  const retryAfter = Number(data.parameters?.retry_after);
-  if (!Number.isFinite(retryAfter) || retryAfter <= 0) return;
+  for (let attempt = 0; attempt < tokenArray.length; attempt++) {
+    if (!state.active) return { data: null, retryAfterSeconds };
 
-  await sleep(Math.min(retryAfter, 60) * 1000);
+    const token = tokenArray[(startIndex + attempt) % tokenArray.length];
+    const data = await requestToken(token);
+    const currentRetryAfter = readRetryAfter(data);
+    if (currentRetryAfter !== null && (retryAfterSeconds === null || currentRetryAfter < retryAfterSeconds)) {
+      retryAfterSeconds = currentRetryAfter;
+    }
+
+    const isAccepted = await checkToken(data);
+    if (isAccepted) return { data, retryAfterSeconds };
+  }
+
+  return { data: null, retryAfterSeconds };
 };
 
-const sleep = async (milliseconds) => {
-  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+const readRetryAfter = (data) => {
+  if (data?.error_code !== 429) return null;
+
+  const retryAfterSeconds = data.parameters?.retry_after;
+  if (typeof retryAfterSeconds !== "number") return null;
+  if (!Number.isFinite(retryAfterSeconds) || retryAfterSeconds < 0) return null;
+
+  return retryAfterSeconds;
+};
+
+const pickWaitMs = (retryAfterSeconds, backoffMs) => {
+  if (retryAfterSeconds === null) return Math.min(backoffMs, MAX_BACKOFF_MS);
+  return Math.min(retryAfterSeconds * 1000, MAX_BACKOFF_MS);
+};
+
+const sleepWhileActive = async (milliseconds) => {
+  let remainingMs = milliseconds;
+
+  while (remainingMs > 0) {
+    if (!state.active) return false;
+    const sliceMs = Math.min(remainingMs, SLEEP_SLICE_MS);
+    await new Promise((resolve) => setTimeout(resolve, sliceMs));
+    remainingMs -= sliceMs;
+  }
+
+  return state.active;
+};
+
+const stopForRateLimitDeadline = () => {
+  const message = "Rate limit deadline exceeded after 60 minutes; stopping all operations";
+  console.log(`ERROR: ${message}`);
+  state.active = false;
+  throw new Error(message);
 };
 
 function loadTokens() {
