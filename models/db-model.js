@@ -6,23 +6,24 @@ import { ObjectId } from "mongodb";
 await dbConnect();
 
 class dbModel {
-  constructor(dataObject, collection) {
+  constructor(dataObject, collection, dbName) {
     this.dataObject = dataObject;
     this.collection = collection;
+    this.dbName = dbName;
   }
 
   //STORE STUFF
 
   async storeAny() {
     // await db.dbConnect();
-    const storeData = await dbGet().collection(this.collection).insertOne(this.dataObject);
+    const storeData = await dbGet(this.dbName).collection(this.collection).insertOne(this.dataObject);
     return storeData;
   }
 
   async storeUniqueVid() {
     await this.vidAlreadyStored();
 
-    const storeVid = await db.dbGet().collection(this.collection).insertOne(this.dataObject);
+    const storeVid = await dbGet(this.dbName).collection(this.collection).insertOne(this.dataObject);
     return storeVid;
   }
 
@@ -34,7 +35,7 @@ class dbModel {
       return true;
     }
 
-    const vidAlreadyStored = await db.dbGet().collection(this.collection).findOne({ forwardFromChannelId: forwardFromChannelId, forwardFromMessageId: forwardFromMessageId }); //prettier-ignore
+    const vidAlreadyStored = await dbGet(this.dbName).collection(this.collection).findOne({ forwardFromChannelId: forwardFromChannelId, forwardFromMessageId: forwardFromMessageId }); //prettier-ignore
     if (vidAlreadyStored) {
       const error = new Error("VID ALREADY STORED");
       throw error;
@@ -54,7 +55,7 @@ class dbModel {
   //GET STUFF
 
   async getAll() {
-    const arrayData = await dbGet().collection(this.collection).find().toArray();
+    const arrayData = await dbGet(this.dbName).collection(this.collection).find().toArray();
     return arrayData;
   }
 
@@ -65,14 +66,14 @@ class dbModel {
     console.log("COLLECTION");
     console.log(this.collection);
 
-    const dataArray = await dbGet().collection(this.collection).findOne({ [keyToLookup]: itemValue }); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).findOne({ [keyToLookup]: itemValue }); //prettier-ignore
     return dataArray;
   }
 
   async getRegexItem() {
     const { keyToLookup, regexValue } = this.dataObject;
 
-    const dataArray = await dbGet().collection(this.collection).findOne({ [keyToLookup]: { $regex: regexValue, $options: "i" } }); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).findOne({ [keyToLookup]: { $regex: regexValue, $options: "i" } }); //prettier-ignore
     return dataArray;
   }
 
@@ -81,7 +82,7 @@ class dbModel {
     const { keyToLookup, itemValue } = this.dataObject;
     const mongoValue = new ObjectId(itemValue); //convert to mongoId
 
-    const dataArray = await dbGet().collection(this.collection).find({ [keyToLookup]: mongoValue }).toArray(); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).find({ [keyToLookup]: mongoValue }).toArray(); //prettier-ignore
     return dataArray;
   }
 
@@ -90,7 +91,7 @@ class dbModel {
     const { scrapeId } = this.dataObject;
     const mongoValue = new ObjectId(scrapeId); //convert to mongoId
 
-    const scrapeData = await dbGet().collection(this.collection).findOne({ _id: mongoValue }); //prettier-ignore
+    const scrapeData = await dbGet(this.dbName).collection(this.collection).findOne({ _id: mongoValue }); //prettier-ignore
     return scrapeData;
   }
 
@@ -101,7 +102,7 @@ class dbModel {
     const { sortKey, sortKey2, howMany } = this.dataObject;
 
     //get data
-    const dataArray = await dbGet().collection(this.collection).find().sort({ [sortKey]: -1, [sortKey2]: -1 }).limit(+howMany).toArray(); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).find().sort({ [sortKey]: -1, [sortKey2]: -1 }).limit(+howMany).toArray(); //prettier-ignore
 
     return dataArray;
   }
@@ -123,7 +124,7 @@ class dbModel {
     console.log(this.dataObject);
 
     //get data
-    const dataArray = await dbGet().collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: -1}).limit(+howMany).toArray(); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: -1}).limit(+howMany).toArray(); //prettier-ignore
 
     return dataArray;
   }
@@ -133,7 +134,7 @@ class dbModel {
     const { sortKey, sortKey2, howMany } = this.dataObject;
 
     //get data
-    const dataArray = await dbGet().collection(this.collection).find().sort({ [sortKey]: 1, [sortKey2]: 1 }).limit(+howMany).toArray(); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).find().sort({ [sortKey]: 1, [sortKey2]: 1 }).limit(+howMany).toArray(); //prettier-ignore
 
     return dataArray;
   }
@@ -143,7 +144,7 @@ class dbModel {
     const { sortKey, sortKey2, howMany, filterKey, filterValue } = this.dataObject;
 
     //get data
-    const dataArray = await dbGet().collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: 1, [sortKey2]: 1 }).limit(+howMany).toArray(); //prettier-ignore
+    const dataArray = await dbGet(this.dbName).collection(this.collection).find({ [filterKey]: filterValue }).sort({ [sortKey]: 1, [sortKey2]: 1 }).limit(+howMany).toArray(); //prettier-ignore
 
     return dataArray;
   }

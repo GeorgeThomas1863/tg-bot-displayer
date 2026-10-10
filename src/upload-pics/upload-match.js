@@ -7,7 +7,7 @@ import { tgPostPicFS, tgForwardMessage } from "../tg-api.js";
 
 export const uploadPicMatch = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic } = inputParams;
+  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic, dbName } = inputParams;
 
   console.log("UPLOAD PIC MATCH");
   console.log(inputParams);
@@ -48,7 +48,7 @@ export const uploadPicMatch = async (inputParams) => {
       keyToLookup: "caption",
       itemValue: matchString,
     };
-    const vidCheckModel = new dbModel(vidCheckParams, collectionPullFrom);
+    const vidCheckModel = new dbModel(vidCheckParams, collectionPullFrom, dbName);
     const vidCheckData = await vidCheckModel.getUniqueItem();
     console.log("VID CHECK DATA");
     console.log(vidCheckData);
@@ -80,7 +80,7 @@ export const uploadPicMatch = async (inputParams) => {
     console.log(forwardVidData);
     if (!forwardVidData) continue;
 
-    const storeModel = new dbModel(forwardVidData, collectionSaveTo);
+    const storeModel = new dbModel(forwardVidData, collectionSaveTo, dbName);
     const storeData = await storeModel.storeAny();
     console.log("STORE DATA");
     console.log(storeData);
@@ -95,11 +95,11 @@ export const uploadPicMatch = async (inputParams) => {
 
 export const forwardVidMatchPic = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic, picPath } = inputParams;
+  const { uploadPicType, uploadToId, collectionPullFrom, collectionSaveTo, collectionPic, picPath, dbName } = inputParams;
 
   if (uploadPicType !== "forwardVidMatchPic") return null;
 
-  const postVidModel = new dbModel("", collectionPullFrom);
+  const postVidModel = new dbModel("", collectionPullFrom, dbName);
   const postVidArray = await postVidModel.getAll();
   if (!postVidArray || !postVidArray.length) return null;
   console.log("POST VID ARRAY");
@@ -121,7 +121,7 @@ export const forwardVidMatchPic = async (inputParams) => {
         itemValue: fileNameId,
       };
 
-      const fileNameCheckModel = new dbModel(fileNameCheckParams, collectionPic);
+      const fileNameCheckModel = new dbModel(fileNameCheckParams, collectionPic, dbName);
       const fileNameCheckData = await fileNameCheckModel.getUniqueItem();
       if (!fileNameCheckData || !fileNameCheckData.picBasePath) continue;
 
@@ -149,7 +149,7 @@ export const forwardVidMatchPic = async (inputParams) => {
       console.log(forwardVidData);
       if (!forwardVidData) continue;
 
-      const storeModel = new dbModel(forwardVidData, collectionSaveTo);
+      const storeModel = new dbModel(forwardVidData, collectionSaveTo, dbName);
       const storeData = await storeModel.storeAny();
       console.log("STORE DATA");
       console.log(storeData);
@@ -165,7 +165,7 @@ export const forwardVidMatchPic = async (inputParams) => {
 
 export const getMatchString = async (picPath, inputParams) => {
   if (!picPath || !inputParams) return null;
-  const { collectionPic } = inputParams;
+  const { collectionPic, dbName } = inputParams;
 
   //FOR DEFEX (remove otehrwise)
   const picName = path.basename(picPath);
@@ -184,7 +184,7 @@ export const getMatchString = async (picPath, inputParams) => {
     itemValue: +fileId,
   };
 
-  const regexModel = new dbModel(regexParams, collectionPic);
+  const regexModel = new dbModel(regexParams, collectionPic, dbName);
   //const regexData = await regexModel.getRegexItem();
   const regexData = await regexModel.getUniqueItem();
   console.log("REGEX DATA");

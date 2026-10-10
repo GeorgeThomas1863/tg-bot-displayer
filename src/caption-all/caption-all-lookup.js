@@ -4,7 +4,7 @@ import state from "../util/state.js";
 
 export const runCaptionAllLookup = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { captionAllType, messageStart, messageStop, collectionPullFrom, collectionSaveTo, editChannelId, forwardToId } = inputParams;
+  const { captionAllType, messageStart, messageStop, collectionPullFrom, collectionSaveTo, dbName, editChannelId, forwardToId } = inputParams;
 
   console.log("CAPTION ALL LOOKUP");
   console.log(inputParams);
@@ -55,7 +55,7 @@ export const runCaptionAllLookup = async (inputParams) => {
       const editData = await tgEditMessageCaption(editParams);
       if (!editData || !editData.result) continue;
 
-      const storeModel = new dbModel(editData, collectionSaveTo);
+      const storeModel = new dbModel(editData, collectionSaveTo, dbName);
       const storeData = await storeModel.storeAny();
 
       console.log("STORE DATA");
@@ -91,7 +91,7 @@ export const getFileNameVid = async (forwardData) => {
 };
 
 export const getFileNameSpecial = async (forwardData, inputObj) => {
-  const { collectionPullFrom } = inputObj;
+  const { collectionPullFrom, dbName } = inputObj;
   const { video } = forwardData.result;
   if (!video) return null;
 
@@ -102,7 +102,7 @@ export const getFileNameSpecial = async (forwardData, inputObj) => {
   // console.log("GET FILE NAME SPECIAL; KINK ID");
   // console.log(kinkId);
 
-  const dataModel = new dbModel({ keyToLookup: "kinkShootId", itemValue: kinkId }, collectionPullFrom);
+  const dataModel = new dbModel({ keyToLookup: "kinkShootId", itemValue: kinkId }, collectionPullFrom, dbName);
   const itemData = await dataModel.getUniqueItem();
   if (!itemData || !itemData.labelText) return null;
 
@@ -121,7 +121,7 @@ export const getFileNameLookup = async (forwardData, inputObj) => {
 };
 
 export const getPrimalText = async (forwardData, inputObj) => {
-  const { collectionPullFrom } = inputObj;
+  const { collectionPullFrom, dbName } = inputObj;
 
   // console.log("GET PRIMAL TEXT");
   // console.log("FORWARD DATA");
@@ -137,7 +137,7 @@ export const getPrimalText = async (forwardData, inputObj) => {
   const primalVidId = file_name.split("_")[0];
   if (!primalVidId) return null;
 
-  const dataModel = new dbModel({ keyToLookup: "realId", itemValue: primalVidId }, collectionPullFrom);
+  const dataModel = new dbModel({ keyToLookup: "realId", itemValue: primalVidId }, collectionPullFrom, dbName);
   const itemData = await dataModel.getUniqueItem();
   console.log("ITEM DATA");
   console.log(itemData);
@@ -151,15 +151,15 @@ export const getPrimalText = async (forwardData, inputObj) => {
 };
 
 export const getDefeatedText = async (forwardData, inputObj) => {
-  const { collectionPullFrom } = inputObj;
+  const { collectionPullFrom, dbName } = inputObj;
   if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
   const { file_name } = forwardData.result.video;
 
-  const dataModel1 = new dbModel({ keyToLookup: "filename", itemValue: file_name }, collectionPullFrom);
+  const dataModel1 = new dbModel({ keyToLookup: "filename", itemValue: file_name }, collectionPullFrom, dbName);
   const itemData1 = await dataModel1.getUniqueItem();
   if (itemData1 && itemData1.labelText) return itemData1.labelText;
 
-  const dataModel2 = new dbModel({ keyToLookup: "vidId", itemValue: file_name.split("-")[0] }, collectionPullFrom);
+  const dataModel2 = new dbModel({ keyToLookup: "vidId", itemValue: file_name.split("-")[0] }, collectionPullFrom, dbName);
   const itemData2 = await dataModel2.getUniqueItem();
   if (itemData2 && itemData2.labelText) return itemData2.labelText;
 
@@ -167,16 +167,16 @@ export const getDefeatedText = async (forwardData, inputObj) => {
 };
 
 export const getXfightsText = async (forwardData, inputObj) => {
-  const { collectionPullFrom } = inputObj;
+  const { collectionPullFrom, dbName } = inputObj;
   if (!forwardData || !forwardData.result || !forwardData.result.video) return null;
   const { file_name } = forwardData.result.video;
   const dashName = file_name.replaceAll("_", "-");
 
-  const dataModel1 = new dbModel({ keyToLookup: "fileName", itemValue: file_name }, collectionPullFrom);
+  const dataModel1 = new dbModel({ keyToLookup: "fileName", itemValue: file_name }, collectionPullFrom, dbName);
   const itemData1 = await dataModel1.getUniqueItem();
   if (itemData1 && itemData1.labelText) return itemData1.labelText;
 
-  const dataModel2 = new dbModel({ keyToLookup: "fileName", itemValue: dashName }, collectionPullFrom);
+  const dataModel2 = new dbModel({ keyToLookup: "fileName", itemValue: dashName }, collectionPullFrom, dbName);
   const itemData2 = await dataModel2.getUniqueItem();
   if (itemData2 && itemData2.labelText) return itemData2.labelText;
 

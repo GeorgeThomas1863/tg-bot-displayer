@@ -4,6 +4,8 @@ import { runForwardAllStore } from "./forward-all/forward-all-store.js";
 import { runCaptionAllLookup } from "./caption-all/caption-all-lookup.js";
 import { runUploadPics } from "./upload-pics/upload-pics.js";
 
+import { checkDbName } from "../middleware/db-config.js";
+
 import state from "./util/state.js";
 
 //define default object
@@ -14,6 +16,7 @@ const defaultObject = {
   forwardToId: process.env.FORWARD_TO_ID, //forwardTest21
   uploadToId: process.env.UPLOAD_TO_ID,
   editChannelId: process.env.EDIT_CHANNEL_ID, //editCaptionsTest11
+  dbName: process.env.DB_NAME,
   collectionPullFrom: process.env.COLLECTION_PULL_FROM,
   collectionExtra: process.env.COLLECTION_EXTRA,
   collectionSaveTo: process.env.COLLECTION_SAVE_TO,
@@ -34,6 +37,7 @@ export const tgCommandRun = async (inputParams) => {
   // add defaults
   const params = await addDefaultParams(inputParams);
   coerceRangeBounds(params);
+  validateDbName(params);
   const { command, offset } = params;
 
   if (command === "editMessageCaption") {
@@ -101,4 +105,25 @@ const coerceRangeBounds = (params) => {
     if (Number.isNaN(numberValue)) throw new Error(`Invalid ${key}: "${value}" is not a number`);
     params[key] = numberValue;
   }
+};
+
+// Reject a bad database name before any loop starts. The loops catch and only log
+// errors, so a throw from dbGet inside them would come back to the user as an empty 200.
+// Only the DB commands are checked: the browser submits dbName for every command.
+// URL photo uploads skip the check because they never touch the database.
+// Throws on an invalid name; returns nothing.
+const dbCommands = ["forwardAllStore", "captionAllLookup", "sendPhoto"];
+const urlUploadTypes = ["uploadSingleURL", "uploadListURL"];
+
+const validateDbName = (params) => {
+  if (!params) return;
+  if (!dbCommands.includes(params.command)) return;
+  if (isUrlUpload(params)) return;
+
+  checkDbName(params.dbName);
+};
+
+// The browser submits uploadPicType for every command, so match on the command too.
+const isUrlUpload = (params) => {
+  return params.command === "sendPhoto" && urlUploadTypes.includes(params.uploadPicType);
 };

@@ -31,6 +31,7 @@ export const buildMainForm = async () => {
   const collectionPullFromListItem = await buildCollectionPullFromListItem();
   const collectionPicListItem = await buildCollectionPicListItem();
   const collectionSaveToListItem = await buildCollectionSaveToListItem();
+  const dbNameListItem = await buildDbNameListItem();
 
   const buttonContainer = await buildButtonContainer();
 
@@ -54,6 +55,7 @@ export const buildMainForm = async () => {
     collectionPullFromListItem,
     collectionPicListItem,
     collectionSaveToListItem,
+    dbNameListItem,
     buttonContainer
   );
 
@@ -479,6 +481,28 @@ export const buildPicPathListItem = async () => {
   picPathListItem.append(picPathLabel, picPathInput);
 
   return picPathListItem;
+};
+
+export const buildDbNameListItem = async () => {
+  const dbNameListItem = document.createElement("li");
+  dbNameListItem.id = "list-item-db-name";
+  dbNameListItem.className = "form-list-item";
+  dbNameListItem.classList.add("hidden");
+
+  const dbNameLabel = document.createElement("label");
+  dbNameLabel.setAttribute("for", "db-name-input");
+  dbNameLabel.textContent = "M DB";
+  dbNameLabel.className = "form-label";
+
+  const dbNameInput = document.createElement("input");
+  dbNameInput.type = "text";
+  dbNameInput.name = "db-name-input";
+  dbNameInput.id = "db-name-input";
+  dbNameInput.className = "form-input";
+
+  dbNameListItem.append(dbNameLabel, dbNameInput);
+
+  return dbNameListItem;
 };
 
 export const buildCollectionPullFromListItem = async () => {

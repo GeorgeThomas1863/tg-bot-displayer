@@ -10,7 +10,7 @@ import { checkPicURL } from "../util/util.js";
 //MAKE SO CHECKS PIC / VID EXISTS FIRST
 export const runUploadPics = async (inputParams) => {
   if (!inputParams || !state.active) return null;
-  const { uploadPicType, uploadToId, collectionSaveTo } = inputParams;
+  const { uploadPicType, uploadToId, collectionSaveTo, dbName } = inputParams;
 
   if (uploadPicType === "forwardVidMatchPic") return await forwardVidMatchPic(inputParams);
 
@@ -42,7 +42,7 @@ export const runUploadPics = async (inputParams) => {
 
       postPicDataArray.push(data);
 
-      const storeModel = new dbModel(data, collectionSaveTo);
+      const storeModel = new dbModel(data, collectionSaveTo, dbName);
       const storeData = await storeModel.storeAny();
       console.log("STORE DATA");
       console.log(storeData);

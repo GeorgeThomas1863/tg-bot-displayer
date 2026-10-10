@@ -12,6 +12,12 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from "vitest";
 
+// src.js imports checkDbName from db-config.js, which runs dotenv.config at import.
+// Mock dotenv so no real .env is loaded; the real checkDbName still runs.
+vi.mock("dotenv", () => ({
+  default: { config: vi.fn() },
+}));
+
 vi.mock("../src/tg-api.js", () => ({
   tgGetUpdates: vi.fn().mockResolvedValue("getUpdates-result"),
   tgSendMessage: vi.fn().mockResolvedValue("sendMessage-result"),
@@ -47,6 +53,7 @@ const ENV_DEFAULTS = {
   TEXT: "env-text",
   CAPTION: "env-caption",
   DATA_TYPE: "env-data-type",
+  DB_NAME: "envdb",
 };
 
 let tgCommandRun;
@@ -226,5 +233,58 @@ describe("handler routing", () => {
     const received = uploadPics.runUploadPics.mock.calls[0][0];
     expect(received.picPath).toBe("env-pic-path");
     expect(received.uploadToId).toBe("u1");
+  });
+});
+
+describe("dbName default", () => {
+  it("an empty dbName is replaced by the DB_NAME env default", async () => {
+    await tgCommandRun({ command: "forwardAllStore", dbName: "", messageStart: "1", messageStop: "2", forwardAllType: "storeEverything" });
+
+    const received = forwardAll.runForwardAllStore.mock.calls[0][0];
+    expect(received.dbName).toBe("envdb");
+  });
+
+  it("a submitted dbName is not overwritten by the env default", async () => {
+    await tgCommandRun({ command: "forwardAllStore", dbName: "userdb", messageStart: "1", messageStop: "2", forwardAllType: "storeEverything" });
+
+    const received = forwardAll.runForwardAllStore.mock.calls[0][0];
+    expect(received.dbName).toBe("userdb");
+  });
+
+  it("an invalid dbName on a DB command throws before the handler runs", async () => {
+    const runPromise = tgCommandRun({ command: "forwardAllStore", dbName: "bad.name", messageStart: "1", messageStop: "2", forwardAllType: "storeEverything" });
+
+    await expect(runPromise).rejects.toThrow(/Invalid database name/);
+    expect(forwardAll.runForwardAllStore).not.toHaveBeenCalled();
+  });
+
+  it("an invalid dbName does not block a non-DB command", async () => {
+    const result = await tgCommandRun({ command: "sendMessage", dbName: "bad.name", chatId: "1", text: "hi" });
+
+    expect(result).toBe("sendMessage-result");
+    expect(tgApi.tgSendMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it("an invalid dbName does not block a URL photo upload", async () => {
+    const urlTypes = ["uploadSingleURL", "uploadListURL"];
+    for (let i = 0; i < urlTypes.length; i++) {
+      await tgCommandRun({ command: "sendPhoto", uploadPicType: urlTypes[i], dbName: "bad.name", picPath: "https://x.test/a.jpg" });
+    }
+
+    expect(uploadPics.runUploadPics).toHaveBeenCalledTimes(2);
+  });
+
+  it("an invalid dbName still blocks a file photo upload", async () => {
+    const runPromise = tgCommandRun({ command: "sendPhoto", uploadPicType: "uploadSingleFS", dbName: "bad.name" });
+
+    await expect(runPromise).rejects.toThrow(/Invalid database name/);
+    expect(uploadPics.runUploadPics).not.toHaveBeenCalled();
+  });
+
+  it("a URL upload type left over on a DB command does not skip the check", async () => {
+    const runPromise = tgCommandRun({ command: "forwardAllStore", uploadPicType: "uploadSingleURL", dbName: "bad.name", messageStart: "1", messageStop: "2" });
+
+    await expect(runPromise).rejects.toThrow(/Invalid database name/);
+    expect(forwardAll.runForwardAllStore).not.toHaveBeenCalled();
   });
 });

@@ -10,13 +10,14 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-const { storeAnyMock } = vi.hoisted(() => ({ storeAnyMock: vi.fn() }));
+const { storeAnyMock, dbModelCtorMock } = vi.hoisted(() => ({ storeAnyMock: vi.fn(), dbModelCtorMock: vi.fn() }));
 
 vi.mock("../models/db-model.js", () => {
   class FakeDbModel {
-    constructor(dataObject, collection) {
+    constructor(dataObject, collection, dbName) {
       this.dataObject = dataObject;
       this.collection = collection;
+      dbModelCtorMock(dataObject, collection, dbName);
     }
     async storeAny() {
       return storeAnyMock(this.dataObject, this.collection);
@@ -103,6 +104,17 @@ describe("range bounds", () => {
       forwardFromId: "from-chat-1",
       messageId: 1,
     });
+  });
+});
+
+describe("db routing", () => {
+  it("passes dbName as the third constructor argument to dbModel", async () => {
+    tgForwardMessage.mockImplementation(async ({ messageId }) => makeForwardData(messageId));
+
+    await runForwardAllStore({ ...baseParams, dbName: "userdb" });
+
+    expect(dbModelCtorMock.mock.calls[0][1]).toBe("test-collection");
+    expect(dbModelCtorMock.mock.calls[0][2]).toBe("userdb");
   });
 });
 

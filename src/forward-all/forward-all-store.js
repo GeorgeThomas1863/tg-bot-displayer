@@ -6,7 +6,7 @@ import state from "../util/state.js";
 export const runForwardAllStore = async (inputParams) => {
   if (!state.active) return null;
 
-  const { messageStart, messageStop, forwardAllType, collectionSaveTo, dataType, forwardFromId, forwardToId } = inputParams;
+  const { messageStart, messageStop, forwardAllType, collectionSaveTo, dbName, dataType, forwardFromId, forwardToId } = inputParams;
   // console.log("INPUT FORWARD ALL STOREPARAMS");
   // console.log(inputParams);
 
@@ -37,7 +37,7 @@ export const runForwardAllStore = async (inputParams) => {
       console.log("STORE OBJ");
       console.log(storeObj);
 
-      const storeModel = new dbModel(storeObj, collectionSaveTo);
+      const storeModel = new dbModel(storeObj, collectionSaveTo, dbName);
       const storeData = await storeModel.storeAny();
 
       console.log("STORE DATA");

@@ -44,9 +44,9 @@ Browser → POST /tg-submit-route
 
 ### Data Layer
 
-`models/db-model.js` — single class wrapping the MongoDB native driver. Constructed with `(dataObject, collectionName)`. All DB operations go through this class. Connection is established at module load (`await dbConnect()` at top-level).
+`models/db-model.js` — single class wrapping the MongoDB native driver. Constructed with `(dataObject, collectionName, dbName)`. All DB operations go through this class. Connection is established at module load (`await dbConnect()` at top-level).
 
-`middleware/db-config.js` — holds the live `db` reference via module-level closure; `dbGet()` returns it.
+`middleware/db-config.js` — holds the MongoClient via module-level closure; `dbGet(dbName)` returns that database, falling back to `DB_NAME` then `"tg"`.
 
 ### Auth
 

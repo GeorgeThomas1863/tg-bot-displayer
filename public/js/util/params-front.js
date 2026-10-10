@@ -47,6 +47,7 @@ export const buildInputParams = async () => {
     captionAllType: document.getElementById("lookup-type-caption-input").value,
     uploadPicType: document.getElementById("lookup-type-upload-pic-input").value,
     picPath: document.getElementById("pic-path-input").value,
+    dbName: document.getElementById("db-name-input").value,
     collectionPullFrom: document.getElementById("collection-pull-from-input").value,
     collectionPic: document.getElementById("collection-pic-input").value,
     collectionSaveTo: document.getElementById("collection-save-to-input").value,
